@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System;
 
 using Snake;
@@ -17,7 +16,6 @@ namespace Logic
     public class StandartLogic : GameLogicBase
     {
         private ISnakeFactory snakeFactory;
-        private PlayingMap playingMap;
 
         #region Constructors
 
@@ -38,7 +36,7 @@ namespace Logic
         {
             this.snakeFactory = snakeFactory;
             this.SnakesForLogic = new GameLogicsAttributes.SnakesForLogic();
-            playingMap = new PlayingMap(mapSideSize, foodCount);
+            map = new PlayingMap(mapSideSize, foodCount);
             var snakesCordinates = GetInitialSnakesCordinates(mapSideSize, snakeNames.Count);
             for (int i = 0; i < snakeNames.Count; i++)
                 SnakesForLogic.Snakes.Add (snakeFactory.GetSnakeByName(snakeNames[i], snakesCordinates[i]));
@@ -53,7 +51,7 @@ namespace Logic
             AssemblySnakeFactory assemblySnakeFactory = new AssemblySnakeFactory();
             const int sideSize = 50;
             const int foodCount = 15;
-            playingMap = new PlayingMap(sideSize, foodCount);
+            map = new PlayingMap(sideSize, foodCount);
 
             var snakesCordinates = GetInitialSnakesCordinates(sideSize, 6);
 
@@ -105,9 +103,25 @@ namespace Logic
             return cordinates;
         }
 
+        /// <summary>
+        /// Метод добавляющий еду на карту в зависимости
+        /// от максимально возможного ее количества.
+        /// Следует вызывать только после того как все
+        /// змейки будут перемещены
+        /// </summary>
         private void InsertFood()
         {
+            Random random = new Random();
 
+            while (map.Food.FoodCordinates.Count < map.Food.MaxCount)
+            {
+                SnakeAttribute.Cordinates foodCordinates = new SnakeAttribute.Cordinates
+                    (random.Next(0, map.sideSize), random.Next(0, map.sideSize));
+
+                if (!CollisionWithSnakes(foodCordinates) && !CollisionWithFood(foodCordinates)
+                    && !CollisionWithBarriers(foodCordinates))
+                    map.Food.FoodCordinates.Add(foodCordinates);
+            }
         }
 
         /// <summary>
@@ -115,23 +129,43 @@ namespace Logic
         /// Производит логические операции 
         /// </summary>
         /// <returns>Возвращает карту с новым положением объектов</returns>
-        public PlayingMap GetNextPlayingMap()
+        public override PlayingMap GetNextPlayingMap()
         {
-            PlayingMap tempMap = playingMap;
-            playingMap.Snake.Clear();
+            PlayingMap tempMap = map;
+            map.Snake.Clear();
+            // Считываем следующие направления
             foreach (var snake in SnakesForLogic.Snakes)
             {
                 // Если змейка мертва у нее ничего не просим
                 if (!snake.isAlive)
                 {
-                    playingMap.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive));
+                    map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive));
                     continue;
                 }
-                
 
-                
+                SnakeAttribute.SnakePathway snakePathway = snake.GetNextPathway(tempMap);
+                SnakeAttribute.Cordinates snakeHead = snake.Head;
+                switch (snakePathway)
+                {
+                    case SnakeAttribute.SnakePathway.Up:
+                        
+                        break;
+
+                    case SnakeAttribute.SnakePathway.Right:
+                        break;
+
+                    case SnakeAttribute.SnakePathway.Down:
+                        break;
+
+                    case SnakeAttribute.SnakePathway.Left:
+                        break;
+
+                    default:
+                        throw new ArgumentException(nameof(snakePathway), "Unknown pathway");
+                }
+
             }
-
+            // stop there
             return null;
         }
     }

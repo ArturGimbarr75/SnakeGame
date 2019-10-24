@@ -23,7 +23,7 @@ namespace Snake
         }
 
         /// <summary>
-        /// Кординаты части тела змейки
+        /// Кординаты объектов игрового поля
         /// </summary>
         public struct Cordinates
         {
@@ -32,8 +32,32 @@ namespace Snake
                 this.X = X;
                 this.Y = Y;
             }
+            /// <summary>
+            /// Кордината Х
+            /// </summary>
             public int X { get; set; }
+            /// <summary>
+            /// Кордината Y
+            /// </summary>
             public int Y { get; set; }
+
+            /// <summary>
+            /// Проверка на равенство кординат
+            /// </summary>
+            /// <param name="cordinates1">Кордината</param>
+            /// <param name="cordinates2">Кордината</param>
+            /// <returns>True если кординаты равны</returns>
+            public static bool operator == (Cordinates cordinates1, Cordinates cordinates2)
+                => (cordinates1.X == cordinates2.X && cordinates1.Y == cordinates2.Y);
+
+            /// <summary>
+            /// Проверка на неравенство кординат
+            /// </summary>
+            /// <param name="cordinates1">Кордината</param>
+            /// <param name="cordinates2">Кордината</param>
+            /// <returns>True если кординаты не равны</returns>
+            public static bool operator !=(Cordinates cordinates1, Cordinates cordinates2)
+                => !(cordinates1.X == cordinates2.X && cordinates1.Y == cordinates2.Y);
         }
 
         /// <summary>
@@ -83,7 +107,6 @@ namespace Snake
                 catch (Exception ex)
                 {
                     Debug.Log(ex.Message);
-                    //this = new SnakeGenes();
                     throw; //TODO: Посмотреть чтобы все не сломало
                 }
             }

@@ -6,22 +6,34 @@ using Snake;
 
 namespace Map
 {
-    public class PlayingMapAttributes
+    public sealed class PlayingMapAttributes
     {
         /// <summary>
         /// Класс хранящий информацию о еде
         /// </summary>
-        public struct Food
+        public sealed class Food
         {
+            /// <summary>
+            /// Максимальное количество еды на поле
+            /// </summary>
             public int MaxCount;
+            /// <summary>
+            /// Кординаты еды на поле
+            /// </summary>
             public List<SnakeAttribute.Cordinates> FoodCordinates;
         }
 
         /// <summary>
         /// Змейки для отображения на карте
         /// </summary>
-        public struct Snake
+        public sealed class Snake
         {
+            /// <summary>
+            /// Стандартный конструктор
+            /// </summary>
+            /// <param name="name">Имя змейки</param>
+            /// <param name="cordinates">Кординаты тела змейки</param>
+            /// <param name="isAlive">Жива ли змейка</param>
             public Snake (string name, List<SnakeAttribute.Cordinates> cordinates, bool isAlive)
             {
                 Name = name;
@@ -29,8 +41,17 @@ namespace Map
                 this.isAlive = isAlive;
             }
 
+            /// <summary>
+            /// Имя змейки
+            /// </summary>
             public string Name;
+            /// <summary>
+            /// Кординаты змейки
+            /// </summary>
             public List<SnakeAttribute.Cordinates> Cordinates;
+            /// <summary>
+            /// Жива ли змейка
+            /// </summary>
             public bool isAlive;
         }
     }
