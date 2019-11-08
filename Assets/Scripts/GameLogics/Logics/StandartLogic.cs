@@ -40,7 +40,7 @@ namespace Logic
         {
             var snakesCordinates = GetInitialSnakesCordinates(50, 6);
 
-            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName ("PlayerArrows",     snakesCordinates[0]));
+            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName ("PlayerRows",       snakesCordinates[0]));
             SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName ("PlayerWASD",       snakesCordinates[1]));
             SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName ("RandPathwaySnake", snakesCordinates[2]));
             SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName ("RandPathwaySnake", snakesCordinates[3]));
