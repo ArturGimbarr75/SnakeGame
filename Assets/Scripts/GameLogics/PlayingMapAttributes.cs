@@ -53,6 +53,47 @@ namespace Map
             /// Жива ли змейка
             /// </summary>
             public bool isAlive;
+
+            /// <summary>
+            /// Проверка равенства змеек
+            /// </summary>
+            /// <param name="snake1">Змейка</param>
+            /// <param name="snake2">Змейка</param>
+            /// <returns>True если равны</returns>
+            public static bool operator == (Snake snake1, Snake snake2)
+            {
+                if (snake1.Name == snake2.Name && snake1.isAlive == snake2.isAlive
+                    && snake1.Cordinates.Count == snake2.Cordinates.Count)
+                {
+                    for (int i = 0; i < snake1.Cordinates.Count; i++)
+                        if (snake1.Cordinates[i] != snake2.Cordinates[i])
+                            return false;
+                }
+                else
+                    return false;
+                return true;
+            }
+
+            /// <summary>
+            /// Проверка неравенства змеек
+            /// </summary>
+            /// <param name="snake1">Змейка</param>
+            /// <param name="snake2">Змейка</param>
+            /// <returns>True если не равны</returns>
+            public static bool operator != (Snake snake1, Snake snake2)
+            {
+                return !(snake1 == snake2);
+            }
+        }
+
+        enum PlayingMapCell
+        {
+            Food,
+            Barrier,
+            Empty,
+            SnakeHead,
+            SnakeBody,
+            SnakeTail
         }
     }
 }

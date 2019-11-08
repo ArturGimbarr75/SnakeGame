@@ -5,41 +5,30 @@ using System;
 using Snake;
 using Assets.Scripts.GameLogics;
 using Map;
-
+using UnityEngine;
 
 namespace Logic
 {
-
     /// <summary>
     /// Стандартная логика игры
     /// </summary>
     public class StandartLogic : GameLogicBase
     {
-        private ISnakeFactory snakeFactory;
-
         #region Constructors
-
-        /// <summary>
-        /// Конструктор принимающий змеек
-        /// </summary>
-        /// <param name="snakeNames">Змейки учавствующие в игре</param>
-        public StandartLogic(GameLogicsAttributes.SnakesForLogic snakeNames) // TODO: Следует отказаться от этого конструктора
-        {
-            this.SnakesForLogic = snakeNames;
-        }
 
         /// <summary>
         /// Конструктор принимающий имена змеек участвующих в игре
         /// </summary>
         /// <param name="snakeNames">Имена змеек</param>
-        public StandartLogic(List<string> snakeNames, ISnakeFactory snakeFactory, int mapSideSize, int foodCount)
-        {
-            this.snakeFactory = snakeFactory;
-            this.SnakesForLogic = new GameLogicsAttributes.SnakesForLogic();
-            map = new PlayingMap(mapSideSize, foodCount);
+        public StandartLogic(List<string> snakeNames, ISnakeFactory snakeFactory,
+            int mapSideSize, int foodCount, bool leftDeadSnakeBody)
+            : base (snakeFactory, mapSideSize, foodCount, leftDeadSnakeBody)
+        {    
             var snakesCordinates = GetInitialSnakesCordinates(mapSideSize, snakeNames.Count);
             for (int i = 0; i < snakeNames.Count; i++)
                 SnakesForLogic.Snakes.Add (snakeFactory.GetSnakeByName(snakeNames[i], snakesCordinates[i]));
+
+            InsertFood(Map);
         }
 
         /// <summary>
@@ -47,24 +36,110 @@ namespace Logic
         /// Только чтобы Андрей поигрался с UI
         /// </summary>
         public StandartLogic() // TODO: Удалить этот метот, он нужен только чтобы Андрей поигрался с UI
+            : base (new AssemblySnakeFactory(), 50, 15, true)
         {
-            AssemblySnakeFactory assemblySnakeFactory = new AssemblySnakeFactory();
-            const int sideSize = 50;
-            const int foodCount = 15;
-            map = new PlayingMap(sideSize, foodCount);
+            var snakesCordinates = GetInitialSnakesCordinates(50, 6);
 
-            var snakesCordinates = GetInitialSnakesCordinates(sideSize, 6);
+            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName ("PlayerArrows",     snakesCordinates[0]));
+            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName ("PlayerWASD",       snakesCordinates[1]));
+            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName ("RandPathwaySnake", snakesCordinates[2]));
+            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName ("RandPathwaySnake", snakesCordinates[3]));
+            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName ("RandPathwaySnake", snakesCordinates[4]));
+            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName ("RandPathwaySnake", snakesCordinates[5]));
 
-            this.SnakesForLogic = new GameLogicsAttributes.SnakesForLogic();
-            SnakesForLogic.Snakes.Add (assemblySnakeFactory.GetSnakeByName ("PlayerArrows",     snakesCordinates[0]));
-            SnakesForLogic.Snakes.Add (assemblySnakeFactory.GetSnakeByName ("PlayerWASD",       snakesCordinates[1]));
-            SnakesForLogic.Snakes.Add (assemblySnakeFactory.GetSnakeByName ("RandPathwaySnake", snakesCordinates[2]));
-            SnakesForLogic.Snakes.Add (assemblySnakeFactory.GetSnakeByName ("RandPathwaySnake", snakesCordinates[3]));
-            SnakesForLogic.Snakes.Add (assemblySnakeFactory.GetSnakeByName ("RandPathwaySnake", snakesCordinates[4]));
-            SnakesForLogic.Snakes.Add (assemblySnakeFactory.GetSnakeByName ("RandPathwaySnake", snakesCordinates[5]));
+            InsertFood(Map);
         }
 
         #endregion
+
+        /// <summary>
+        /// Метот считывает все следующие шаги змеек.
+        /// Производит логические операции 
+        /// </summary>
+        /// <returns>Возвращает карту с новым положением объектов</returns>
+        public override PlayingMap GetNextPlayingMap()
+        {
+            PlayingMap tempMap = Map;
+            Map.Snake.Clear();
+            // Считываем следующие направления
+            foreach (var snake in SnakesForLogic.Snakes)
+            {
+                // Если змейка мертва у нее ничего не просим
+                if (!snake.isAlive)
+                {
+                    if (LeftDeadSnakeBody)
+                        Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive));
+                    continue;
+                }
+
+                SnakeAttribute.SnakePathway snakePathway = snake.GetNextPathway(tempMap);
+                SnakeAttribute.Cordinates snakeHead = snake.Head;
+                // Если змейка после шага погибает, мы ее не передвигаем
+                switch (snakePathway)
+                {
+                    case SnakeAttribute.SnakePathway.Up:
+                        snakeHead.Y = (snakeHead.Y - 1 != -1) ? --snakeHead.Y : Map.sideSize - 1;
+                        ReactionToMapsObjectsOnNewPosition (snakeHead, snake, tempMap);
+                        break;
+
+                    case SnakeAttribute.SnakePathway.Right:
+                        snakeHead.X = (snakeHead.X + 1 != Map.sideSize) ? ++snakeHead.X : 0;
+                        ReactionToMapsObjectsOnNewPosition (snakeHead, snake, tempMap);
+                        break;
+
+                    case SnakeAttribute.SnakePathway.Down:
+                        snakeHead.Y = (snakeHead.Y + 1 != Map.sideSize) ? ++snakeHead.Y : 0;
+                        ReactionToMapsObjectsOnNewPosition (snakeHead, snake, tempMap);
+                        break;
+
+                    case SnakeAttribute.SnakePathway.Left:
+                        snakeHead.X = (snakeHead.X - 1 != -1) ? --snakeHead.X : Map.sideSize - 1;
+                        ReactionToMapsObjectsOnNewPosition (snakeHead, snake, tempMap);
+                        break;
+
+                    default:
+                        throw new ArgumentException(nameof(snakePathway), "Unknown pathway");
+                }
+
+                // Проверяем жива ли змейка после хода
+                if (!snake.isAlive)
+                {
+                    if (LeftDeadSnakeBody)
+                        Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive));
+                }
+                else
+                {
+                    Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive));
+                }
+            }
+
+            // Окончательная проверка того живы ли змейки
+            foreach (var snake in SnakesForLogic.Snakes)
+            {
+                PlayingMap tempMapForColisionChecking = Map;
+                var snakeForMap = new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive);
+
+                // Удаляем голову змейки из карты, чтобы у нее не было коллизии с собой 
+                tempMapForColisionChecking.Snake.RemoveAll(s => snakeForMap == s);
+                var head = snakeForMap.Cordinates[0];
+                snakeForMap.Cordinates.RemoveAt(0);
+                tempMapForColisionChecking.Snake.Add(snakeForMap);
+
+                // Если обнаруживается коллизия укорачиваем змейку с головы
+                if (HasCollisionAfterStep(head, tempMapForColisionChecking, snakeForMap))
+                {
+                    snakeForMap = new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive);
+                    Map.Snake.RemoveAll(s => snakeForMap == s);
+                    snake.SnakeBody.RemoveAt(0);
+                    snakeForMap.Cordinates.RemoveAt(0);
+                    Map.Snake.Add(snakeForMap);
+                }
+            }
+
+            InsertFood(Map);
+            
+            return Map;
+        }
 
         /// <summary>
         /// Метод возвращающий кординаты для змеек
@@ -109,64 +184,71 @@ namespace Logic
         /// Следует вызывать только после того как все
         /// змейки будут перемещены
         /// </summary>
-        private void InsertFood()
+        private void InsertFood(PlayingMap map)
         {
-            Random random = new Random();
+            System.Random random = new System.Random();
 
             while (map.Food.FoodCordinates.Count < map.Food.MaxCount)
             {
                 SnakeAttribute.Cordinates foodCordinates = new SnakeAttribute.Cordinates
                     (random.Next(0, map.sideSize), random.Next(0, map.sideSize));
 
-                if (!CollisionWithSnakes(foodCordinates) && !CollisionWithFood(foodCordinates)
-                    && !CollisionWithBarriers(foodCordinates))
+                if (!CollisionWithSnakes(foodCordinates, map) && !CollisionWithFood(foodCordinates, map)
+                    && !CollisionWithBarriers(foodCordinates, map))
                     map.Food.FoodCordinates.Add(foodCordinates);
             }
         }
 
         /// <summary>
-        /// Метот считывает все следующие шаги змеек.
-        /// Производит логические операции 
+        /// Реакция змейки на объекты на новой кординате
         /// </summary>
-        /// <returns>Возвращает карту с новым положением объектов</returns>
-        public override PlayingMap GetNextPlayingMap()
+        /// <param name="cordinate">Новая кордината</param>
+        /// <param name="snake">Змейка</param>
+        /// <param name="map">Карта с объектами</param>
+        private void ReactionToMapsObjectsOnNewPosition (SnakeAttribute.Cordinates cordinate, SnakeBase snake, PlayingMap map)
         {
-            PlayingMap tempMap = map;
-            map.Snake.Clear();
-            // Считываем следующие направления
-            foreach (var snake in SnakesForLogic.Snakes)
+            if (CollisionWithBarriers(cordinate, map) || CollisionWithSnakesBody(cordinate, map))
             {
-                // Если змейка мертва у нее ничего не просим
-                if (!snake.isAlive)
-                {
-                    map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive));
-                    continue;
-                }
-
-                SnakeAttribute.SnakePathway snakePathway = snake.GetNextPathway(tempMap);
-                SnakeAttribute.Cordinates snakeHead = snake.Head;
-                switch (snakePathway)
-                {
-                    case SnakeAttribute.SnakePathway.Up:
-                        
-                        break;
-
-                    case SnakeAttribute.SnakePathway.Right:
-                        break;
-
-                    case SnakeAttribute.SnakePathway.Down:
-                        break;
-
-                    case SnakeAttribute.SnakePathway.Left:
-                        break;
-
-                    default:
-                        throw new ArgumentException(nameof(snakePathway), "Unknown pathway");
-                }
-
+                snake.isAlive = false;
+                return;
             }
-            // stop there
-            return null;
+
+            if (CollisionWithFood (cordinate, map))
+            {
+                map.Food.FoodCordinates.RemoveAll(c => cordinate == c);
+                snake.SnakeBody.Insert(0, cordinate);
+                return;
+            }
+
+            // Если нет колизии с объектами на карте, передвигаем змейку           
+            for (int i = snake.SnakeBody.Count - 1; i > 0; i--)
+                snake.SnakeBody[i] = snake.SnakeBody[i - 1];
+            snake.SnakeBody[0] = cordinate;
+        }
+
+        /// <summary>
+        /// Метод используется для окончательной проверки коллизий
+        /// после сделанного змейкой шага
+        /// </summary>
+        /// <param name="head">Голова змейки</param>
+        /// <param name="map">Игровая карта</param>
+        /// <param name="snake">Змейка</param>
+        /// <returns>True если есть коллизия со змейкой или барьером</returns>
+        private bool HasCollisionAfterStep (SnakeAttribute.Cordinates head, PlayingMap map, PlayingMapAttributes.Snake snake)
+        {
+            if (CollisionWithFood(head, map))
+            {
+                Debug.Log("Error: Unexpected food element");
+                Map.Food.FoodCordinates.RemoveAll(c => c == head);
+            }
+
+            if (!snake.isAlive)
+                return false;
+
+            if (CollisionWithSnakes(head, map) || CollisionWithBarriers(head, map))
+                return true;
+
+            return false;
         }
     }
 }

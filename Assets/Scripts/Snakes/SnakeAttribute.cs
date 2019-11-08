@@ -44,20 +44,20 @@ namespace Snake
             /// <summary>
             /// Проверка на равенство кординат
             /// </summary>
-            /// <param name="cordinates1">Кордината</param>
-            /// <param name="cordinates2">Кордината</param>
+            /// <param name="cordinate1">Кордината</param>
+            /// <param name="cordinate2">Кордината</param>
             /// <returns>True если кординаты равны</returns>
-            public static bool operator == (Cordinates cordinates1, Cordinates cordinates2)
-                => (cordinates1.X == cordinates2.X && cordinates1.Y == cordinates2.Y);
+            public static bool operator == (Cordinates cordinate1, Cordinates cordinate2)
+                => (cordinate1.X == cordinate2.X && cordinate1.Y == cordinate2.Y);
 
             /// <summary>
             /// Проверка на неравенство кординат
             /// </summary>
-            /// <param name="cordinates1">Кордината</param>
-            /// <param name="cordinates2">Кордината</param>
+            /// <param name="cordinate1">Кордината</param>
+            /// <param name="cordinate2">Кордината</param>
             /// <returns>True если кординаты не равны</returns>
-            public static bool operator !=(Cordinates cordinates1, Cordinates cordinates2)
-                => !(cordinates1.X == cordinates2.X && cordinates1.Y == cordinates2.Y);
+            public static bool operator != (Cordinates cordinate1, Cordinates cordinate2)
+                => !(cordinate1.X == cordinate2.X && cordinate1.Y == cordinate2.Y);
         }
 
         /// <summary>

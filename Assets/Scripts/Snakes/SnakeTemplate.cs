@@ -33,6 +33,11 @@ namespace Snake
         /// </summary>
         public SnakeAttribute.Cordinates Head => SnakeBody[0];
         /// <summary>
+        /// Кординаты хвоста змейки (последняя кордината тела)
+        /// </summary>
+        public SnakeAttribute.Cordinates Tail => SnakeBody[SnakeBody.Count - 1];
+
+        /// <summary>
         /// Кординаты тела змейки
         /// </summary>
         public List<SnakeAttribute.Cordinates> SnakeBody { get; } = new List<SnakeAttribute.Cordinates>();

@@ -25,7 +25,7 @@ namespace Assets.Scripts.GameLogics
 
         /// <summary>
         /// Создает новый объект змейки по имени
-        /// и присваевает ему кординат.
+        /// и присваевает ему кординаты.
         /// </summary>
         /// <param name="snakeName">Имя змейки</param>
         /// <param name="cordinates">Кондинаты головы и тела</param>
