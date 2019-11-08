@@ -136,6 +136,7 @@ namespace Logic
                 }
             }
 
+            Map.Food = tempMap.Food;
             InsertFood(Map);
             
             return Map;
