@@ -36,7 +36,6 @@ namespace Snake
         /// Кординаты хвоста змейки (последняя кордината тела)
         /// </summary>
         public SnakeAttribute.Cordinates Tail => SnakeBody[SnakeBody.Count - 1];
-
         /// <summary>
         /// Кординаты тела змейки
         /// </summary>

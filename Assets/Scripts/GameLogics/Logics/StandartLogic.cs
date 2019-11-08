@@ -28,6 +28,9 @@ namespace Logic
             for (int i = 0; i < snakeNames.Count; i++)
                 SnakesForLogic.Snakes.Add (snakeFactory.GetSnakeByName(snakeNames[i], snakesCordinates[i]));
 
+            foreach (var snake in SnakesForLogic.Snakes)
+                Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive));
+
             InsertFood(Map);
         }
 
@@ -36,16 +39,19 @@ namespace Logic
         /// Только чтобы Андрей поигрался с UI
         /// </summary>
         public StandartLogic() // TODO: Удалить этот метот, он нужен только чтобы Андрей поигрался с UI
-            : base (new AssemblySnakeFactory(), 50, 15, true)
+            : base (new AssemblySnakeFactory(), 20, 15, true)
         {
-            var snakesCordinates = GetInitialSnakesCordinates(50, 6);
+            var snakesCordinates = GetInitialSnakesCordinates(20, 6);
 
-            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName ("PlayerRows",       snakesCordinates[0]));
-            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName ("PlayerWASD",       snakesCordinates[1]));
-            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName ("RandPathwaySnake", snakesCordinates[2]));
-            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName ("RandPathwaySnake", snakesCordinates[3]));
-            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName ("RandPathwaySnake", snakesCordinates[4]));
-            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName ("RandPathwaySnake", snakesCordinates[5]));
+            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName (nameof(PlayerArrows),     snakesCordinates[0]));
+            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName (nameof(PlayerWASD),       snakesCordinates[1]));
+            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName (nameof(RandPathwaySnake), snakesCordinates[2]));
+            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName (nameof(RandPathwaySnake), snakesCordinates[3]));
+            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName (nameof(RandPathwaySnake), snakesCordinates[4]));
+            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName (nameof(RandPathwaySnake), snakesCordinates[5]));
+
+            foreach (var snake in SnakesForLogic.Snakes)
+                Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive));
 
             InsertFood(Map);
         }
@@ -59,7 +65,7 @@ namespace Logic
         /// <returns>Возвращает карту с новым положением объектов</returns>
         public override PlayingMap GetNextPlayingMap()
         {
-            PlayingMap tempMap = Map;
+            PlayingMap tempMap = new PlayingMap (Map);
             Map.Snake.Clear();
             // Считываем следующие направления
             foreach (var snake in SnakesForLogic.Snakes)
@@ -116,8 +122,8 @@ namespace Logic
             // Окончательная проверка того живы ли змейки
             foreach (var snake in SnakesForLogic.Snakes)
             {
-                PlayingMap tempMapForColisionChecking = Map;
-                var snakeForMap = new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive);
+                PlayingMap tempMapForColisionChecking = new PlayingMap(Map);
+                var snakeForMap = new PlayingMapAttributes.Snake(snake.SnakeName, new List<SnakeAttribute.Cordinates>(snake.SnakeBody), snake.isAlive);
 
                 // Удаляем голову змейки из карты, чтобы у нее не было коллизии с собой 
                 tempMapForColisionChecking.Snake.RemoveAll(s => snakeForMap == s);
@@ -130,7 +136,6 @@ namespace Logic
                 {
                     snakeForMap = new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive);
                     Map.Snake.RemoveAll(s => snakeForMap == s);
-                    snake.SnakeBody.RemoveAt(0);
                     snakeForMap.Cordinates.RemoveAt(0);
                     Map.Snake.Add(snakeForMap);
                 }
@@ -162,16 +167,16 @@ namespace Logic
             List<List<SnakeAttribute.Cordinates>> cordinates
                 = new List<List<SnakeAttribute.Cordinates>>();
 
-            int marginRow = sideSize / (column + 1);
-            int marginColumn = sideSize / (row + 1);
+            int marginRow = sideSize / (row + 1);
+            int marginColumn = sideSize / (column + 1);
 
-            for (int i = 0; i < column; i++)
-                for (int j = 0; j < row; j++)
+            for (int i = 1; i <= column; i++)
+                for (int j = 1; j <= row; j++)
                 {
                     List<SnakeAttribute.Cordinates> temp = new List<SnakeAttribute.Cordinates>();
-                    for (int y = 0; y < bodySize; y++)
+                    for (int body = 0; body < bodySize; body++)
                     {
-                        temp.Add(new SnakeAttribute.Cordinates(marginColumn * i, marginRow * j + y));
+                        temp.Add(new SnakeAttribute.Cordinates(marginColumn * i, marginRow * j + body));
                     }
                     cordinates.Add(temp);
                 }

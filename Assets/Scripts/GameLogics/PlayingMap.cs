@@ -41,6 +41,22 @@ namespace Map
 
             this.sideSize = sideSize;
             Food.MaxCount = maxFoodCount;
+            Food.FoodCordinates = new List<SnakeAttribute.Cordinates>();
+            Snake = new List<PlayingMapAttributes.Snake>();
+        }
+
+        /// <summary>
+        /// Копи конструктор
+        /// </summary>
+        /// <param name="playingMap">Объект для копирования</param>
+        public PlayingMap (PlayingMap playingMap)
+        {
+            sideSize = playingMap.sideSize;
+            Food = new PlayingMapAttributes.Food();
+            Food.MaxCount = playingMap.Food.MaxCount;
+            Food.FoodCordinates = new List<SnakeAttribute.Cordinates>(playingMap.Food.FoodCordinates);
+            Snake = new List<PlayingMapAttributes.Snake>(playingMap.Snake);
+            Barriers = new List<SnakeAttribute.Cordinates>(playingMap.Barriers);
         }
     }
 }

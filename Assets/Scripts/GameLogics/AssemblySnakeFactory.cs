@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 using Snake;
 
@@ -11,7 +9,14 @@ namespace Assets.Scripts.GameLogics
 {
     class AssemblySnakeFactory : ISnakeFactory
     {
+        /// <summary>
+        /// Словарь типов змеек
+        /// </summary>
         private Dictionary<string, TypeInfo> snakeTypes;
+        /// <summary>
+        /// Имена змеек
+        /// </summary>
+        private List<string> snakeNames;
 
         /// <summary>
         /// Конструктор который создает словарь из типов змеек
@@ -19,8 +24,11 @@ namespace Assets.Scripts.GameLogics
         public AssemblySnakeFactory()
         {
             snakeTypes =
-                typeof(AssemblySnakeFactory).Assembly.DefinedTypes
-                .Where(t => t.IsAssignableFrom(typeof(SnakeBase)) && !t.IsAbstract).ToDictionary(t => t.Name, t => t);
+            typeof(AssemblySnakeFactory).Assembly.DefinedTypes
+            .Where(t => typeof(SnakeBase).IsAssignableFrom(t) && !t.IsAbstract)
+            .ToDictionary(t => t.Name, t => t);
+
+            snakeNames = snakeTypes.Keys.ToList();
         }
 
         /// <summary>
@@ -52,14 +60,8 @@ namespace Assets.Scripts.GameLogics
 
         /// <summary>
         /// Возвращает названия доступных змеек.
-        /// В целях экономии ресурсов следует использовать один раз
-        /// и записать результат.
         /// </summary>
         /// <returns></returns>
-        public static List<string> GetAllSnakeTypes()
-        {
-            return typeof(AssemblySnakeFactory).Assembly.DefinedTypes
-                .Where(t => t.IsAssignableFrom(typeof(SnakeBase)) && !t.IsAbstract).Select(t => t.Name).ToList();
-        }
+        public List<string> GetAllSnakeTypes() => snakeNames;
     }
 }
