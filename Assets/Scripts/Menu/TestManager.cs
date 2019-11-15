@@ -18,7 +18,7 @@ public class TestManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameLogic = new StandartLogic();
+        GameLogic = new StandartLogic(4);
         Map = GameLogic.GetCurrentPlayingMap();
 
         SimbolMap = new char[Map.sideSize, Map.sideSize];
@@ -34,7 +34,7 @@ public class TestManager : MonoBehaviour
     {
         if (timeNum < 500)
         {
-            Thread.Sleep(500);
+            Thread.Sleep(250);
             Map = GameLogic.GetNextPlayingMap();
             FillMapEmptyObjects();
             InsertElements();

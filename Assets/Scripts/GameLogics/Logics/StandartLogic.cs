@@ -38,17 +38,15 @@ namespace Logic
         /// Используется только для теста.
         /// Только чтобы Андрей поигрался с UI
         /// </summary>
-        public StandartLogic() // TODO: Удалить этот метот, он нужен только чтобы Андрей поигрался с UI
+        public StandartLogic(int extraSnakeCount = 0) // TODO: Удалить этот метот, он нужен только чтобы Андрей поигрался с UI
             : base (new AssemblySnakeFactory(), 20, 15, true)
         {
-            var snakesCordinates = GetInitialSnakesCordinates(20, 6);
+            var snakesCordinates = GetInitialSnakesCordinates(20, extraSnakeCount + 2);
 
             SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName (nameof(PlayerArrows),     snakesCordinates[0]));
             SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName (nameof(PlayerWASD),       snakesCordinates[1]));
-            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName (nameof(RandPathwaySnake), snakesCordinates[2]));
-            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName (nameof(RandPathwaySnake), snakesCordinates[3]));
-            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName (nameof(RandPathwaySnake), snakesCordinates[4]));
-            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName (nameof(RandPathwaySnake), snakesCordinates[5]));
+            for (int i = 2; i < extraSnakeCount + 2; i++)
+                SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName (nameof(RandPathwaySnake), snakesCordinates[i]));
 
             foreach (var snake in SnakesForLogic.Snakes)
                 Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive));
@@ -213,7 +211,8 @@ namespace Logic
         /// <param name="map">Карта с объектами</param>
         private void ReactionToMapsObjectsOnNewPosition (SnakeAttribute.Cordinates cordinate, SnakeBase snake, PlayingMap map)
         {
-            if (CollisionWithBarriers(cordinate, map) || CollisionWithSnakesBody(cordinate, map))
+            if (CollisionWithBarriers(cordinate, map) || CollisionWithSnakesBody(cordinate, map)
+                || CollisionWithSnakesHead(cordinate, map))
             {
                 snake.isAlive = false;
                 return;
