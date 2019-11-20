@@ -27,11 +27,27 @@ namespace Snake
         /// </summary>
         public struct Cordinates
         {
+            /// <summary>
+            /// Стандартный конструктор
+            /// </summary>
+            /// <param name="X">Кордината Х</param>
+            /// <param name="Y">Кордината Y</param>
             public Cordinates(int X, int Y)
             {
                 this.X = X;
                 this.Y = Y;
             }
+            /// <summary>
+            /// Копи конструктор
+            /// </summary>
+            /// <param name="X">Кордината Х</param>
+            /// <param name="Y">Кордината Y</param>
+            public Cordinates(Cordinates cordinates)
+            {
+                this.X = cordinates.X;
+                this.Y = cordinates.Y;
+            }
+
             /// <summary>
             /// Кордината Х
             /// </summary>
