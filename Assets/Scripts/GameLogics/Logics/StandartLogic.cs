@@ -38,15 +38,29 @@ namespace Logic
         /// Используется только для теста.
         /// Только чтобы Андрей поигрался с UI
         /// </summary>
-        public StandartLogic(int extraSnakeCount = 0) // TODO: Удалить этот метот, он нужен только чтобы Андрей поигрался с UI
-            : base (new AssemblySnakeFactory(), 20, 15, true)
+        public StandartLogic(int snakeCount = 0) // TODO: Удалить этот метот, он нужен только чтобы Андрей поигрался с UI
+            : base (new AssemblySnakeFactory(), 50, 1, true)
         {
-            var snakesCordinates = GetInitialSnakesCordinates(20, extraSnakeCount + 2);
+            var snakesCordinates = GetInitialSnakesCordinates(50, snakeCount);
 
-            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName (nameof(PlayerArrows),     snakesCordinates[0]));
-            SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName (nameof(PlayerWASD),       snakesCordinates[1]));
-            for (int i = 2; i < extraSnakeCount + 2; i++)
-                SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName (nameof(RandPathwaySnake), snakesCordinates[i]));
+            if (snakeCount > 0)
+                SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName (nameof(/*PlayerArrows*/FollowFoodSnake),     snakesCordinates[0]));
+            if (snakeCount > 1)
+                SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName (nameof(/*PlayerWASD*/FollowFoodSnake),       snakesCordinates[1]));
+            for (int i = 2; i < snakeCount; i++)
+            {
+                switch (i % ((SnakeFactory as AssemblySnakeFactory).GetAllSnakeTypes().Count - 2))
+                {
+                    case 1:
+                        SnakesForLogic.Snakes.Add(SnakeFactory.GetSnakeByName(nameof(FollowFoodSnake),  snakesCordinates[i]));
+                        break;
+
+                    default:
+                        SnakesForLogic.Snakes.Add(SnakeFactory.GetSnakeByName(nameof(/*RandPathwaySnake*/FollowFoodSnake), snakesCordinates[i]));
+                        break;
+                }
+            }
+                
 
             foreach (var snake in SnakesForLogic.Snakes)
                 Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive));
@@ -212,7 +226,7 @@ namespace Logic
         private void ReactionToMapsObjectsOnNewPosition (SnakeAttribute.Cordinates cordinate, SnakeBase snake, PlayingMap map)
         {
             if (CollisionWithBarriers(cordinate, map) || CollisionWithSnakesBody(cordinate, map)
-                || CollisionWithSnakesHead(cordinate, map))
+                || CollisionWithSnakesHead(cordinate, map) || CollisionWithDeadSnakes(cordinate, map))
             {
                 snake.isAlive = false;
                 return;

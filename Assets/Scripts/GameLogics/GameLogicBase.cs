@@ -133,6 +133,25 @@ namespace Logic
         }
 
         /// <summary>
+        /// Метод проверяет колизию с хвостами мертвых змеек
+        /// </summary>
+        /// <param name="cordinate">Кординаты для проверки</param>
+        /// <param name="map">Карта с объектами</param>
+        /// <returns>True если есть колизия с головами змеек</returns>
+        protected bool CollisionWithDeadSnakes(SnakeAttribute.Cordinates cordinate, PlayingMap map)
+        {
+            foreach (var snake in map.Snake)
+            {
+                foreach(var snakesCordinates in snake.Cordinates)
+                    if (snakesCordinates == cordinate && !snake.isAlive)
+                    {
+                        return true;
+                    }
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Метод проверяет колизию с барьерами
         /// </summary>
         /// <param name="cordinate">Кординаты для проверки</param>

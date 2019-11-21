@@ -13,19 +13,19 @@ public class TestManager : MonoBehaviour
 
     private PlayingMap Map;
 
-    private char[,] SimbolMap;
+    private string[,] SimbolMap;
 
     // Start is called before the first frame update
     void Start()
     {
-        GameLogic = new StandartLogic(4);
+        GameLogic = new StandartLogic(1);
         Map = GameLogic.GetCurrentPlayingMap();
 
-        SimbolMap = new char[Map.sideSize, Map.sideSize];
+        SimbolMap = new string[Map.sideSize, Map.sideSize];
 
         FillMapEmptyObjects();
         InsertElements();
-        ShowMapConsole();
+        //ShowMapConsole();
         ShowMapTexture();
     }
 
@@ -34,7 +34,7 @@ public class TestManager : MonoBehaviour
     {
         if (timeNum < 500)
         {
-            Thread.Sleep(250);
+            Thread.Sleep(100);
             Map = GameLogic.GetNextPlayingMap();
             FillMapEmptyObjects();
             InsertElements();
@@ -49,7 +49,7 @@ public class TestManager : MonoBehaviour
         for(int i = 0; i < Map.sideSize; i++)
             for(int j = 0; j < Map.sideSize; j++)
             {
-                SimbolMap[i, j] = '_';
+                SimbolMap[i, j] = "_";
             }      
     }
 
@@ -59,7 +59,7 @@ public class TestManager : MonoBehaviour
         for (int i = 0; i < Map.sideSize; i++)
         {
             for (int j = 0; j < Map.sideSize; j++)
-                map += SimbolMap[j,i];
+                map += SimbolMap[j,i][0];
             map += "\n";
         }
         print(map);
@@ -86,21 +86,30 @@ public class TestManager : MonoBehaviour
         spriteRenderer.sprite = sprite;
     }
 
-    private Color GetColor (char ch)
+    private Color GetColor (string name)
     {
-        switch (ch)
+        switch (name)
         {
-            case 'F':
-                return Color.red;
-
-            case 'R':
-                return Color.green;
-
-            case 'P':
+            case nameof(PlayerArrows):
                 return Color.blue;
 
-            case 'd':
+            case nameof(PlayerWASD):
+                return Color.green;
+
+            case nameof(RandPathwaySnake):
+                return Color.yellow;
+
+            case nameof(FollowFoodSnake):
+                return Color.cyan;
+
+            case "F":
+                return Color.red;
+
+            case "d":
                 return Color.gray;
+
+            case "B":
+                return Color.black;
         }
 
         return Color.white;
@@ -109,14 +118,14 @@ public class TestManager : MonoBehaviour
     private void InsertElements()
     {
         foreach (var f in Map.Food.FoodCordinates)
-            SimbolMap[f.X, f.Y] = 'F';
+            SimbolMap[f.X, f.Y] = "F";
 
         foreach (var b in Map.Barriers)
-            SimbolMap[b.X, b.Y] = 'B';
+            SimbolMap[b.X, b.Y] = "B";
 
         foreach (var s in Map.Snake)
             foreach (var c in s.Cordinates)
-            SimbolMap[c.X, c.Y] = (s.isAlive)? s.Name[0] : 'd';
+            SimbolMap[c.X, c.Y] = (s.isAlive)? s.Name : "d";
     }
 
 }
