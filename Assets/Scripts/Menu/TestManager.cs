@@ -5,6 +5,7 @@ using System.Threading;
 
 using Logic;
 using Map;
+using Assets.Scripts.GameLogics;
 
 public class TestManager : MonoBehaviour
 {
@@ -18,7 +19,18 @@ public class TestManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameLogic = new StandartLogic(1);
+        List<string> names = new List<string>()
+        {
+            //nameof(PlayerArrows),
+            //nameof(PlayerWASD),
+            //nameof(RandPathwaySnake),
+            //nameof(FollowFoodSnake),
+            nameof(Adam),
+        };
+        int mapSize = 50;
+        int foodCount = 15;
+
+        GameLogic = new StandartLogic(names, new AssemblySnakeFactory(), mapSize, foodCount, true);
         Map = GameLogic.GetCurrentPlayingMap();
 
         SimbolMap = new string[Map.sideSize, Map.sideSize];
@@ -32,7 +44,7 @@ public class TestManager : MonoBehaviour
     int timeNum = 0;
     private void Update()
     {
-        if (timeNum < 500)
+        if (timeNum < 5000)
         {
             Thread.Sleep(100);
             Map = GameLogic.GetNextPlayingMap();
@@ -101,6 +113,9 @@ public class TestManager : MonoBehaviour
 
             case nameof(FollowFoodSnake):
                 return Color.cyan;
+
+            case nameof(Adam):
+                return Color.magenta;
 
             case "F":
                 return Color.red;

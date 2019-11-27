@@ -167,7 +167,7 @@ namespace Snake
             /// <summary>
             /// Стандартный размер стороны геннома 
             /// </summary>
-            public const int StandartSideSize = 9;
+            public const int StandartSideSize = 11;
             /// <summary>
             /// Максимальный размер генна
             /// </summary>

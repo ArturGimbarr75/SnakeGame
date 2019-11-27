@@ -44,9 +44,9 @@ namespace Logic
             var snakesCordinates = GetInitialSnakesCordinates(50, snakeCount);
 
             if (snakeCount > 0)
-                SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName (nameof(/*PlayerArrows*/FollowFoodSnake),     snakesCordinates[0]));
+                SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName (nameof(PlayerArrows),     snakesCordinates[0]));
             if (snakeCount > 1)
-                SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName (nameof(/*PlayerWASD*/FollowFoodSnake),       snakesCordinates[1]));
+                SnakesForLogic.Snakes.Add (SnakeFactory.GetSnakeByName (nameof(PlayerWASD),       snakesCordinates[1]));
             for (int i = 2; i < snakeCount; i++)
             {
                 switch (i % ((SnakeFactory as AssemblySnakeFactory).GetAllSnakeTypes().Count - 2))
@@ -56,7 +56,7 @@ namespace Logic
                         break;
 
                     default:
-                        SnakesForLogic.Snakes.Add(SnakeFactory.GetSnakeByName(nameof(/*RandPathwaySnake*/FollowFoodSnake), snakesCordinates[i]));
+                        SnakesForLogic.Snakes.Add(SnakeFactory.GetSnakeByName(nameof(RandPathwaySnake), snakesCordinates[i]));
                         break;
                 }
             }
