@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 using Snake;
 
@@ -71,5 +72,28 @@ class Adam : SmartSnakeBase
         BarrierGenes.Add(SnakeAttribute.SnakePathway.Left, leftBarrier);
 
         Genes = new SnakeAttribute.SnakeGenes(FoodGenes, BarrierGenes);
+        CreateJsonTest();
+    }
+
+    void CreateJsonTest() // TODO: удали этот метод, он нужен только для теста JSON
+    {
+        Dictionary<SnakeAttribute.SnakePathway, int[,]> genes = new Dictionary<SnakeAttribute.SnakePathway, int[,]>();
+
+        foreach (var pathway in (SnakeAttribute.SnakePathway[])(Enum.GetValues(typeof(SnakeAttribute.SnakePathway))))
+        {
+            genes.Add(pathway, new int[11 ,11]);
+
+            for (int i = 0; i < 11; i++)
+                for (int j = 0; j < 11; j++)
+                    genes[pathway][i, j] = SnakeAttribute.SnakeGenes.MinGenesValue;
+        }
+
+        SnakeAttribute.SnakeGenes snakeGenes = new SnakeAttribute.SnakeGenes(genes, genes);
+
+        string json1 = JsonUtility.ToJson(snakeGenes.BarrierGenes[SnakeAttribute.SnakePathway.Down]);
+        string json2 = JsonUtility.ToJson(snakeGenes.BarrierGenes);
+        string json3 = JsonUtility.ToJson(snakeGenes.FoodGenes[SnakeAttribute.SnakePathway.Left][0,0]);
+        string json4 = JsonUtility.ToJson(snakeGenes, false);
+
     }
 }
