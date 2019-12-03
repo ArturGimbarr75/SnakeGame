@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using Newtonsoft.Json;
 
 namespace Snake
 {
@@ -110,6 +111,7 @@ namespace Snake
             /// </summary>
             /// <param name="foodGenes">Генном еды</param>
             /// <param name="barrierGenes">Генном </param>
+            [JsonConstructor]
             public SnakeGenes (Dictionary<SnakePathway, int[,]> foodGenes, Dictionary<SnakePathway, int[,]> barrierGenes)
             {
                 int sideSize = foodGenes[SnakePathway.Up].GetLength(0);
