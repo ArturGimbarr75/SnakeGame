@@ -6,6 +6,7 @@ using System.Threading;
 using Logic;
 using Map;
 using Assets.Scripts.GameLogics;
+using Assets.Scripts.DataBase;
 
 public class TestManager : MonoBehaviour
 {
@@ -43,7 +44,7 @@ public class TestManager : MonoBehaviour
 
     int timeNum = 0;
     private void Update()
-    {
+    {/*
         if (timeNum < 5000)
         {
             Thread.Sleep(100);
@@ -53,7 +54,7 @@ public class TestManager : MonoBehaviour
             ShowMapConsole();
             ShowMapTexture();
             timeNum++;
-        }
+        }*/
     }
 
     private void FillMapEmptyObjects()
