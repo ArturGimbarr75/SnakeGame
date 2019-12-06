@@ -33,16 +33,17 @@ public class TestManager : MonoBehaviour
         List<string> names = new List<string>()
         {
             nameof(PlayerArrows),
-            nameof(PlayerWASD),
+            nameof(PlayerIJKL),
+            /*nameof(PlayerWASD),
             nameof(RandPathwaySnake),
-            nameof(FollowFoodSnake),
+            nameof(FollowFoodSnake),*/
             nameof(Adam),
         };
         int mapSize = 50;
         int foodCount = 15;
 
         GameLogic = new StandartLogic(new HashSet<GameLogicsAttributes.GameoverPredicates>
-        { GameLogicsAttributes.GameoverPredicates.Achieved30Cels, GameLogicsAttributes.GameoverPredicates.LeftOneAliveSnake },
+        { /*GameLogicsAttributes.GameoverPredicates.Achieved30Cels,*/ GameLogicsAttributes.GameoverPredicates.LeftOneAliveSnake },
             names, new AssemblySnakeFactory(), mapSize, foodCount, true);
         Map = GameLogic.GetCurrentPlayingMap();
 
@@ -59,7 +60,7 @@ public class TestManager : MonoBehaviour
     {
         if (!GameLogic.IsGameEnded())
         {
-            Thread.Sleep(10);
+            Thread.Sleep(100);
             Map = GameLogic.GetNextPlayingMap();
             FillMapEmptyObjects();
             InsertElements();
@@ -139,6 +140,9 @@ public class TestManager : MonoBehaviour
 
             case nameof(Adam):
                 return Color.magenta;
+
+            case nameof(PlayerIJKL):
+                return Color.HSVToRGB(0.1f, 0.5f, 0.9f);
 
             case "F":
                 return Color.red;

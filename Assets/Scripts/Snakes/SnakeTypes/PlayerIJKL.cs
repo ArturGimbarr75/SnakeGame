@@ -8,22 +8,22 @@ using UnityEngine;
 using Snake;
 using Map;
 
-public class PlayerArrows : SnakeBase
+public class PlayerIJKL : SnakeBase
 {
     public override SnakeAttribute.SnakePathway GetNextPathway(PlayingMap map)
     {
         SnakeAttribute.SnakePathway path = LastPathway;
 
-        if (Input.GetKeyDown(KeyCode.UpArrow) && LastPathway != SnakeAttribute.SnakePathway.Down)
+        if (Input.GetKeyDown(KeyCode.I) && LastPathway != SnakeAttribute.SnakePathway.Down)
             path = SnakeAttribute.SnakePathway.Up;
-         
-        if (Input.GetKeyDown(KeyCode.RightArrow) && LastPathway != SnakeAttribute.SnakePathway.Left)
+
+        if (Input.GetKeyDown(KeyCode.L) && LastPathway != SnakeAttribute.SnakePathway.Left)
             path = SnakeAttribute.SnakePathway.Right;
-        
-        if (Input.GetKeyDown(KeyCode.DownArrow) && LastPathway != SnakeAttribute.SnakePathway.Up)
+
+        if (Input.GetKeyDown(KeyCode.K) && LastPathway != SnakeAttribute.SnakePathway.Up)
             path = SnakeAttribute.SnakePathway.Down;
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && LastPathway != SnakeAttribute.SnakePathway.Right)
+        if (Input.GetKeyDown(KeyCode.J) && LastPathway != SnakeAttribute.SnakePathway.Right)
             path = SnakeAttribute.SnakePathway.Left;
 
         LastPathway = path;

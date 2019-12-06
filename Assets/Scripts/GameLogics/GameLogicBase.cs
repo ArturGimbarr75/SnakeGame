@@ -15,6 +15,10 @@ namespace Logic
     public abstract class GameLogicBase
     {
         /// <summary>
+        /// Название типа игры
+        /// </summary>
+        public string GameType => this.GetType().Name;
+        /// <summary>
         /// Список змеек учавствующих в игре
         /// </summary>
         protected GameLogicsAttributes.SnakesForLogic SnakesForLogic;
@@ -75,10 +79,17 @@ namespace Logic
             foreach (var p in predecates)
                 if (((GameLogicsAttributes.GameoverPredicate)p)())
                 {
-                    SnakesTable snakesTable = new SnakesTable();
-                    foreach (var s in SnakesForLogic.Snakes)
-                        if (!isDBUpdated)
+                    if (!isDBUpdated)
+                    {
+                        SnakesTable snakesTable = new SnakesTable();
+                        PlayerTable playerTable = new PlayerTable();
+                        foreach (var s in SnakesForLogic.Snakes)
+                        {
                             snakesTable.UpdateStatistics(s);
+                            if (s.SnakeName.Contains("Player"))
+                                playerTable.AddNewRow(s.SnakeName, GameType, s.SnakeStatistics.EatenFood);
+                        }
+                    }
                     isDBUpdated = true;
                     return true;
                 }
