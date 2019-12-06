@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
 using Snake;
 using Map;
 using Assets.Scripts.GameLogics;
+using Assets.Scripts.DataBase;
 
 namespace Logic
 {
@@ -29,6 +30,10 @@ namespace Logic
         /// Объект позволяющий получить любую инстанцию змейки по имени
         /// </summary>
         protected ISnakeFactory SnakeFactory;
+        /// <summary>
+        /// Указывает на то обновлена ли БД
+        /// </summary>
+        private bool isDBUpdated= false;
 
         /// <summary>
         /// Базовый конструктор
@@ -36,12 +41,14 @@ namespace Logic
         /// <param name="snakeFactory">Производство змеек</param>
         /// <param name="mapSideSize">Сторона карты</param>
         /// <param name="foodCount">Максимальное колличество еды</param>
-        public GameLogicBase (ISnakeFactory snakeFactory, int mapSideSize, int foodCount, bool leftDeadSnakeBody = false)
+        public GameLogicBase (HashSet<GameLogicsAttributes.GameoverPredicates> gameoverPredicates,
+            ISnakeFactory snakeFactory, int mapSideSize, int foodCount, bool leftDeadSnakeBody = false)
         {
             this.SnakeFactory = snakeFactory;
             this.SnakesForLogic = new GameLogicsAttributes.SnakesForLogic();
             Map = new PlayingMap(mapSideSize, foodCount);
             LeftDeadSnakeBody = leftDeadSnakeBody;
+            InitialGameoverPredicate(gameoverPredicates);
         }
 
         /// <summary>
@@ -56,6 +63,30 @@ namespace Logic
         /// </summary>
         /// <returns>Возвращает карту с новым положением объектов</returns>
         public abstract PlayingMap GetNextPlayingMap();
+
+        /// <summary>
+        /// Метод проверяет окончена ли игра 
+        /// </summary>
+        /// <returns>True если игра окончена</returns>
+        public bool IsGameEnded()
+        {
+            var predecates = GameoverPredicate.GetInvocationList();
+
+            foreach (var p in predecates)
+                if (((GameLogicsAttributes.GameoverPredicate)p)())
+                {
+                    SnakesTable snakesTable = new SnakesTable();
+                    foreach (var s in SnakesForLogic.Snakes)
+                        if (!isDBUpdated)
+                            snakesTable.UpdateStatistics(s);
+                    isDBUpdated = true;
+                    return true;
+                }
+
+            return false;
+        }
+
+        #region CheckCollisions
 
         /// <summary>
         /// Метод проверяет колизию со змейками
@@ -182,5 +213,106 @@ namespace Logic
                 }
             return false;
         }
+        #endregion
+
+        #region GameOverPredicates
+
+        private GameLogicsAttributes.GameoverPredicate GameoverPredicate;
+
+        /// <summary>
+        /// Инициализация предикатов для игры
+        /// </summary>
+        /// <param name="gameoverPredicates">Предикаты</param>
+        private void InitialGameoverPredicate (HashSet<GameLogicsAttributes.GameoverPredicates> gameoverPredicates)
+        {
+            GameoverPredicate = new GameLogicsAttributes.GameoverPredicate(DeadAllSnakes);
+            GameoverPredicate -= DeadAllSnakes; // TODO: Придумать нормальную инициализацию
+
+            if (gameoverPredicates == null && gameoverPredicates.Count == 0)
+            {
+                GameoverPredicate += DeadAllSnakes;
+                return;
+            }
+
+            foreach (var pr in gameoverPredicates)
+            {
+                switch (pr)
+                {
+                    case GameLogicsAttributes.GameoverPredicates.Achieved30Cels:
+                        GameoverPredicate += Achieved30Cels;
+                        break;
+
+                    case GameLogicsAttributes.GameoverPredicates.DeadAllPlayers:
+                        GameoverPredicate += DeadAllPlayers;
+                        break;
+
+                    case GameLogicsAttributes.GameoverPredicates.DeadAllSnakes:
+                        GameoverPredicate += DeadAllSnakes;
+                        break;
+
+                    case GameLogicsAttributes.GameoverPredicates.LeftOneAliveSnake:
+                        GameoverPredicate += LeftOneAliveSnake;
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Предекат проверки мертвы ли игроки
+        /// </summary>
+        /// <returns>True если все мертвы</returns>
+        private bool DeadAllPlayers()
+        {
+            var players = (from snake in Map.Snake
+                           where snake.Name.Contains("Player")
+                           select snake).ToList();
+
+            if (players.Count == 0)
+            {
+                return DeadAllSnakes();
+            }
+
+            return players.Count (s => s.isAlive) > 0;
+        }
+
+        /// <summary>
+        /// Предекат проверки мертвы ли змейки
+        /// </summary>
+        /// <returns>True если все мертвы</returns>
+        private bool DeadAllSnakes()
+        {
+            var snakes = (from snake in Map.Snake
+                          select snake).ToList();
+
+            return snakes.Count (s => s.isAlive) == 0;
+        }
+
+        /// <summary>
+        /// Предекат проверки жива ли одна змейка
+        /// </summary>
+        /// <returns>True если все мертвы кроме одной</returns>
+        private bool LeftOneAliveSnake()
+        {
+            var snakes = (from snake in Map.Snake
+                          select snake).ToList();
+
+            return snakes.Count (s => s.isAlive) == 1;
+        }
+
+        /// <summary>
+        /// Проверяет достигли ли змейки длины в 30 клеток
+        /// </summary>
+        /// <returns>True если хоть одна достигла или если все погибли</returns>
+        private bool Achieved30Cels()
+        {
+            var snakes = (from snake in Map.Snake
+                          select snake).ToList();
+
+            return snakes.Count(s => s.Cordinates.Count >= 30) > 0 || DeadAllSnakes();
+        }
+
+
+        #endregion
+
     }
 }

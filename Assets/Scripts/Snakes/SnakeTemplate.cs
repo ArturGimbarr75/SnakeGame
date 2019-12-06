@@ -12,7 +12,6 @@ namespace Snake
     public abstract class SnakeBase
     {
         #region Params
-
         /// <summary>
         /// Имя змейки
         /// </summary>
@@ -45,6 +44,10 @@ namespace Snake
         /// Значиние указывающее на то, жива ли змейка
         /// </summary>
         public bool isAlive = true;
+        /// <summary>
+        /// Статистика змеек
+        /// </summary>
+        public SnakeStatistics SnakeStatistics = new SnakeStatistics(0);
 
         #endregion
 
@@ -73,6 +76,10 @@ namespace Snake
         /// Веса на выходе
         /// </summary>
         protected Dictionary<SnakeAttribute.SnakePathway, int> SnakePathwaysWeights;
+        /// <summary>
+        /// Json генов
+        /// </summary>
+        public string GenesString => Genes.ToString();
 
         /// <summary>
         /// Конструктор
@@ -111,7 +118,7 @@ namespace Snake
                 if (   xFactor * map.sideSize + food.X - Head.X + genesCenter < genesSize
                     && yFactor * map.sideSize + food.Y - Head.Y + genesCenter < genesSize
                     && xFactor * map.sideSize + food.X - Head.X + genesCenter >= 0
-                    && yFactor * map.sideSize + food.Y - Head.Y + genesCenter >= 0)
+                    && yFactor * map.sideSize + food.Y - Head.Y + genesCenter >= 0) // TODO: Оптимищировать используя Math.Abs()
                 {
                     SnakePathwaysWeights[path] +=
                         Genes.FoodGenes[path][yFactor * map.sideSize + food.Y - Head.Y + genesCenter,

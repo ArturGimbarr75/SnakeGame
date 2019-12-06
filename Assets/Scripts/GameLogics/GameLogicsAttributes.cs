@@ -17,6 +17,14 @@ namespace Logic
             public List<SnakeBase> Snakes = new List<SnakeBase>(); 
         }
 
+        public delegate bool GameoverPredicate();
 
+        public enum GameoverPredicates
+        {
+            DeadAllPlayers,
+            DeadAllSnakes,
+            LeftOneAliveSnake,
+            Achieved30Cels
+        }
     }
 }

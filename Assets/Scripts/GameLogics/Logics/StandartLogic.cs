@@ -20,16 +20,17 @@ namespace Logic
         /// Конструктор принимающий имена змеек участвующих в игре
         /// </summary>
         /// <param name="snakeNames">Имена змеек</param>
-        public StandartLogic(List<string> snakeNames, ISnakeFactory snakeFactory,
+        public StandartLogic(HashSet<GameLogicsAttributes.GameoverPredicates> gameoverPredicates,
+            List<string> snakeNames, ISnakeFactory snakeFactory,
             int mapSideSize, int foodCount, bool leftDeadSnakeBody)
-            : base (snakeFactory, mapSideSize, foodCount, leftDeadSnakeBody)
+            : base (gameoverPredicates, snakeFactory, mapSideSize, foodCount, leftDeadSnakeBody)
         {    
             var snakesCordinates = GetInitialSnakesCordinates(mapSideSize, snakeNames.Count);
             for (int i = 0; i < snakeNames.Count; i++)
                 SnakesForLogic.Snakes.Add (snakeFactory.GetSnakeByName(snakeNames[i], snakesCordinates[i]));
 
             foreach (var snake in SnakesForLogic.Snakes)
-                Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive));
+                Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive, snake.SnakeStatistics));
 
             InsertFood(Map);
         }
@@ -39,7 +40,8 @@ namespace Logic
         /// Только чтобы Андрей поигрался с UI
         /// </summary>
         public StandartLogic(int snakeCount = 0) // TODO: Удалить этот метот, он нужен только чтобы Андрей поигрался с UI
-            : base (new AssemblySnakeFactory(), 50, 1, true)
+            : base (new HashSet<GameLogicsAttributes.GameoverPredicates> {GameLogicsAttributes.GameoverPredicates.DeadAllPlayers },
+                    new AssemblySnakeFactory(), 50, 1, true)
         {
             var snakesCordinates = GetInitialSnakesCordinates(50, snakeCount);
 
@@ -63,7 +65,7 @@ namespace Logic
                 
 
             foreach (var snake in SnakesForLogic.Snakes)
-                Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive));
+                Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive, snake.SnakeStatistics));
 
             InsertFood(Map);
         }
@@ -86,11 +88,12 @@ namespace Logic
                 if (!snake.isAlive)
                 {
                     if (LeftDeadSnakeBody)
-                        Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive));
+                        Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive, snake.SnakeStatistics));
                     continue;
                 }
 
                 SnakeAttribute.SnakePathway snakePathway = snake.GetNextPathway(tempMap);
+                snake.SnakeStatistics.Steps++;
                 SnakeAttribute.Cordinates snakeHead = snake.Head;
                 // Если змейка после шага погибает, мы ее не передвигаем
                 switch (snakePathway)
@@ -123,11 +126,11 @@ namespace Logic
                 if (!snake.isAlive)
                 {
                     if (LeftDeadSnakeBody)
-                        Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive));
+                        Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive, snake.SnakeStatistics));
                 }
                 else
                 {
-                    Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive));
+                    Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive, snake.SnakeStatistics));
                 }
             }
 
@@ -135,7 +138,8 @@ namespace Logic
             foreach (var snake in SnakesForLogic.Snakes)
             {
                 PlayingMap tempMapForColisionChecking = new PlayingMap(Map);
-                var snakeForMap = new PlayingMapAttributes.Snake(snake.SnakeName, new List<SnakeAttribute.Cordinates>(snake.SnakeBody), snake.isAlive);
+                var snakeForMap = new PlayingMapAttributes.Snake
+                    (snake.SnakeName, new List<SnakeAttribute.Cordinates>(snake.SnakeBody), snake.isAlive, snake.SnakeStatistics);
 
                 // Удаляем голову змейки из карты, чтобы у нее не было коллизии с собой 
                 tempMapForColisionChecking.Snake.RemoveAll(s => snakeForMap == s);
@@ -146,7 +150,7 @@ namespace Logic
                 // Если обнаруживается коллизия укорачиваем змейку с головы
                 if (HasCollisionAfterStep(head, tempMapForColisionChecking, snakeForMap))
                 {
-                    snakeForMap = new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive);
+                    snakeForMap = new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive, snake.SnakeStatistics);
                     Map.Snake.RemoveAll(s => snakeForMap == s);
                     snakeForMap.Cordinates.RemoveAt(0);
                     Map.Snake.Add(snakeForMap);
@@ -155,7 +159,8 @@ namespace Logic
 
             Map.Food = tempMap.Food;
             InsertFood(Map);
-            
+            UpdateLengthStatistics();
+
             return Map;
         }
 
@@ -234,6 +239,7 @@ namespace Logic
 
             if (CollisionWithFood (cordinate, map))
             {
+                snake.SnakeStatistics.EatenFood++;
                 map.Food.FoodCordinates.RemoveAll(c => cordinate == c);
                 snake.SnakeBody.Insert(0, cordinate);
                 return;
@@ -268,6 +274,15 @@ namespace Logic
                 return true;
 
             return false;
+        }
+
+        /// <summary>
+        /// Обновляем статистику длины
+        /// </summary>
+        private void UpdateLengthStatistics()
+        {
+            foreach (var snake in SnakesForLogic.Snakes)
+                snake.SnakeStatistics.Length = snake.SnakeLength;
         }
     }
 }

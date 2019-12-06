@@ -7,6 +7,8 @@ using Logic;
 using Map;
 using Assets.Scripts.GameLogics;
 using Assets.Scripts.DataBase;
+using System;
+using System.Linq;
 
 public class TestManager : MonoBehaviour
 {
@@ -17,21 +19,31 @@ public class TestManager : MonoBehaviour
 
     private string[,] SimbolMap;
 
-    // Start is called before the first frame update
+    private static System.Random random = new System.Random();
+    /*public static string RandomString(int length)
+    {
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        return new string(Enumerable.Repeat(chars, length)
+          .Select(s => s[random.Next(s.Length)]).ToArray());
+    }*/
     void Start()
     {
+        /*SnakesTable t = new SnakesTable();
+        var name = RandomString(5);*/
         List<string> names = new List<string>()
         {
-            //nameof(PlayerArrows),
-            //nameof(PlayerWASD),
-            //nameof(RandPathwaySnake),
-            //nameof(FollowFoodSnake),
+            nameof(PlayerArrows),
+            nameof(PlayerWASD),
+            nameof(RandPathwaySnake),
+            nameof(FollowFoodSnake),
             nameof(Adam),
         };
         int mapSize = 50;
         int foodCount = 15;
 
-        GameLogic = new StandartLogic(names, new AssemblySnakeFactory(), mapSize, foodCount, true);
+        GameLogic = new StandartLogic(new HashSet<GameLogicsAttributes.GameoverPredicates>
+        { GameLogicsAttributes.GameoverPredicates.Achieved30Cels, GameLogicsAttributes.GameoverPredicates.LeftOneAliveSnake },
+            names, new AssemblySnakeFactory(), mapSize, foodCount, true);
         Map = GameLogic.GetCurrentPlayingMap();
 
         SimbolMap = new string[Map.sideSize, Map.sideSize];
@@ -42,19 +54,29 @@ public class TestManager : MonoBehaviour
         ShowMapTexture();
     }
 
-    int timeNum = 0;
+    bool showOnes = true;
     private void Update()
-    {/*
-        if (timeNum < 5000)
+    {
+        if (!GameLogic.IsGameEnded())
         {
-            Thread.Sleep(100);
+            Thread.Sleep(10);
             Map = GameLogic.GetNextPlayingMap();
             FillMapEmptyObjects();
             InsertElements();
-            ShowMapConsole();
+            //ShowMapConsole();
             ShowMapTexture();
-            timeNum++;
-        }*/
+        }
+        else if (showOnes)
+        {
+            showOnes = false;
+            Map = GameLogic.GetNextPlayingMap();
+            string info = "";
+            foreach (var s in Map.Snake)
+            {
+                info += s.Name + " -> " + s.SnakeStatistics + "\n";
+            }
+            Debug.Log(info);
+        }
     }
 
     private void FillMapEmptyObjects()

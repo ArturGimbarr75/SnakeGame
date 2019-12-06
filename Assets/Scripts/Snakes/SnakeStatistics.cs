@@ -18,8 +18,10 @@ namespace Snake
         {
             Steps = 0;
             EatenFood = 0;
-            MaxLength = 0;
+            MaxSize = 0;
+            _length = 0;
             Length = snakeLength;
+
         }
         /// <summary>
         /// Общее количество шагов
@@ -36,20 +38,29 @@ namespace Snake
         {
             get
             {
-                return Length;
+                return _length;
             }
 
             set
             {
-                if (value > MaxLength)
-                    MaxLength = value;
-                Length = value;
+                _length = value;
+                if (MaxSize < value)
+                MaxSize = value;
             }
         }
         /// <summary>
+        /// Текущая длинна змейки
+        /// </summary>
+        private int _length;
+        /// <summary>
         /// Максимальная длинна
         /// </summary>
-        public int MaxLength { get; private set; }
+        public int MaxSize { get; private set; }
+
+        public override string ToString()
+        {
+            return string.Format("Steps {0}, Eaten food {1}, Max size {2}, Size {3}", Steps, EatenFood, MaxSize, Length);
+        }
 
     }
 }

@@ -129,6 +129,16 @@ namespace Snake
                 }
             }
 
+            public override string ToString()
+            {
+                if (BarrierGenes == null || FoodGenes == null)
+                {
+                    return null;
+                }
+
+                return JsonConvert.SerializeObject(this);
+            }
+
             /// <summary>
             /// Проверка геннов на валидность
             /// </summary>

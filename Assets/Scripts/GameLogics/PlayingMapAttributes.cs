@@ -34,11 +34,12 @@ namespace Map
             /// <param name="name">Имя змейки</param>
             /// <param name="cordinates">Кординаты тела змейки</param>
             /// <param name="isAlive">Жива ли змейка</param>
-            public Snake (string name, List<SnakeAttribute.Cordinates> cordinates, bool isAlive)
+            public Snake (string name, List<SnakeAttribute.Cordinates> cordinates, bool isAlive, SnakeStatistics snakeStatistics)
             {
                 Name = name;
                 Cordinates = cordinates;
                 this.isAlive = isAlive;
+                SnakeStatistics = snakeStatistics; 
             }
 
             /// <summary>
@@ -53,6 +54,10 @@ namespace Map
             /// Жива ли змейка
             /// </summary>
             public bool isAlive;
+            /// <summary>
+            /// Статистика змеек
+            /// </summary>
+            public SnakeStatistics SnakeStatistics;
 
             /// <summary>
             /// Проверка равенства змеек

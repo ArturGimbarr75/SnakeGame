@@ -15,10 +15,6 @@ namespace Assets.Scripts.DataBase
         private static Dictionary<string, string> Russian;
         private const string NotFoundStr = "Text not found";
 
-        public LanguageTable()
-        {
-        }
-
         public string GetElementText(string elName, UISettingsAttributes.Language language)
         {
             string sqlQuery;
