@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -46,13 +47,80 @@ namespace Logic
         /// <param name="mapSideSize">Сторона карты</param>
         /// <param name="foodCount">Максимальное колличество еды</param>
         public GameLogicBase (HashSet<GameLogicsAttributes.GameoverPredicates> gameoverPredicates,
-            ISnakeFactory snakeFactory, int mapSideSize, int foodCount, bool leftDeadSnakeBody = false)
+            ISnakeFactory snakeFactory, int mapSideSize, int foodCount, List<string> snakeNames, bool leftDeadSnakeBody = false)
         {
             this.SnakeFactory = snakeFactory;
             this.SnakesForLogic = new GameLogicsAttributes.SnakesForLogic();
             Map = new PlayingMap(mapSideSize, foodCount);
             LeftDeadSnakeBody = leftDeadSnakeBody;
             InitialGameoverPredicate(gameoverPredicates);
+
+            var snakesCordinates = GetInitialSnakesCordinates(mapSideSize, snakeNames.Count);
+            for (int i = 0; i < snakeNames.Count; i++)
+                SnakesForLogic.Snakes.Add(snakeFactory.GetSnakeByName(snakeNames[i], snakesCordinates[i]));
+
+            foreach (var snake in SnakesForLogic.Snakes)
+                Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive, snake.SnakeStatistics));
+
+            InsertFood(Map);
+        }
+
+        /// <summary>
+        /// Метод добавляющий еду на карту в зависимости
+        /// от максимально возможного ее количества.
+        /// Следует вызывать только после того как все
+        /// змейки будут перемещены
+        /// </summary>
+        public void InsertFood(PlayingMap map)
+        {
+            System.Random random = new System.Random();
+
+            while (map.Food.FoodCordinates.Count < map.Food.MaxCount)
+            {
+                SnakeAttribute.Cordinates foodCordinates = new SnakeAttribute.Cordinates
+                    (random.Next(0, map.sideSize), random.Next(0, map.sideSize));
+
+                if (!CollisionWithSnakes(foodCordinates, map) && !CollisionWithFood(foodCordinates, map)
+                    && !CollisionWithBarriers(foodCordinates, map))
+                    map.Food.FoodCordinates.Add(foodCordinates);
+            }
+        }
+
+        /// <summary>
+        /// Метод возвращающий кординаты для змеек
+        /// равномерно распределленных
+        /// </summary>
+        /// <param name="sideSize">Размер стороны карты</param>
+        /// <param name="snakeCount">Количество змеек</param>
+        /// <param name="bodySize">Изначальная длина змейки</param>
+        /// <returns>Массив из массивов кординат</returns>
+        public List<List<SnakeAttribute.Cordinates>> GetInitialSnakesCordinates
+            (int sideSize, int snakeCount, int bodySize = 3)
+        {
+            int row = (int)Math.Sqrt(snakeCount);
+            int column = (int)Math.Round((double)(snakeCount / row));
+
+            while (row * column < snakeCount)
+                column++;
+
+            List<List<SnakeAttribute.Cordinates>> cordinates
+                = new List<List<SnakeAttribute.Cordinates>>();
+
+            int marginRow = sideSize / (row + 1);
+            int marginColumn = sideSize / (column + 1);
+
+            for (int i = 1; i <= column; i++)
+                for (int j = 1; j <= row; j++)
+                {
+                    List<SnakeAttribute.Cordinates> temp = new List<SnakeAttribute.Cordinates>();
+                    for (int body = 0; body < bodySize; body++)
+                    {
+                        temp.Add(new SnakeAttribute.Cordinates(marginColumn * i, marginRow * j + body));
+                    }
+                    cordinates.Add(temp);
+                }
+
+            return cordinates;
         }
 
         /// <summary>

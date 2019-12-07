@@ -32,27 +32,5 @@ namespace Assets.Scripts.DataBase
             dbPath = "URI=file:" + Application.dataPath + "/DataBase/GameDB.s3db";
             dbconn = (IDbConnection)new SqliteConnection(dbPath);
         }
-
-        /// <summary>
-        /// Деструктор
-        /// </summary>
-        ~TableBase()
-        {
-            if (reader != null)
-            {
-                reader.Close();
-                reader = null;
-            }
-            if (dbcmd != null)
-            {
-                dbcmd.Dispose();
-                dbcmd = null;
-            }
-            if (dbconn != null)
-            {
-                dbconn.Close();
-                dbconn = null;
-            }
-        }
     }
 }

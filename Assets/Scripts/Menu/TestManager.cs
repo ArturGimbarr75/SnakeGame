@@ -9,6 +9,7 @@ using Assets.Scripts.GameLogics;
 using Assets.Scripts.DataBase;
 using System;
 using System.Linq;
+using Assets.Scripts.Settings;
 
 public class TestManager : MonoBehaviour
 {
@@ -28,23 +29,31 @@ public class TestManager : MonoBehaviour
     }*/
     void Start()
     {
-        /*SnakesTable t = new SnakesTable();
-        var name = RandomString(5);*/
         List<string> names = new List<string>()
         {
             nameof(PlayerArrows),
             nameof(PlayerIJKL),
-            /*nameof(PlayerWASD),
+            nameof(PlayerWASD),
             nameof(RandPathwaySnake),
-            nameof(FollowFoodSnake),*/
+            nameof(FollowFoodSnake),
             nameof(Adam),
         };
         int mapSize = 50;
         int foodCount = 15;
 
-        GameLogic = new StandartLogic(new HashSet<GameLogicsAttributes.GameoverPredicates>
-        { /*GameLogicsAttributes.GameoverPredicates.Achieved30Cels,*/ GameLogicsAttributes.GameoverPredicates.LeftOneAliveSnake },
-            names, new AssemblySnakeFactory(), mapSize, foodCount, true);
+        GameLogic = new StandartLogic
+            (
+            new HashSet<GameLogicsAttributes.GameoverPredicates>
+            {  
+                GameLogicsAttributes.GameoverPredicates.Achieved30Cels,
+                GameLogicsAttributes.GameoverPredicates.LeftOneAliveSnake
+            },
+            names,
+            new AssemblySnakeFactory(),
+            mapSize,
+            foodCount,
+            true
+            );
         Map = GameLogic.GetCurrentPlayingMap();
 
         SimbolMap = new string[Map.sideSize, Map.sideSize];

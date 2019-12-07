@@ -902,10 +902,10 @@ MonoBehaviour:
   m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -4248,13 +4248,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1149539525}
   m_TextComponent: {fileID: 899089419}
   m_Placeholder: {fileID: 968636005}
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 1
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
@@ -4867,6 +4867,7 @@ GameObject:
   - component: {fileID: 1472327987}
   - component: {fileID: 1472327986}
   - component: {fileID: 1472327985}
+  - component: {fileID: 1472327988}
   m_Layer: 5
   m_Name: 'Dropdown: Game mode (1)'
   m_TagString: Untagged
@@ -4987,6 +4988,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1472327983}
   m_CullTransparentMesh: 0
+--- !u!114 &1472327988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1472327983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdea907b5e5810640a2e3d19f5cae945, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropdown:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1001 &1491337422
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5268,6 +5288,55 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 137395990}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1528761469
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1528761470}
+  - component: {fileID: 1528761471}
+  m_Layer: 0
+  m_Name: Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1528761470
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1528761469}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1528761471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1528761469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e444593cff9d6504498cb9255a47ddf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SnakeTypesDropdowns: []
+  LeftDeadBody: {fileID: 0}
+  GameMode: {fileID: 0}
+  FoodCount: {fileID: 0}
+  MapSize: {fileID: 0}
+  EndGameCheckboxes: {fileID: 0}
 --- !u!224 &1554454340 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3973496190577526934, guid: 095ba0636bea4364f9308fe02e21205a,
