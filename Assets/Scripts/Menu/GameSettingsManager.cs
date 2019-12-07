@@ -15,7 +15,7 @@ namespace Assets.Scripts.Menu
         public Dropdown GameMode;
         public InputField FoodCount;
         public InputField MapSize;
-        public Toggle EndGameCheckboxes;
+        public List<Toggle> EndGameCheckboxes;
 
         private void Start()
         {
