@@ -1216,4 +1216,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TextComponent: {fileID: 2110824644}
-  Key: Settings
+  Key: Statistics

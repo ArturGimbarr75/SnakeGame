@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Settings;
+﻿using Assets.Scripts.DataBase;
+using Assets.Scripts.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,13 +21,18 @@ namespace Assets.Scripts.Setings
         [SerializeField]
         private string Key;
 
+        private static LanguageTable table;
+
         /// <summary>
         /// Вызывается при старте сцены и подписываемся на смену языка
         /// </summary>
         private void Awake()
         {
+            if (table == null)
+                table = new LanguageTable();
+
             UISettings.Current.LangugeChange += handleLanguageChange;
-            string localisedString = TextSource.GetTextInSetLaunguage(Key);
+            string localisedString = table.GetElementText(Key, UISettings.Current.language);
             TextComponent.text = localisedString;
         }
         /// <summary>
@@ -35,7 +41,7 @@ namespace Assets.Scripts.Setings
         /// <param name="language">Выбранный язык</param> // не используется пока
         private void handleLanguageChange(UISettingsAttributes.Language language)
         {
-            string localisedString = TextSource.GetTextInSetLaunguage(Key);
+            string localisedString = table.GetElementText(Key, UISettings.Current.language);
             TextComponent.text = localisedString;
         }
         /// <summary>

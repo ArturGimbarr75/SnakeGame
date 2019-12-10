@@ -13,6 +13,14 @@ namespace Map
     public sealed class PlayingMap
     {
         /// <summary>
+        /// Минимальный размер карты
+        /// </summary>
+        public const int MinSize = 20;
+        /// <summary>
+        /// Максимальный размер карты
+        /// </summary>
+        public const int MaxSize = 200; 
+        /// <summary>
         /// Высота карты
         /// </summary>
         public int sideSize { get; }

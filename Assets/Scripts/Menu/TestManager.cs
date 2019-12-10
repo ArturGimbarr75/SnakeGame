@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading;
@@ -6,10 +5,7 @@ using System.Threading;
 using Logic;
 using Map;
 using Assets.Scripts.GameLogics;
-using Assets.Scripts.DataBase;
-using System;
-using System.Linq;
-using Assets.Scripts.Settings;
+using Assets.Scripts.Menu.Attributes;
 
 public class TestManager : MonoBehaviour
 {
@@ -20,13 +16,6 @@ public class TestManager : MonoBehaviour
 
     private string[,] SimbolMap;
 
-    private static System.Random random = new System.Random();
-    /*public static string RandomString(int length)
-    {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        return new string(Enumerable.Repeat(chars, length)
-          .Select(s => s[random.Next(s.Length)]).ToArray());
-    }*/
     void Start()
     {
         List<string> names = new List<string>()
@@ -43,16 +32,12 @@ public class TestManager : MonoBehaviour
 
         GameLogic = new StandartLogic
             (
-            new HashSet<GameLogicsAttributes.GameoverPredicates>
-            {  
-                GameLogicsAttributes.GameoverPredicates.Achieved30Cels,
-                GameLogicsAttributes.GameoverPredicates.LeftOneAliveSnake
-            },
-            names,
+            GameInits.GameoverPredicates,
+            GameInits.SnakeNames,
             new AssemblySnakeFactory(),
-            mapSize,
-            foodCount,
-            true
+            GameInits.MapSize,
+            GameInits.FoodCount,
+            GameInits.LeftDeadSnakeBody
             );
         Map = GameLogic.GetCurrentPlayingMap();
 
@@ -81,7 +66,7 @@ public class TestManager : MonoBehaviour
             showOnes = false;
             Map = GameLogic.GetNextPlayingMap();
             string info = "";
-            foreach (var s in Map.Snake)
+            foreach (var s in Map.Snake) // TODO: Сделать вывод статистики из GameBase
             {
                 info += s.Name + " -> " + s.SnakeStatistics + "\n";
             }

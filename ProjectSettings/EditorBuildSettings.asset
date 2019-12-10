@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Settings.unity
     guid: 1dcfbb40ecc78094690aea5e2589ae8d
+  - enabled: 1
+    path: Assets/Scenes/StartSettings.unity
+    guid: 203f718d6483c3a45a9e209c05b1b5aa
+  - enabled: 1
+    path: Assets/Scenes/Trash_ToTestLogic.unity
+    guid: 366db53383e56324b84f99be3fe17730
   m_configObjects: {}

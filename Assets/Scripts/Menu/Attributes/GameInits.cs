@@ -17,11 +17,13 @@ namespace Assets.Scripts.Menu.Attributes
         /// <summary>
         /// Предикаты окончания игры
         /// </summary>
-        public static HashSet<GameLogicsAttributes.GameoverPredicates> gameoverPredicates = new HashSet<GameLogicsAttributes.GameoverPredicates>();
+        public static HashSet<GameLogicsAttributes.GameoverPredicates> GameoverPredicates =
+            new HashSet<GameLogicsAttributes.GameoverPredicates>()
+            { GameLogicsAttributes.GameoverPredicates.DeadAllSnakes};
         /// <summary>
         /// Имена змеек
         /// </summary>
-        public static List<string> snakeNames = new List<string>();
+        public static List<string> SnakeNames = new List<string>();
         /// <summary>
         /// Фабрика змеек
         /// </summary>

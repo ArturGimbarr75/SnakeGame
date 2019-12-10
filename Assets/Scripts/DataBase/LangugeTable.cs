@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
 using Assets.Scripts.Settings;
-
+using UnityEngine;
 
 namespace Assets.Scripts.DataBase
 {
@@ -60,7 +60,7 @@ namespace Assets.Scripts.DataBase
                         return Russian[elName];
                     break;
             }
-
+            Debug.Assert(false, elName + " translation not exists");
             return NotFoundStr;
         }
 

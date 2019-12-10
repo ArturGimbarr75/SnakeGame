@@ -49,10 +49,11 @@ public class MainMenuManager : MonoBehaviour
     public void NewGame()
     {
         { // TODO: убрать | Используется для смены языков
-            if ((int)UISettings.Current.language == 2)
-                UISettings.Current.language = 0;
-            else
-                UISettings.Current.language++;
+          /*if ((int)UISettings.Current.language == 2)
+              UISettings.Current.language = 0;
+          else
+              UISettings.Current.language++;*/
+            SceneManager.LoadScene(2);
         }
     }
 
