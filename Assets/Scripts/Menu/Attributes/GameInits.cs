@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Assets.Scripts.GameLogics;
 using Logic;
+using Snake;
 
 namespace Assets.Scripts.Menu.Attributes
 {

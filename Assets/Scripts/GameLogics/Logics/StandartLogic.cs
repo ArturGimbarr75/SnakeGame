@@ -16,10 +16,6 @@ namespace Logic
     {
         #region Constructors
 
-        /// <summary>
-        /// Конструктор принимающий имена змеек участвующих в игре
-        /// </summary>
-        /// <param name="snakeNames">Имена змеек</param>
         public StandartLogic(HashSet<GameLogicsAttributes.GameoverPredicates> gameoverPredicates,
             List<string> snakeNames, ISnakeFactory snakeFactory,
             int mapSideSize, int foodCount, bool leftDeadSnakeBody)

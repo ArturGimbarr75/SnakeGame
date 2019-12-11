@@ -4,9 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Snake;
-
-namespace Assets.Scripts.GameLogics
+namespace Snake
 {
     public interface ISnakeFactory
     {
