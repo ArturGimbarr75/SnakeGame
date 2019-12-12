@@ -51,7 +51,7 @@ namespace Assets.Scripts.DataBase
                 (double)(newStatistics.StepsCount / ((newStatistics.EatenFood != 0)? newStatistics.EatenFood : 1)));
             newStatistics.MaxSize       = (curSt.MaxSize > snake.SnakeStatistics.MaxSize)? curSt.MaxSize : snake.SnakeStatistics.MaxSize;
             newStatistics.PlayedGames   = curSt.PlayedGames + 1;
-            newStatistics.Mark          = curSt.StepsCount + snake.SnakeStatistics.Steps;
+            newStatistics.Mark          = (int)(Math.Round((decimal)(newStatistics.StepsPerFood / 10)));
 
 
             string sqlQuery = String.Format("UPDATE Snakes SET " +
@@ -116,7 +116,22 @@ namespace Assets.Scripts.DataBase
             return statistics;
         }
 
-        private bool IsExistInTable (string name)
+        /// <summary>
+        /// Метод очищает таблицу
+        /// </summary>
+        public void ClearTable()
+        {
+            string sqlQuery = "DELETE FROM Snakes";
+
+            dbconn.Open();
+            dbcmd = dbconn.CreateCommand();
+            dbcmd.CommandText = sqlQuery;
+            dbcmd.ExecuteReader();
+            dbcmd.Dispose();
+            dbconn.Close();
+        }
+
+        public bool IsExistInTable (string name)
         {
             string sqlQuery = "SELECT * FROM Snakes WHERE name = '" + name + "'";
 

@@ -209,7 +209,7 @@ namespace Assets.Scripts.Menu
         /// </summary>
         public void Next()
         {
-            SceneManager.LoadScene(3);
+            SceneManager.LoadScene(2);
         }
 
         /// <summary>

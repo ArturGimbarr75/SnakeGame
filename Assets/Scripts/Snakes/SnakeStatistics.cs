@@ -14,7 +14,7 @@ namespace Snake
         /// Конструктор класса статистики
         /// </summary>
         /// <param name="snakeLength">Изначальная длинна змейки</param>
-        public SnakeStatistics(int snakeLength)
+        public SnakeStatistics(int snakeLength = 0)
         {
             Steps = 0;
             EatenFood = 0;
