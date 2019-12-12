@@ -51,6 +51,21 @@ namespace Assets.Scripts.DataBase
             dbcmd.Dispose();
             dbconn.Close();
         }
+
+        /// <summary>
+        /// Метод очищает таблицу
+        /// </summary>
+        public void ClearTable()
+        {
+            string sqlQuery = "DELETE FROM Player";
+
+            dbconn.Open();
+            dbcmd = dbconn.CreateCommand();
+            dbcmd.CommandText = sqlQuery;
+            dbcmd.ExecuteReader();
+            dbcmd.Dispose();
+            dbconn.Close();
+        }
     }
 
     struct PlayerGameInfo
