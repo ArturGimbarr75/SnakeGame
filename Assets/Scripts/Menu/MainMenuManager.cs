@@ -11,19 +11,8 @@ using Assets.Scripts.Settings;
 
 public class MainMenuManager : MonoBehaviour
 {
-    /// <summary>
-    /// Используется для присвоения элементам текста на необходимом языке
-    /// </summary>
-    static private List<string> ComponentsNames = new List<string> //TODO: Наверное больше не нужен
-    {
-        "NewGame",
-        "Settings",
-        "Quit"
-    };
-
     void Start()
     {
-        //Text.SetLanguage(ComponentsNames);
         UISettings.Current.LangugeChange += handleLanguageChange;
     }
 
@@ -53,16 +42,24 @@ public class MainMenuManager : MonoBehaviour
               UISettings.Current.language = 0;
           else
               UISettings.Current.language++;*/
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(1);
         }
     }
 
     /// <summary>
-    /// Переход к сцене с настройками
+    /// Переход к сцене со статистикой
     /// </summary>
-    public void Settings()
+    public void SnakeStatistics()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(5);
+    }
+
+    /// <summary>
+    /// Переход к сцене со статистикой
+    /// </summary>
+    public void PlayersStatistics()
+    {
+        SceneManager.LoadScene(4);
     }
 
     /// <summary>
