@@ -6,6 +6,7 @@ using Logic;
 using Map;
 using Assets.Scripts.GameLogics;
 using Assets.Scripts.Menu.Attributes;
+using UnityEngine.SceneManagement;
 
 public class TestManager : MonoBehaviour
 {
@@ -66,11 +67,14 @@ public class TestManager : MonoBehaviour
             showOnes = false;
             Map = GameLogic.GetNextPlayingMap();
             string info = "";
-            foreach (var s in Map.Snake) // TODO: Сделать вывод статистики из GameBase
+            var statistics = GameLogic.GetSnakeStatistics();
+            GameInits.SnakeStatistics = statistics;
+            foreach (var s in statistics)
             {
-                info += s.Name + " -> " + s.SnakeStatistics + "\n";
+                info += s + "\n";
             }
             Debug.Log(info);
+            SceneManager.LoadScene(3);
         }
     }
 

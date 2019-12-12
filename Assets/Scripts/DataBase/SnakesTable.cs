@@ -44,12 +44,12 @@ namespace Assets.Scripts.DataBase
             newStatistics.Genes = (snake is SmartSnakeBase)
                 ? (snake as SmartSnakeBase).GenesString 
                 : "null";
-            newStatistics.StepsCount    = curSt.StepsCount + snake.SnakeStatistics.Steps;
+            newStatistics.StepsCount    = curSt.StepsCount + snake.Statistics.Steps;
             newStatistics.DeathCount    = curSt.DeathCount + (snake.isAlive? 0 : 1);
-            newStatistics.EatenFood     = curSt.EatenFood + snake.SnakeStatistics.EatenFood;
+            newStatistics.EatenFood     = curSt.EatenFood + snake.Statistics.EatenFood;
             newStatistics.StepsPerFood  = (int)Math.Round (
                 (double)(newStatistics.StepsCount / ((newStatistics.EatenFood != 0)? newStatistics.EatenFood : 1)));
-            newStatistics.MaxSize       = (curSt.MaxSize > snake.SnakeStatistics.MaxSize)? curSt.MaxSize : snake.SnakeStatistics.MaxSize;
+            newStatistics.MaxSize       = (curSt.MaxSize > snake.Statistics.MaxSize)? curSt.MaxSize : snake.Statistics.MaxSize;
             newStatistics.PlayedGames   = curSt.PlayedGames + 1;
             newStatistics.Mark          = (int)(Math.Round((decimal)(newStatistics.StepsPerFood / 10)));
 

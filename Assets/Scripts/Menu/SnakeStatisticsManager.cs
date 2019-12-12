@@ -16,10 +16,10 @@ namespace Assets.Scripts.Menu
     {
         private SnakesTable table = new SnakesTable();
         private List<string> SnakeNames;
+        private List<GameObject> Rows;
         public VisualElement Scroll;
         public GameObject RowPrefab;
         public GameObject Content;
-        public List<GameObject> Rows;
 
         private void Start()
         {

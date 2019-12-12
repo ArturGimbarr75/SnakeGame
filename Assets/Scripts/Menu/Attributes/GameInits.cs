@@ -41,5 +41,9 @@ namespace Assets.Scripts.Menu.Attributes
         /// Оставлять ли мертвые тела
         /// </summary>
         public static bool LeftDeadSnakeBody = false;
+        /// <summary>
+        /// Статистика игравших змеек
+        /// </summary>
+        public static List<SnakeStatistics> SnakeStatistics = new List<SnakeStatistics>();
     }
 }

@@ -60,7 +60,7 @@ namespace Logic
                 SnakesForLogic.Snakes.Add(snakeFactory.GetSnakeByName(snakeNames[i], snakesCordinates[i]));
 
             foreach (var snake in SnakesForLogic.Snakes)
-                Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive, snake.SnakeStatistics));
+                Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive, snake.Statistics));
 
             InsertFood(Map);
         }
@@ -155,7 +155,7 @@ namespace Logic
                         {
                             snakesTable.UpdateStatistics(s);
                             if (s.SnakeName.Contains("Player"))
-                                playerTable.AddNewRow(s.SnakeName, GameType, s.SnakeStatistics.EatenFood);
+                                playerTable.AddNewRow(s.SnakeName, GameType, s.Statistics.EatenFood);
                         }
                     }
                     isDBUpdated = true;
@@ -163,6 +163,19 @@ namespace Logic
                 }
 
             return false;
+        }
+
+        /// <summary>
+        /// Возвращает статистику игравших змеек
+        /// </summary>
+        /// <returns>Статистика змеек</returns>
+        public List<SnakeStatistics> GetSnakeStatistics()
+        {
+            List<SnakeStatistics> statistics = new List<SnakeStatistics>();
+            foreach (var snake in SnakesForLogic.Snakes)
+                statistics.Add(new SnakeStatistics(snake.Statistics));
+
+            return statistics;
         }
 
         #region CheckCollisions

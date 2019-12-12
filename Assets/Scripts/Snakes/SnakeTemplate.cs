@@ -47,11 +47,19 @@ namespace Snake
         /// <summary>
         /// Статистика змеек
         /// </summary>
-        public SnakeStatistics SnakeStatistics = new SnakeStatistics(0);
+        public SnakeStatistics Statistics;
 
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        protected SnakeBase()
+        {
+            Statistics = new SnakeStatistics(SnakeName);
+        }
 
         /// <summary>
         /// Метод который возвращает следующее движение змейки
