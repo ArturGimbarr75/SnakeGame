@@ -7,6 +7,9 @@ using Map;
 using Assets.Scripts.GameLogics;
 using Assets.Scripts.Menu.Attributes;
 using UnityEngine.SceneManagement;
+using System.IO;
+using System;
+using System.Text;
 
 public class TestManager : MonoBehaviour
 {
@@ -19,18 +22,6 @@ public class TestManager : MonoBehaviour
 
     void Start()
     {
-        List<string> names = new List<string>()
-        {
-            nameof(PlayerArrows),
-            nameof(PlayerIJKL),
-            nameof(PlayerWASD),
-            nameof(RandPathwaySnake),
-            nameof(FollowFoodSnake),
-            nameof(Adam),
-        };
-        int mapSize = 50;
-        int foodCount = 15;
-
         GameLogic = new StandartLogic
             (
             GameInits.GameoverPredicates,
@@ -50,7 +41,7 @@ public class TestManager : MonoBehaviour
         ShowMapTexture();
     }
 
-    bool showOnes = true;
+    int cccc = 0;
     private void Update()
     {
         if (!GameLogic.IsGameEnded())
@@ -62,18 +53,30 @@ public class TestManager : MonoBehaviour
             //ShowMapConsole();
             ShowMapTexture();
         }
-        else if (showOnes)
+        else
         {
-            showOnes = false;
+            cccc++;
+            string fileName = "Bug" + cccc.ToString() +".txt";
+
+            // Check if file already exists. If yes, delete it.     
+            if (File.Exists(fileName))
+            {
+                File.Delete(fileName);
+            }
+
+            // Create a new file     
+            using (FileStream fs = File.Create(fileName))
+            {
+                // Add some text to file    
+                Byte[] title = new UTF8Encoding(true).GetBytes("New Text File");
+                fs.Write(title, 0, title.Length);
+                byte[] author = new UTF8Encoding(true).GetBytes("Mahesh Chand");
+                fs.Write(author, 0, author.Length);
+            }
+
             Map = GameLogic.GetNextPlayingMap();
-            string info = "";
             var statistics = GameLogic.GetSnakeStatistics();
             GameInits.SnakeStatistics = statistics;
-            foreach (var s in statistics)
-            {
-                info += s + "\n";
-            }
-            Debug.Log(info);
             SceneManager.LoadScene(3);
         }
     }

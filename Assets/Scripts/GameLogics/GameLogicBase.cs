@@ -35,10 +35,6 @@ namespace Logic
         /// Объект позволяющий получить любую инстанцию змейки по имени
         /// </summary>
         protected ISnakeFactory SnakeFactory;
-        /// <summary>
-        /// Указывает на то обновлена ли БД
-        /// </summary>
-        private bool isDBUpdated= false;
 
         /// <summary>
         /// Базовый конструктор
@@ -143,26 +139,25 @@ namespace Logic
         public bool IsGameEnded()
         {
             var predecates = GameoverPredicate.GetInvocationList();
+            bool result = false;
 
             foreach (var p in predecates)
                 if (((GameLogicsAttributes.GameoverPredicate)p)())
-                {
-                    if (!isDBUpdated)
-                    {
-                        SnakesTable snakesTable = new SnakesTable();
-                        PlayerTable playerTable = new PlayerTable();
-                        foreach (var s in SnakesForLogic.Snakes)
-                        {
-                            snakesTable.UpdateStatistics(s);
-                            if (s.SnakeName.Contains("Player"))
-                                playerTable.AddNewRow(s.SnakeName, GameType, s.Statistics.EatenFood);
-                        }
-                    }
-                    isDBUpdated = true;
-                    return true;
-                }
+                    result = true;
 
-            return false;
+            if (result)
+            {
+                SnakesTable snakesTable = new SnakesTable();
+                PlayerTable playerTable = new PlayerTable();
+                foreach (var s in SnakesForLogic.Snakes)
+                {
+                    snakesTable.UpdateStatistics(s);
+                    if (s.SnakeName.Contains("Player"))
+                        playerTable.AddNewRow(s.SnakeName, GameType, s.Statistics.EatenFood);
+                }
+            }
+
+            return result;
         }
 
         /// <summary>

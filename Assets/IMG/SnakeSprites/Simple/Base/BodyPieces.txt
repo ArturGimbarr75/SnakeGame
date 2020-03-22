@@ -1,0 +1,17 @@
+HeadUp
+HeadRight
+HeadDown
+HeadLeft
+
+DownRight
+DownLeft
+UpRight
+UpLeft
+
+Horizontal
+Vertical
+
+TailUp
+TailRight
+TailDown
+TailLeft
