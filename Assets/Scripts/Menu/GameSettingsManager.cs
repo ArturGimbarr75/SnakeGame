@@ -166,6 +166,8 @@ namespace Assets.Scripts.Menu
                 num = PlayingMap.MinSize;
             if (num > PlayingMap.MaxSize)
                 num = PlayingMap.MaxSize;
+            if (num % 2 != 0)
+                num++;
 
             MapSize.text = num.ToString();
             GameInits.MapSize = num;

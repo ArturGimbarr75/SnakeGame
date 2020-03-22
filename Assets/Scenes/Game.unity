@@ -265,7 +265,7 @@ GameObject:
   - component: {fileID: 476315759}
   - component: {fileID: 476315760}
   m_Layer: 0
-  m_Name: Tilemap
+  m_Name: Snakes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -560,6 +560,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 476315761}
+  - {fileID: 1166339544}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -694,6 +695,120 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &1166339541
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1166339544}
+  - component: {fileID: 1166339542}
+  - component: {fileID: 1166339543}
+  m_Layer: 0
+  m_Name: Background
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1839735485 &1166339542
+Tilemap:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166339541}
+  m_Enabled: 1
+  m_Tiles: {}
+  m_AnimatedTiles: {}
+  m_TileAssetArray: []
+  m_TileSpriteArray: []
+  m_TileMatrixArray: []
+  m_TileColorArray: []
+  m_AnimationFrameRate: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Origin: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0, y: 0, z: 1}
+  m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
+  m_TileOrientation: 0
+  m_TileOrientationMatrix:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
+--- !u!483693784 &1166339543
+TilemapRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166339541}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_ChunkSize: {x: 32, y: 32, z: 32}
+  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_MaxChunkCount: 16
+  m_MaxFrameAge: 16
+  m_SortOrder: 0
+  m_Mode: 0
+  m_DetectChunkCullingBounds: 0
+  m_MaskInteraction: 0
+--- !u!4 &1166339544
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166339541}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 711183156}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1957964541
 GameObject:
   m_ObjectHideFlags: 0
@@ -794,16 +909,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 2080783772}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a05eda1d15742fc45a96b67b4bb2ef25, type: 3}
+  m_Script: {fileID: 11500000, guid: eafd32aa0deab554e91693150357fb53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tile: {fileID: 0}
-  Position: {x: 0, y: 0, z: 0}
-  Base:
+  Grass: {fileID: 11400000, guid: 51cd3bbc76e4a014fabac73e3898dd62, type: 2}
+  Food: {fileID: 11400000, guid: 7c578e3680160854880cbcdcf504b719, type: 2}
+  AdamBody:
   - {fileID: 11400000, guid: a19d816144aab7340a076972f0681e7e, type: 2}
-  grid: {fileID: 0}
-  scale: 1
-  side: 1
+  - {fileID: 11400000, guid: 29c8535059a7fc045b06d7d2e066f1ac, type: 2}
+  - {fileID: 11400000, guid: 9a26bdbc930014a46ade2bdbf0655d3a, type: 2}
+  - {fileID: 11400000, guid: 51231a71856f7c64dbc00404037191c5, type: 2}
+  - {fileID: 11400000, guid: 9703ed2ab70180f41925afb8e5af2940, type: 2}
+  - {fileID: 11400000, guid: 9684f58917e23564c9f7a3d9b4c1a955, type: 2}
+  - {fileID: 11400000, guid: 704634c8f405395488084a0890f0e1e6, type: 2}
+  - {fileID: 11400000, guid: 917b9a5b65b0ee44aa555e832651d3d2, type: 2}
+  - {fileID: 11400000, guid: 09b79370533909548959de421fa08eaf, type: 2}
+  - {fileID: 11400000, guid: 26569dd6a50c5a14b98090792b53311e, type: 2}
+  - {fileID: 11400000, guid: 0c3144c945923374dad74441ee63bfbd, type: 2}
+  - {fileID: 11400000, guid: 57fc44b83cd1ac5449af7080589e1972, type: 2}
+  - {fileID: 11400000, guid: 5abdd7361368626489ac66151962d77a, type: 2}
+  - {fileID: 11400000, guid: 4072daa32466b1e409ce51c5e42b2b31, type: 2}
+  DeadBody: []
+  FollowFoodSnakeBody: []
+  PlayerArrowsBody: []
+  PlayerWASDBody: []
+  RandPathwaySnakeBody: []
+  Snakes: {fileID: 476315758}
+  Background: {fileID: 1166339542}
+  GameGrid: {fileID: 711183157}
 --- !u!4 &2080783774
 Transform:
   m_ObjectHideFlags: 0
