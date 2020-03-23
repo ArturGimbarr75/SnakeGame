@@ -7,6 +7,7 @@ namespace Assets.Scripts.DataBase
 {
     /// <summary>
     /// Класс для работы с таблицой языков
+    /// Class, which works with language table in DataBase
     /// </summary>
     public class LanguageTable : TableBase
     {

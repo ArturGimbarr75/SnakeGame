@@ -7,6 +7,7 @@ namespace Assets.Scripts.Settings
 {
     /// <summary>
     /// Класс для использования настроек
+    /// Class for using setting
     /// </summary>
     public class UISettings
     {
@@ -16,6 +17,7 @@ namespace Assets.Scripts.Settings
 
     /// <summary>
     /// Настройки пользовательского интерфейса
+    /// Set user's interface
     /// </summary>
     public class UISettingsClass
     {
@@ -41,6 +43,7 @@ namespace Assets.Scripts.Settings
 
         /// <summary>
         /// Устанавливаем базовые значения
+        /// Set base values
         /// </summary>
         public UISettingsClass()
         {
@@ -54,11 +57,13 @@ namespace Assets.Scripts.Settings
     /// <summary>
     /// Класс хранящий структуры, перечесления
     /// необходимые для настроек
+    /// Class containing structures, enumeration needed for setting
     /// </summary>
     public static class UISettingsAttributes
     {
         /// <summary>
         /// Возможные языки игры
+        /// Avalable game languages
         /// </summary>
         public enum Language
         {
@@ -69,6 +74,7 @@ namespace Assets.Scripts.Settings
 
         /// <summary>
         /// Возможный фон игрового поля
+        /// Avalable background of a map
         /// </summary>
         public enum Background2D
         {

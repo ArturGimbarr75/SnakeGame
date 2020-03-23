@@ -9,11 +9,13 @@ namespace Snake
 {
     /// <summary>
     /// Атрибуты для параметров змейки
+    /// Attributes for snake's parameters
     /// </summary>
     public class SnakeAttribute
     {
         /// <summary>
         /// Направления движения змейки
+        /// Snake's direction
         /// </summary>
         public enum SnakePathway
         {
@@ -25,14 +27,16 @@ namespace Snake
 
         /// <summary>
         /// Кординаты объектов игрового поля
+        /// Objects' coordinates in the map
         /// </summary>
         public struct Cordinates
         {
             /// <summary>
             /// Стандартный конструктор
+            /// Standart constructor
             /// </summary>
-            /// <param name="X">Кордината Х</param>
-            /// <param name="Y">Кордината Y</param>
+            /// <param name="X">Кордината Х/X coordinate</param>
+            /// <param name="Y">Кордината Y/Y coordinate</param>
             public Cordinates(int X, int Y)
             {
                 this.X = X;
@@ -40,9 +44,10 @@ namespace Snake
             }
             /// <summary>
             /// Копи конструктор
+            /// Copy constructor
             /// </summary>
-            /// <param name="X">Кордината Х</param>
-            /// <param name="Y">Кордината Y</param>
+            /// <param name="X">Кордината Х/X coordinate</param>
+            /// <param name="Y">Кордината Y/Y coordinate</param>
             public Cordinates(Cordinates cordinates)
             {
                 this.X = cordinates.X;
@@ -51,41 +56,47 @@ namespace Snake
 
             /// <summary>
             /// Кордината Х
+            /// X coordinate
             /// </summary>
             public int X { get; set; }
             /// <summary>
             /// Кордината Y
+            /// Y coordinate
             /// </summary>
             public int Y { get; set; }
 
             /// <summary>
             /// Проверка на равенство кординат
+            /// Coordinate equality check
             /// </summary>
-            /// <param name="cordinate1">Кордината</param>
-            /// <param name="cordinate2">Кордината</param>
-            /// <returns>True если кординаты равны</returns>
+            /// <param name="cordinate1">Кордината/Coordinate</param>
+            /// <param name="cordinate2">Кордината/Coordinate</param>
+            /// <returns>True если кординаты равны/Return true if coordinates are equal</returns>
             public static bool operator == (Cordinates cordinate1, Cordinates cordinate2)
                 => (cordinate1.X == cordinate2.X && cordinate1.Y == cordinate2.Y);
 
             /// <summary>
             /// Проверка на неравенство кординат
+            /// Inequality check
             /// </summary>
-            /// <param name="cordinate1">Кордината</param>
-            /// <param name="cordinate2">Кордината</param>
-            /// <returns>True если кординаты не равны</returns>
+            /// <param name="cordinate1">Кордината/Coordinate</param>
+            /// <param name="cordinate2">Кордината/Coordinate</param>
+            /// <returns>True если кординаты не равны/Returns true if coordinates are inequal</returns>
             public static bool operator != (Cordinates cordinate1, Cordinates cordinate2)
                 => !(cordinate1.X == cordinate2.X && cordinate1.Y == cordinate2.Y);
         }
 
         /// <summary>
         /// "Генны" умных змеек
+        /// "Genes" of smart snakes
         /// </summary>
         public sealed class SnakeGenes
         {
             /// <summary>
             /// Создаем случайный "генном" 
+            /// Creating a rangom genome
             /// </summary>
-            /// <param name="sideSize">Размер стороны "геннома"</param>
+            /// <param name="sideSize">Размер стороны "геннома"/Side size of genome</param>
             public SnakeGenes (int sideSize = StandartSideSize)
             {
                 FoodGenes = new Dictionary<SnakePathway, int[,]>();
@@ -108,9 +119,10 @@ namespace Snake
             /// <summary>
             /// Конструктор в который передется генном еды и преград
             /// В случае невалидности геннов создается случайный генном
+            /// Constructor which creates a random genome in case of invalid food and obstacle genomes
             /// </summary>
-            /// <param name="foodGenes">Генном еды</param>
-            /// <param name="barrierGenes">Генном </param>
+            /// <param name="foodGenes">Генном еды/Food genome</param>
+            /// <param name="barrierGenes">Генном/ Obstacle genome </param>
             [JsonConstructor]
             public SnakeGenes (Dictionary<SnakePathway, int[,]> foodGenes, Dictionary<SnakePathway, int[,]> barrierGenes)
             {
@@ -141,9 +153,10 @@ namespace Snake
 
             /// <summary>
             /// Проверка геннов на валидность
+            /// Checking if genomes are valid
             /// </summary>
-            /// <param name="sideSize">Размер стороны "геннома"</param>
-            /// <param name="genes">Генном</param>
+            /// <param name="sideSize">Размер стороны "геннома"/Side size of genome</param>
+            /// <param name="genes">Генном/Genome</param>
             private static void CheckGenesSidesEquality(int sideSize, Dictionary<SnakePathway, int[,]> genes)
             {
                 if (genes == null)
@@ -169,23 +182,28 @@ namespace Snake
             }
             /// <summary>
             /// Генном преград
+            /// Obstacle genome
             /// </summary>
             public Dictionary<SnakePathway, int[,]> BarrierGenes { get; }
             /// <summary>
             /// Генном еды
+            /// Food genome
             /// </summary>
             public Dictionary<SnakePathway, int[,]> FoodGenes { get; }
 
             /// <summary>
             /// Стандартный размер стороны геннома 
+            /// Standart side size of genome
             /// </summary>
             public const int StandartSideSize = 11;
             /// <summary>
             /// Максимальный размер генна
+            /// Max size of genome
             /// </summary>
             public const int MaxGenesValue = 100;
             /// <summary>
             /// Минимальный размер генна
+            /// Min size of genome
             /// </summary>
             public const int MinGenesValue = -100;
         }

@@ -14,6 +14,7 @@ namespace Assets.Scripts.Setings
     {
         /// <summary>
         /// Текстовый компонент элемента UI
+        /// Text component of UI element
         /// </summary>
         [SerializeField]
         private Text TextComponent;
@@ -25,6 +26,7 @@ namespace Assets.Scripts.Setings
 
         /// <summary>
         /// Вызывается при старте сцены и подписываемся на смену языка
+        /// Is called when the scene starts subscribes for language change
         /// </summary>
         private void Awake()
         {
@@ -36,9 +38,10 @@ namespace Assets.Scripts.Setings
             TextComponent.text = localisedString;
         }
         /// <summary>
-        /// Оброботчик смены языка
+        /// Оброботчик смены языка obrAbotchik
+        /// Language change handler
         /// </summary>
-        /// <param name="language">Выбранный язык</param> // не используется пока
+        /// <param name="language">Выбранный язык/Chosen language</param> // не используется пока
         private void handleLanguageChange(UISettingsAttributes.Language language)
         {
             string localisedString = table.GetElementText(Key, UISettings.Current.language);
@@ -46,6 +49,7 @@ namespace Assets.Scripts.Setings
         }
         /// <summary>
         /// Отписка
+        /// Unsubscribe
         /// </summary>
         private void OnDestroy()
         {

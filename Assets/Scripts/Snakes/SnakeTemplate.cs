@@ -8,6 +8,7 @@ namespace Snake
 {
     /// <summary>
     /// Представляет собой шаблон для реализации и использования змеек в игре
+    /// Template for snakes' realization and using
     /// </summary>
     public abstract class SnakeBase
     {
@@ -73,24 +74,29 @@ namespace Snake
 
     /// <summary>
     /// Шаблон для умной змейки
+    /// Template for a smart snake
     /// </summary>
     public abstract class SmartSnakeBase : SnakeBase
     {
         /// <summary>
         /// "Генны" змейки
+        /// Snake's genes
         /// </summary>
         protected SnakeAttribute.SnakeGenes Genes;
         /// <summary>
         /// Веса на выходе
+        /// Pathways weights
         /// </summary>
         protected Dictionary<SnakeAttribute.SnakePathway, int> SnakePathwaysWeights;
         /// <summary>
         /// Json генов
+        /// Genes JSON
         /// </summary>
         public string GenesString => Genes.ToString();
 
         /// <summary>
         /// Конструктор
+        /// Constructor
         /// </summary>
         public SmartSnakeBase()
         {
@@ -104,6 +110,7 @@ namespace Snake
 
         /// <summary>
         /// Установка геннов змеек
+        /// Setting snakes' genes
         /// </summary>
         protected abstract void SetSnakeGenes();
 
@@ -111,11 +118,12 @@ namespace Snake
         /// <summary>
         /// Метод просчитывает вес решений
         /// если идти через стены или не обязательно
+        /// Method that calculates decision weights and determines whether should you go through the walls or not
         /// </summary>
-        /// <param name="map">Карта</param>
-        /// <param name="xFactor">Множитель кординаты X</param>
-        /// <param name="yFactor">Множитель кординаты Y</param>
-        /// <param name="path">Путь</param>
+        /// <param name="map">Карта/Map</param>
+        /// <param name="xFactor">Множитель кординаты X/X coordinate multiplier</param>
+        /// <param name="yFactor">Множитель кординаты Y/Y coordinate multiplier</param>
+        /// <param name="path">Путь/Path</param>
         protected void CheckOtherSide(PlayingMap map, int xFactor, int yFactor, SnakeAttribute.SnakePathway path)
         {
             int genesSize = Genes.FoodGenes[SnakeAttribute.SnakePathway.Up].GetLength(0);
@@ -165,8 +173,9 @@ namespace Snake
 
         /// <summary>
         /// Метот ищет пусти с максимальными весами
+        /// Methond is finding paths with max weights
         /// </summary>
-        /// <returns>Пусти с максимальными весами</returns>
+        /// <returns>Пусти с максимальными весами/Paths with maximus weights</returns>
         protected List<SnakeAttribute.SnakePathway> FindMaxWeights ()
         {
             List<SnakeAttribute.SnakePathway> maxWeights =
@@ -195,6 +204,7 @@ namespace Snake
                         CheckOtherSide(map, xFactor, yFactor, path);
 
             // Поиск самого маленького возможного веса, чтобы не допустить похода под себя =D
+            // Finding minimum weight, so that snake doesn't step under itself
             int minWeight =
                 Math.Abs(8 * SnakeAttribute.SnakeGenes.MinGenesValue * Genes.FoodGenes.Count * Genes.FoodGenes.Count) * 2;
 

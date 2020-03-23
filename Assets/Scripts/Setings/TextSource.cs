@@ -12,6 +12,7 @@ namespace Assets.Scripts.Settings
     /// <summary>
     /// Класс позволяющий получить текст элементов
     /// интерфейса на необходимом языке
+    /// Class allowing to fetch text of elements of interface in correct languge
     /// </summary>
     static class TextSource /*LangugeManager*/  // TODO: Подписать на 
     {

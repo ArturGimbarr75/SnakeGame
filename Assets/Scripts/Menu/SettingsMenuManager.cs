@@ -16,8 +16,9 @@ public class SettingsMenuManager : MonoBehaviour
 {
     /// <summary>
     /// Используется для присвоения элементам текста на необходимом языке
+    /// Used for assigning a text to elements in a correct language
     /// </summary>
-    static private List<string> ComponentsNames = new List<string> //TODO: Наверное больше не нужен
+    static private List<string> ComponentsNames = new List<string> //TODO: Наверное больше не нужен/Mb it's a redundant one
     {
         "Back",
         "Background2D",
