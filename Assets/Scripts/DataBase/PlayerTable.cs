@@ -54,6 +54,7 @@ namespace Assets.Scripts.DataBase
 
         /// <summary>
         /// Метод очищает таблицу
+        /// Method that clears the table
         /// </summary>
         public void ClearTable()
         {

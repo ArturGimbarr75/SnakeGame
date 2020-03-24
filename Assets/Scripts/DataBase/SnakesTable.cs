@@ -86,7 +86,8 @@ namespace Assets.Scripts.DataBase
         public SnakeStatisticsForTable GetStatisticsBySnake (string name)
         {
             if (!IsExistInTable(name))
-                return new SnakeStatisticsForTable(); // TODO: Вернуть NULL
+                return new SnakeStatisticsForTable(); // TODO: Вернуть NULL; Should return Null
+            
 
 
             SnakeStatisticsForTable statistics = new SnakeStatisticsForTable();
@@ -118,6 +119,7 @@ namespace Assets.Scripts.DataBase
 
         /// <summary>
         /// Метод очищает таблицу
+        /// Method that clears the table
         /// </summary>
         public void ClearTable()
         {

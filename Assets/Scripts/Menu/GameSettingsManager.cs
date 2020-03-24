@@ -117,6 +117,7 @@ namespace Assets.Scripts.Menu
 
         /// <summary>
         /// Добавляет имена змеек для игры
+        /// Adds snakes' names for a game
         /// </summary>
         public void OnDropdownsValueChanged()
         {
@@ -128,6 +129,7 @@ namespace Assets.Scripts.Menu
 
         /// <summary>
         /// Установка предикатов окончания игры
+        /// Setting game ending predicates
         /// </summary>
         public void OnEndGamePredicateChanged()
         {
@@ -156,8 +158,9 @@ namespace Assets.Scripts.Menu
 
         /// <summary>
         /// Установка корректного значения размеров карты
+        /// Setting correct map size
         /// </summary>
-        /// <param name="numStr">Значение</param> 
+        /// <param name="numStr">Значение/Value</param> 
         public void OnMapSizeChanged()
         {
             int num = int.Parse(MapSize.text);
@@ -175,8 +178,9 @@ namespace Assets.Scripts.Menu
 
         /// <summary>
         /// Установка корректного значения количества еды
+        /// Setting correct food amount
         /// </summary>
-        /// <param name="numStr">Значение</param>
+        /// <param name="numStr">Значение/Value</param>
         public void OnFoodCountChanged()
         {
             int num = int.Parse(FoodCount.text);
@@ -194,9 +198,10 @@ namespace Assets.Scripts.Menu
 
         /// <summary>
         /// Установка значения чекбокса
+        /// Setting checkbox value
         /// </summary>
-        /// <param name="predicate">Название предиката</param>
-        /// <param name="isOn">Значение</param>
+        /// <param name="predicate">Название предиката/Predicate's name</param>
+        /// <param name="isOn">Значение/Value</param>
         private void SetPredicate(string predicate, bool isOn = true)
         {
             foreach (var checkbox in EndGameCheckboxes)

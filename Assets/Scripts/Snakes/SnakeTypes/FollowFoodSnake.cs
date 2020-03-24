@@ -17,6 +17,7 @@ class FollowFoodSnake : SnakeBase
         minDistance = Math.Pow(map.sideSize, 2);
 
         // Смотрим все проходы за стены
+        // Checking all pather beyond walls
         for (int xFactor = -1; xFactor <= 1; xFactor++)
             for (int yFactor = -1; yFactor <= 1; yFactor++)
                 CheckOtherSide (map, xFactor, yFactor);
@@ -24,6 +25,7 @@ class FollowFoodSnake : SnakeBase
         List<SnakeAttribute.SnakePathway> correctPathways = new List<SnakeAttribute.SnakePathway>();
 
         // Выбираем направления
+        // Choosing direction
         if (Head.Y < nearestFoodCor.Y + map.sideSize * YFactor)
             correctPathways.Add (SnakeAttribute.SnakePathway.Down);
         else
@@ -40,6 +42,7 @@ class FollowFoodSnake : SnakeBase
             ? false : true;
 
         // Смотрим не пойдет ли змейка в себя
+        // Checking if snake collides with itself
         foreach (var pathway in correctPathways)
         {
             if (pathway == SnakeAttribute.SnakePathway.Up && LastPathway == SnakeAttribute.SnakePathway.Down)
@@ -65,6 +68,7 @@ class FollowFoodSnake : SnakeBase
         }
 
         // Выбераем окончательный путь
+        // Coosing final path
         if (correctPathways.Count > 1)
         {
             foreach (var pathway in correctPathways)
@@ -93,10 +97,11 @@ class FollowFoodSnake : SnakeBase
     /// <summary>
     /// Метод просчитывает растояние до еды,
     /// если идти через стены или не обязательно
+    /// Method counts distance to the food, should you go through walls or not
     /// </summary>
-    /// <param name="map">Карта</param>
-    /// <param name="xFactor">Множитель кординаты X</param>
-    /// <param name="yFactor">Множитель кординаты Y</param>
+    /// <param name="map">Карта/Map</param>
+    /// <param name="xFactor">Множитель кординаты X/Multiplier of X coordinate</param>
+    /// <param name="yFactor">Множитель кординаты Y/Multiplier of Y coordinate</param>
     private void CheckOtherSide (PlayingMap map, int xFactor, int yFactor)
     {
         // Ищем ближайшую еду

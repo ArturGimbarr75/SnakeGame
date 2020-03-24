@@ -12,8 +12,9 @@ namespace Snake
 
         /// <summary>
         /// Конструктор класса статистики
+        /// Statistics constructor
         /// </summary>
-        /// <param name="snakeLength">Изначальная длинна змейки</param>
+        /// <param name="snakeLength">Изначальная длинна змейки/Initial snake length</param>
         public SnakeStatistics(string name)
         {
             Name = name;
@@ -27,8 +28,9 @@ namespace Snake
 
         /// <summary>
         /// Копи конструктор
+        /// Copy constructor
         /// </summary>
-        /// <param name="statistics">Оригинал</param>
+        /// <param name="statistics">Оригинал/Original</param>
         public SnakeStatistics (SnakeStatistics statistics)
         {
             Name = statistics.Name;
@@ -40,18 +42,22 @@ namespace Snake
 
         /// <summary>
         /// Имя змейки
+        /// Snake's name
         /// </summary>
         public string Name { get; set; }
         /// <summary>
         /// Общее количество шагов
+        /// General amount of steps
         /// </summary>
         public int Steps { get; set; }
         /// <summary>
         /// Общее количество съеденной еды
+        /// General amount of eaten food
         /// </summary>
         public int EatenFood { get; set; }
         /// <summary>
         /// Текущая длинна змейки
+        /// Current snake's length
         /// </summary>
         public int Length
         {
@@ -69,10 +75,12 @@ namespace Snake
         }
         /// <summary>
         /// Текущая длинна змейки
+        /// Current snake's length
         /// </summary>
         private int _length;
         /// <summary>
         /// Максимальная длинна
+        /// Max snake's length
         /// </summary>
         public int MaxSize { get; private set; }
 

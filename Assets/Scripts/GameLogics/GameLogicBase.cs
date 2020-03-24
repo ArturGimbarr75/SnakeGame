@@ -12,36 +12,43 @@ namespace Logic
 {
     /// <summary>
     /// Абстрактный класс для создания разных логик
+    /// Abstract class for creating a logic
     /// </summary>
     public abstract class GameLogicBase
     {
         /// <summary>
         /// Название типа игры
+        /// Game's type
         /// </summary>
         public string GameType => this.GetType().Name;
         /// <summary>
         /// Список змеек учавствующих в игре
+        /// List of snakes in the game
         /// </summary>
         protected GameLogicsAttributes.SnakesForLogic SnakesForLogic;
         /// <summary>
         /// Игровая карта
+        /// Game map
         /// </summary>
         protected PlayingMap Map;
         /// <summary>
         /// Поле указывающее оставлять ли мертвое тело змейки на карте как барьер
+        /// Field which says where dead snake should be left on the game map
         /// </summary>
         protected bool LeftDeadSnakeBody;
         /// <summary>
         /// Объект позволяющий получить любую инстанцию змейки по имени
+        /// Objects which return any instance of a snake base on snake's name
         /// </summary>
         protected ISnakeFactory SnakeFactory;
 
         /// <summary>
         /// Базовый конструктор
+        /// Base constructor
         /// </summary>
-        /// <param name="snakeFactory">Производство змеек</param>
-        /// <param name="mapSideSize">Сторона карты</param>
-        /// <param name="foodCount">Максимальное колличество еды</param>
+        /// <param name="snakeFactory">Производство змеек/Snakes factory</param>
+        /// <param name="mapSideSize">Сторона карты/Map's edge</param>
+        /// <param name="foodCount">Максимальное колличество еды/Max amount of food</param>
         public GameLogicBase (HashSet<GameLogicsAttributes.GameoverPredicates> gameoverPredicates,
             ISnakeFactory snakeFactory, int mapSideSize, int foodCount, List<string> snakeNames, bool leftDeadSnakeBody = false)
         {
@@ -66,6 +73,8 @@ namespace Logic
         /// от максимально возможного ее количества.
         /// Следует вызывать только после того как все
         /// змейки будут перемещены
+        /// Method which adds food to the map based on max amoung of it's instances.
+        /// Should be called only when all snakes had been moved.
         /// </summary>
         public void InsertFood(PlayingMap map)
         {
@@ -85,11 +94,12 @@ namespace Logic
         /// <summary>
         /// Метод возвращающий кординаты для змеек
         /// равномерно распределленных
+        /// Method which returns coordinates for equally destributed snakes
         /// </summary>
-        /// <param name="sideSize">Размер стороны карты</param>
-        /// <param name="snakeCount">Количество змеек</param>
-        /// <param name="bodySize">Изначальная длина змейки</param>
-        /// <returns>Массив из массивов кординат</returns>
+        /// <param name="sideSize">Размер стороны карты/Map's side size</param>
+        /// <param name="snakeCount">Количество змеек/Snakes amount</param>
+        /// <param name="bodySize">Изначальная длина змейки/Initial snake's length</param>
+        /// <returns>Массив из массивов кординат/Array of coordinates array</returns>
         public List<List<SnakeAttribute.Cordinates>> GetInitialSnakesCordinates
             (int sideSize, int snakeCount, int bodySize = 3)
         {
@@ -121,21 +131,24 @@ namespace Logic
 
         /// <summary>
         /// Метод получения игровой карты
+        /// Method for obtaining game map
         /// </summary>
-        /// <returns>текущая игровая карта</returns>
+        /// <returns>текущая игровая карта/Current game map</returns>
         public PlayingMap GetCurrentPlayingMap() => Map;
 
         /// <summary>
         /// Метот считывает все следующие шаги змеек.
         /// Производит логические операции 
+        /// Method reads all next snakes' steps and makes logic operations
         /// </summary>
-        /// <returns>Возвращает карту с новым положением объектов</returns>
+        /// <returns>Возвращает карту с новым положением объектов/Returns a map with in a new way placed objects</returns>
         public abstract PlayingMap GetNextPlayingMap();
 
         /// <summary>
         /// Метод проверяет окончена ли игра 
+        /// Method checks whethe game is over
         /// </summary>
-        /// <returns>True если игра окончена</returns>
+        /// <returns>True если игра окончена/Returns true if game is over</returns>
         public bool IsGameEnded()
         {
             var predecates = GameoverPredicate.GetInvocationList();
@@ -162,8 +175,9 @@ namespace Logic
 
         /// <summary>
         /// Возвращает статистику игравших змеек
+        /// Returns statistics of snakes, which were in the game
         /// </summary>
-        /// <returns>Статистика змеек</returns>
+        /// <returns>Статистика змеек/Snake statistics</returns>
         public List<SnakeStatistics> GetSnakeStatistics()
         {
             List<SnakeStatistics> statistics = new List<SnakeStatistics>();

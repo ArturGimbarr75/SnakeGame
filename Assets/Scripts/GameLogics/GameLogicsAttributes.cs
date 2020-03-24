@@ -11,6 +11,7 @@ namespace Logic
         // TODO: Наверное этот класс не нужен или его надо добавить в другое место
         /// <summary>
         /// Класс змейки для использования в логике игры
+        /// Snake class, used in a game logic
         /// </summary> 
         public sealed class SnakesForLogic // TODO: запись предыдущего хода, длина...
         {

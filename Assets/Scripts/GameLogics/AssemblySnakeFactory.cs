@@ -11,15 +11,18 @@ namespace Assets.Scripts.GameLogics
     {
         /// <summary>
         /// Словарь типов змеек
+        /// Dictionary of snake types
         /// </summary>
         private Dictionary<string, TypeInfo> snakeTypes;
         /// <summary>
         /// Имена змеек
+        /// Snakes' names
         /// </summary>
         private List<string> snakeNames;
 
         /// <summary>
         /// Конструктор который создает словарь из типов змеек
+        /// Constructor which creates dictionary from snakes' types
         /// </summary>
         public AssemblySnakeFactory()
         {
@@ -34,9 +37,10 @@ namespace Assets.Scripts.GameLogics
         /// <summary>
         /// Создает новый объект змейки по имени
         /// и присваевает ему кординаты.
+        /// Creates new snake object based on name and assigns coordinates.
         /// </summary>
-        /// <param name="snakeName">Имя змейки</param>
-        /// <param name="cordinates">Кондинаты головы и тела</param>
+        /// <param name="snakeName">Имя змейки/Snake's name</param>
+        /// <param name="cordinates">Кондинаты головы и тела/Head and body coordinates</param>
         /// <returns></returns>
         public SnakeBase GetSnakeByName(string snakeName, List<SnakeAttribute.Cordinates> cordinates)
         {
@@ -48,6 +52,7 @@ namespace Assets.Scripts.GameLogics
             {
                 var snake = (SnakeBase)Activator.CreateInstance(snakeType);
                 // На всякий случай
+                //Just in case of a problem
                 snake.SnakeBody.Clear();
                 foreach (var c in cordinates)
                     snake.SnakeBody.Add(c);
@@ -60,6 +65,7 @@ namespace Assets.Scripts.GameLogics
 
         /// <summary>
         /// Возвращает названия доступных змеек.
+        /// Returns avalable snakes' names
         /// </summary>
         /// <returns></returns>
         public List<string> GetAllSnakeTypes() => snakeNames;
