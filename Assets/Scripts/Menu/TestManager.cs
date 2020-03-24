@@ -142,9 +142,6 @@ public class TestManager : MonoBehaviour
             case nameof(Adam):
                 return Color.magenta;
 
-            case nameof(PlayerIJKL):
-                return Color.HSVToRGB(0.1f, 0.5f, 0.9f);
-
             case "F":
                 return Color.red;
 
