@@ -75,6 +75,28 @@ namespace Snake
             /// <returns>True если кординаты не равны</returns>
             public static bool operator != (Cordinates cordinate1, Cordinates cordinate2)
                 => !(cordinate1.X == cordinate2.X && cordinate1.Y == cordinate2.Y);
+
+            /// <summary>
+            /// Подсчет суммы кординат
+            /// </summary>
+            /// <param name="cordinate1">Кордината</param>
+            /// <param name="cordinate2">Кордината</param>
+            /// <returns>Сумма кординат</returns>
+            public static Cordinates operator + (Cordinates cordinate1, Cordinates cordinate2)
+            {
+                return new Cordinates(cordinate1.X + cordinate2.X, cordinate1.Y + cordinate2.Y);
+            }
+
+            /// <summary>
+            /// Подсчет разности кординат
+            /// </summary>
+            /// <param name="cordinate1">Кордината</param>
+            /// <param name="cordinate2">Кордината</param>
+            /// <returns>Разность кординат</returns>
+            public static Cordinates operator - (Cordinates cordinate1, Cordinates cordinate2)
+            {
+                return new Cordinates(cordinate1.X - cordinate2.X, cordinate1.Y - cordinate2.Y);
+            }
         }
 
         /// <summary>

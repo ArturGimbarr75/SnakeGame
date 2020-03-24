@@ -45,5 +45,13 @@ namespace Assets.Scripts.Menu.Attributes
         /// Статистика игравших змеек
         /// </summary>
         public static List<SnakeStatistics> SnakeStatistics = new List<SnakeStatistics>();
+        /// <summary>
+        /// Скорость змеек
+        /// </summary>
+        public static int Speed = 7;
+        /// <summary>
+        /// Пауза междую шагами змеек
+        /// </summary>
+        public static float Pause => (float)(0.11 - Speed * 0.01); 
     }
 }

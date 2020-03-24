@@ -406,7 +406,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -934,8 +934,8 @@ MonoBehaviour:
   PlayerArrowsBody: []
   PlayerWASDBody: []
   RandPathwaySnakeBody: []
-  Snakes: {fileID: 476315758}
-  Background: {fileID: 1166339542}
+  SnakesTileMap: {fileID: 476315758}
+  BackgroundTileMap: {fileID: 1166339542}
   GameGrid: {fileID: 711183157}
 --- !u!4 &2080783774
 Transform:
