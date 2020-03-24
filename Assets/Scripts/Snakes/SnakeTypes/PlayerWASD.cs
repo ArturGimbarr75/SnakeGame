@@ -10,16 +10,16 @@ public class PlayerWASD : SnakeBase
     {
         SnakeAttribute.SnakePathway path = LastPathway;
 
-        if (Input.GetKeyDown(KeyCode.W) && LastPathway != SnakeAttribute.SnakePathway.Down)
+        if (Input.GetKey(KeyCode.W) && LastPathway != SnakeAttribute.SnakePathway.Down)
             path = SnakeAttribute.SnakePathway.Up;
 
-        if (Input.GetKeyDown(KeyCode.D) && LastPathway != SnakeAttribute.SnakePathway.Left)
+        if (Input.GetKey(KeyCode.D) && LastPathway != SnakeAttribute.SnakePathway.Left)
             path = SnakeAttribute.SnakePathway.Right;
 
-        if (Input.GetKeyDown(KeyCode.S) && LastPathway != SnakeAttribute.SnakePathway.Up)
+        if (Input.GetKey(KeyCode.S) && LastPathway != SnakeAttribute.SnakePathway.Up)
             path = SnakeAttribute.SnakePathway.Down;
 
-        if (Input.GetKeyDown(KeyCode.A) && LastPathway != SnakeAttribute.SnakePathway.Right)
+        if (Input.GetKey(KeyCode.A) && LastPathway != SnakeAttribute.SnakePathway.Right)
             path = SnakeAttribute.SnakePathway.Left;
 
         LastPathway = path;

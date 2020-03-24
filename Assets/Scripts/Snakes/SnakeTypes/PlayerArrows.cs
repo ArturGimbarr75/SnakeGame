@@ -14,16 +14,16 @@ public class PlayerArrows : SnakeBase
     {
         SnakeAttribute.SnakePathway path = LastPathway;
 
-        if (Input.GetKeyDown(KeyCode.UpArrow) && LastPathway != SnakeAttribute.SnakePathway.Down)
+        if (Input.GetKey(KeyCode.UpArrow) && LastPathway != SnakeAttribute.SnakePathway.Down)
             path = SnakeAttribute.SnakePathway.Up;
          
-        if (Input.GetKeyDown(KeyCode.RightArrow) && LastPathway != SnakeAttribute.SnakePathway.Left)
+        if (Input.GetKey(KeyCode.RightArrow) && LastPathway != SnakeAttribute.SnakePathway.Left)
             path = SnakeAttribute.SnakePathway.Right;
         
-        if (Input.GetKeyDown(KeyCode.DownArrow) && LastPathway != SnakeAttribute.SnakePathway.Up)
+        if (Input.GetKey(KeyCode.DownArrow) && LastPathway != SnakeAttribute.SnakePathway.Up)
             path = SnakeAttribute.SnakePathway.Down;
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && LastPathway != SnakeAttribute.SnakePathway.Right)
+        if (Input.GetKey(KeyCode.LeftArrow) && LastPathway != SnakeAttribute.SnakePathway.Right)
             path = SnakeAttribute.SnakePathway.Left;
 
         LastPathway = path;
