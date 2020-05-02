@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEditor;
+using UnityEngine.Tilemaps;
 
 using Assets.Scripts.GameLogics;
 using Assets.Scripts.Menu.Attributes;
@@ -16,44 +19,66 @@ namespace Assets.Scripts.Menu
 {
     public class GameSettingsManager : MonoBehaviour
     {
-        public List<Dropdown> SnakeTypesDropdowns;
         public Toggle LeftDeadBody;
         public Dropdown GameMode;
         public InputField FoodCount;
         public InputField MapSize;
         public List<Toggle> EndGameCheckboxes;
+        public GameObject SnakesScrollView;
+        public GameObject SnakeButtonRowPrefab;
+        public GameObject AddedSnakesScrollView;
+        public GameObject AddedSnakeRowPrefab;
 
-        private List<string> SnakeNames;
-        private const string NoneStr = "None";
-        private List<string> names = new List<string>(GameInits.SnakeNames);
+        private Dictionary<string, Sprite> SnakeHeadSprites;
         private HashSet<GameLogicsAttributes.GameoverPredicates> Predicates =
             new HashSet<GameLogicsAttributes.GameoverPredicates>(GameInits.GameoverPredicates);
 
         private void Start()
         {
-            SetUpSnakeTypesDropdowns();
             SetUpElementsValue();
+            InitialiseSnakeHeadSprites();
+            SetUpSnakeButtons(); 
         }
 
 
         #region SetUps
+
+        private void InitialiseSnakeHeadSprites()
+        {
+            SnakeHeadSprites = new Dictionary<string, Sprite>();
+            AssemblySnakeFactory factory = new AssemblySnakeFactory();
+            foreach (string name in factory.GetAllSnakeTypes())
+            {
+                string path = String.Format("Assets\\IMG\\SnakeSprites\\Simple\\{0}\\{0}_1.asset", name);
+                TileBase tile = (TileBase)AssetDatabase.LoadAssetAtPath(path, typeof(TileBase));
+                TileData data = new TileData();
+                tile.GetTileData(new Vector3Int(), null, ref data);
+                SnakeHeadSprites.Add(name, data.sprite);
+            }
+        }
+
+        private void SetUpSnakeButtons()
+        {
+            AssemblySnakeFactory factory = new AssemblySnakeFactory();
+            SnakeButtonRowPrefab.SetActive(false);
+
+            foreach (string name in factory.GetAllSnakeTypes())
+            {
+                var tempRow = Instantiate(SnakeButtonRowPrefab);
+                tempRow.SetActive(true);
+                Button tempButton = tempRow.transform.GetChild(0).gameObject.GetComponent<Button>();
+                tempButton.image.sprite = SnakeHeadSprites[name];
+                tempButton.onClick.AddListener(() => OnButtonSnakePressed(name));
+                tempButton.transform.GetChild(0).gameObject.GetComponent<Text>().text = name;
+                tempRow.transform.parent = SnakesScrollView.transform;
+            }
+        }
 
         /// <summary>
         /// Установка предыдущих значений
         /// </summary>
         private void SetUpElementsValue()
         {
-            // установка значений дропдаун менюшек
-            for (int i = 0; i < names.Count; i++)
-            {
-                for (int j = 0; j < SnakeNames.Count; j++)
-                    if (SnakeNames[j] == names[i])
-                    {
-                        SnakeTypesDropdowns[i].value = j;
-                        break;
-                    }
-            }
-
             // установка значения закрепления трупов змеек
             LeftDeadBody.isOn = GameInits.LeftDeadSnakeBody;
 
@@ -89,42 +114,52 @@ namespace Assets.Scripts.Menu
             FoodCount.text = GameInits.FoodCount.ToString();
         }
 
-        /// <summary>
-        /// Устанавливаем значения дропдаунов
-        /// </summary>
-        private void SetUpSnakeTypesDropdowns()
-        {
-            AssemblySnakeFactory factory = new AssemblySnakeFactory();
-            SnakeNames = factory.GetAllSnakeTypes();
-            SnakeNames.Insert(0, NoneStr);
-            foreach (var dropdown in SnakeTypesDropdowns)
-            {
-                dropdown.ClearOptions();
-                dropdown.AddOptions(SnakeNames);
-                dropdown.onValueChanged.AddListener(delegate {
-                    OnDropdownsValueChanged();});
-            }
-            // Устанавливаем значение игрока
-            for (int i = 0; i < SnakeNames.Count; i++)
-                if (SnakeNames[i] == nameof(PlayerArrows))
-                {
-                    SnakeTypesDropdowns[0].value = i;
-                    break;
-                }
-        }
-
         #endregion
 
         /// <summary>
         /// Добавляет имена змеек для игры
         /// Adds snakes' names for a game
         /// </summary>
-        public void OnDropdownsValueChanged()
+        private void OnButtonSnakePressed(string name)
         {
-            GameInits.SnakeNames.Clear();
-            foreach (var dropdown in SnakeTypesDropdowns)
-                if (SnakeNames[dropdown.value] != NoneStr)
-                    GameInits.SnakeNames.Add (SnakeNames[dropdown.value]);
+            GameInits.SnakeNames.Add(name);
+
+            var tempRow = Instantiate(AddedSnakeRowPrefab);
+            tempRow.SetActive(true);
+
+            if (AddedSnakesScrollView.transform.childCount % 2 == 0)
+            {
+                var color = tempRow.GetComponent<Image>().color;
+                color.a = 30.0f / 255.0f;
+                tempRow.GetComponent<Image>().color = color;
+            }
+  
+            tempRow.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = SnakeHeadSprites[name];
+
+            tempRow.transform.GetChild(1).gameObject.GetComponent<Text>().text =
+                new Func<string>(() =>
+                {
+                    string line = String.Empty;
+                    foreach (var c in name)
+                    {
+                        if (Regex.Replace(c.ToString(), "[A-Z]", String.Empty) == String.Empty)
+                            line += " " + c;
+                        else
+                            line += c;
+                    }
+                    return line;
+                }).Invoke().Trim();
+
+            var tempButton = tempRow.transform.GetChild(2).gameObject.GetComponent<Button>();
+            tempButton.onClick.AddListener(() => OnButtonRemoveSnakePresed(tempRow, name));
+            tempRow.transform.parent = AddedSnakesScrollView.transform;
+
+        }
+
+        private void OnButtonRemoveSnakePresed(GameObject o, string name)
+        {
+            GameObject.Destroy(o);
+            GameInits.SnakeNames.Remove(name);
         }
 
         /// <summary>

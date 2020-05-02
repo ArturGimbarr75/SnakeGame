@@ -190,7 +190,7 @@ GameObject:
   - component: {fileID: 419127097}
   - component: {fileID: 419127096}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -821,7 +821,7 @@ GameObject:
   - component: {fileID: 1957964544}
   - component: {fileID: 1957964543}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -912,28 +912,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eafd32aa0deab554e91693150357fb53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Grass: {fileID: 11400000, guid: 51cd3bbc76e4a014fabac73e3898dd62, type: 2}
-  Food: {fileID: 11400000, guid: 7c578e3680160854880cbcdcf504b719, type: 2}
-  AdamBody:
-  - {fileID: 11400000, guid: a19d816144aab7340a076972f0681e7e, type: 2}
-  - {fileID: 11400000, guid: 29c8535059a7fc045b06d7d2e066f1ac, type: 2}
-  - {fileID: 11400000, guid: 9a26bdbc930014a46ade2bdbf0655d3a, type: 2}
-  - {fileID: 11400000, guid: 51231a71856f7c64dbc00404037191c5, type: 2}
-  - {fileID: 11400000, guid: 9703ed2ab70180f41925afb8e5af2940, type: 2}
-  - {fileID: 11400000, guid: 9684f58917e23564c9f7a3d9b4c1a955, type: 2}
-  - {fileID: 11400000, guid: 704634c8f405395488084a0890f0e1e6, type: 2}
-  - {fileID: 11400000, guid: 917b9a5b65b0ee44aa555e832651d3d2, type: 2}
-  - {fileID: 11400000, guid: 09b79370533909548959de421fa08eaf, type: 2}
-  - {fileID: 11400000, guid: 26569dd6a50c5a14b98090792b53311e, type: 2}
-  - {fileID: 11400000, guid: 0c3144c945923374dad74441ee63bfbd, type: 2}
-  - {fileID: 11400000, guid: 57fc44b83cd1ac5449af7080589e1972, type: 2}
-  - {fileID: 11400000, guid: 5abdd7361368626489ac66151962d77a, type: 2}
-  - {fileID: 11400000, guid: 4072daa32466b1e409ce51c5e42b2b31, type: 2}
-  DeadBody: []
-  FollowFoodSnakeBody: []
-  PlayerArrowsBody: []
-  PlayerWASDBody: []
-  RandPathwaySnakeBody: []
   SnakesTileMap: {fileID: 476315758}
   BackgroundTileMap: {fileID: 1166339542}
   GameGrid: {fileID: 711183157}
