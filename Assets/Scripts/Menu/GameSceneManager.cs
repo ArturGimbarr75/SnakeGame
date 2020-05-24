@@ -12,6 +12,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Menu
 {
@@ -25,14 +26,18 @@ namespace Assets.Scripts.Menu
         public Tilemap SnakesTileMap;
         public Tilemap BackgroundTileMap;
         public Grid GameGrid;
+        public GameObject RowPrefab;
 
+        private List<Text> TextRows;
         private List<TileBase> SnakeBody;
         private GameLogicBase GameLogic;
         private PlayingMap Map;
         private float TimePause;
+        private bool EndGame;
 
         void Start()
         {
+            EndGame = false;
             TimePause = Time.time + GameInits.Pause;
             GameLogic = new StandartLogic
                 (
@@ -52,6 +57,75 @@ namespace Assets.Scripts.Menu
 
             ShowFood();
             ShowSnakes();
+
+            SetUpStatisticsTable();
+        }
+
+        void Update()
+        {
+            if (EndGame || GameLogic.IsGameEnded())
+            {
+                var statistics = GameLogic.GetSnakeStatistics();
+                GameInits.SnakeStatistics = statistics;
+                SceneManager.LoadScene(3);
+            }
+
+            if (TimePause <= Time.time && !GameLogic.IsGameEnded())
+            {
+                TimePause = Time.time + GameInits.Pause;
+
+                Map = GameLogic.GetNextPlayingMap();
+                SnakesTileMap.ClearAllTiles();
+                ShowFood();
+                ShowSnakes();
+                UpdateStatisticsTable();
+            }
+        }
+
+        public void OnEndGameClick()
+        {
+            EndGame = true;
+        }
+
+        private void SetUpStatisticsTable()
+        {
+            var statistics = GameLogic.GetSnakeStatistics();
+            TextRows = new List<Text>();
+            foreach (var s in statistics)
+            {
+                var row = GameObject.Instantiate(RowPrefab);
+                var rowContent = RowPrefab.GetComponentsInChildren<Text>();
+                Text score = null, name = null;
+                for (int i = 0; i < rowContent.Length; i++)
+                {
+                    if (rowContent[i].name.Equals("Name"))
+                        name = rowContent[i];
+                    else
+                        score = rowContent[i];
+                }
+                row.transform.parent = RowPrefab.transform.parent;
+                name.text = s.Name;
+                score.text = s.EatenFood.ToString();
+            }
+            // 2-ая строка всегда будет префабом
+            // 2-nd row always will be prefab
+            RowPrefab.transform.parent.GetChild(1).gameObject.SetActive(false);
+            for (int i = 0; i < RowPrefab.transform.parent.childCount; i++)
+                if (i != 1)
+                    TextRows.Add(RowPrefab.transform.parent.GetChild(i).gameObject.transform.GetChild(1).GetComponents<Text>().Where(x => x.name == "Score").Select(x => x).First());
+            // По какой-то причине последний эллемент перепрыгивает в начало
+            // For some reason last element jumps to begin
+            var temp = TextRows[0];
+            TextRows.RemoveAt(0);
+            TextRows.Add(temp);
+        }
+
+        private void UpdateStatisticsTable()
+        {
+            var statistics = GameLogic.GetSnakeStatistics();
+
+            for (int i = 0; i < statistics.Count && i < TextRows.Count; i++)
+                TextRows[i].text = statistics[i].EatenFood.ToString();
         }
 
         private void SetTileBases()
@@ -83,26 +157,6 @@ namespace Assets.Scripts.Menu
             Food = (TileBase)Instantiate(AssetDatabase.LoadAssetAtPath("Assets\\IMG\\Food\\Simple\\Apple.asset", typeof(TileBase)));
             Grass = (TileBase)Instantiate(AssetDatabase.LoadAssetAtPath("Assets\\IMG\\Background\\Simple\\Grass.asset", typeof(TileBase)));
 
-        }
-
-        void Update()
-        {
-            if (TimePause <= Time.time && !GameLogic.IsGameEnded())
-            {
-                TimePause = Time.time + GameInits.Pause;
-
-                Map = GameLogic.GetNextPlayingMap();
-                SnakesTileMap.ClearAllTiles();
-                ShowFood();
-                ShowSnakes();
-            }
-
-            if (GameLogic.IsGameEnded())
-            {
-                var statistics = GameLogic.GetSnakeStatistics();
-                GameInits.SnakeStatistics = statistics;
-                SceneManager.LoadScene(3);
-            }
         }
 
         private void ShowSnakes()

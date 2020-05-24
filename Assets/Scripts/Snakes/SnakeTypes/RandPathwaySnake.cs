@@ -13,7 +13,7 @@ class RandPathwaySnake : SnakeBase
 
         while (!correctPathway)
         {
-            int randPathNum = Random.Range(0, 3);
+            int randPathNum = Random.Range(0, 4);
 
             if (randPathNum == 0 && LastPathway != SnakeAttribute.SnakePathway.Down)
             {
