@@ -39,11 +39,11 @@ namespace Map
             /// <param name="name">Имя змейки/Snake's name</param>
             /// <param name="cordinates">Кординаты тела змейки/Snake's body coordinates</param>
             /// <param name="isAlive">Жива ли змейка/Is snake alive</param>
-            public Snake (string name, List<SnakeAttribute.Cordinates> cordinates, bool isAlive, SnakeStatistics snakeStatistics)
+            public Snake (string name, List<SnakeAttribute.Cordinates> cordinates, SnakeBase snake, SnakeStatistics snakeStatistics)
             {
                 Name = name;
                 Cordinates = cordinates;
-                this.isAlive = isAlive;
+                SnakeB = snake;
                 SnakeStatistics = snakeStatistics; 
             }
 
@@ -61,12 +61,17 @@ namespace Map
             /// Жива ли змейка
             /// Is snake alive
             /// </summary>
-            public bool isAlive;
+            public bool IsAlive { get => SnakeB.isAlive; set { SnakeB.isAlive = value; } }
             /// <summary>
             /// Статистика змеек
             /// Snakes' statistics
             /// </summary>
             public SnakeStatistics SnakeStatistics;
+            /// <summary>
+            /// Ссылка на змейку
+            /// Snake base reference
+            /// </summary>
+            public SnakeBase SnakeB { get; }
 
             /// <summary>
             /// Проверка равенства змеек
@@ -77,7 +82,7 @@ namespace Map
             /// <returns>True если равны/Returns true if 2 snakes are equal</returns>
             public static bool operator == (Snake snake1, Snake snake2)
             {
-                if (snake1.Name == snake2.Name && snake1.isAlive == snake2.isAlive
+                if (snake1.Name == snake2.Name && snake1.IsAlive == snake2.IsAlive
                     && snake1.Cordinates.Count == snake2.Cordinates.Count)
                 {
                     for (int i = 0; i < snake1.Cordinates.Count; i++)

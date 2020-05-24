@@ -71,9 +71,28 @@ namespace Map
             sideSize = playingMap.sideSize;
             Food = new PlayingMapAttributes.Food();
             Food.MaxCount = playingMap.Food.MaxCount;
-            Food.FoodCordinates = new List<SnakeAttribute.Cordinates>(playingMap.Food.FoodCordinates);
-            Snake = new List<PlayingMapAttributes.Snake>(playingMap.Snake);
-            Barriers = new List<SnakeAttribute.Cordinates>(playingMap.Barriers);
+
+            Food.FoodCordinates = new List<SnakeAttribute.Cordinates>();
+            for (int i = 0; i < playingMap.Food.FoodCordinates.Count; i++)
+                Food.FoodCordinates.Add(new SnakeAttribute.Cordinates(playingMap.Food.FoodCordinates[i]));
+
+            Snake = new List<PlayingMapAttributes.Snake>();
+            for (int i = 0; i < playingMap.Snake.Count; i++)
+            {
+                Snake.Add(new PlayingMapAttributes.Snake
+                    (
+                    playingMap.Snake[i].Name,                   
+                    new List<SnakeAttribute.Cordinates>(),
+                    playingMap.Snake[i].SnakeB,
+                    playingMap.Snake[i].SnakeStatistics
+                    ));
+                for (int j = 0; j < playingMap.Snake[i].Cordinates.Count; j++)
+                    Snake[i].Cordinates.Add(new SnakeAttribute.Cordinates(playingMap.Snake[i].Cordinates[j]));
+            }
+
+            Barriers = new List<SnakeAttribute.Cordinates>();
+            for (int i = 0; i < playingMap.Barriers.Count; i++)
+                Food.FoodCordinates.Add(new SnakeAttribute.Cordinates(playingMap.Barriers[i]));
         }
     }
 }

@@ -110,7 +110,7 @@ namespace Assets.Scripts.Menu
             foreach (var snake in Map.Snake)
             {
                 /// Выбор спрайта для отрисовки
-                if (!snake.isAlive)
+                if (!snake.IsAlive)
                     SnakeBody = SnakeBodies[DEAD_SNAKE_BODY];
                 else if (SnakeBodies.ContainsKey(snake.Name))
                     SnakeBody = SnakeBodies[snake.Name];

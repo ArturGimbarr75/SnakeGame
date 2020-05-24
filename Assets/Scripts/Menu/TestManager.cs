@@ -165,7 +165,7 @@ public class TestManager : MonoBehaviour
 
         foreach (var s in Map.Snake)
             foreach (var c in s.Cordinates)
-            SimbolMap[c.X, c.Y] = (s.isAlive)? s.Name : "d";
+            SimbolMap[c.X, c.Y] = (s.IsAlive)? s.Name : "d";
     }
 
 }

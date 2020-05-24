@@ -63,7 +63,7 @@ namespace Logic
                 SnakesForLogic.Snakes.Add(snakeFactory.GetSnakeByName(snakeNames[i], snakesCordinates[i]));
 
             foreach (var snake in SnakesForLogic.Snakes)
-                Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive, snake.Statistics));
+                Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake, snake.Statistics));
 
             InsertFood(Map);
         }
@@ -174,6 +174,16 @@ namespace Logic
         }
 
         /// <summary>
+        /// Обновляем статистику длины
+        /// Updating length statistics
+        /// </summary>
+        protected void UpdateLengthStatistics()
+        {
+            foreach (var snake in SnakesForLogic.Snakes)
+                snake.Statistics.Length = snake.SnakeLength;
+        }
+
+        /// <summary>
         /// Возвращает статистику игравших змеек
         /// Returns statistics of snakes, which were in the game
         /// </summary>
@@ -214,7 +224,7 @@ namespace Logic
         /// <param name="cordinate">Кординаты для проверки</param>
         /// <param name="map">Карта с объектами</param>
         /// <returns>True если есть колизия с хвостами змееек</returns>
-        protected bool CollisionWithSnakesTail(SnakeAttribute.Cordinates cordinate, PlayingMap map)
+        public static bool CollisionWithSnakesTail(SnakeAttribute.Cordinates cordinate, PlayingMap map)
         {
             foreach (var snake in map.Snake)
             {
@@ -232,7 +242,7 @@ namespace Logic
         /// <param name="cordinate">Кординаты для проверки</param>
         /// <param name="map">Карта с объектами</param>
         /// <returns>True если есть колизия с телами змееек</returns>
-        protected bool CollisionWithSnakesBody(SnakeAttribute.Cordinates cordinate, PlayingMap map)
+        public static bool CollisionWithSnakesBody(SnakeAttribute.Cordinates cordinate, PlayingMap map)
         {
             foreach (var snake in map.Snake)
             {
@@ -252,11 +262,11 @@ namespace Logic
         /// <param name="cordinate">Кординаты для проверки</param>
         /// <param name="map">Карта с объектами</param>
         /// <returns>True если есть колизия с головами змеек</returns>
-        protected bool CollisionWithSnakesHead(SnakeAttribute.Cordinates cordinate, PlayingMap map)
+        public static bool CollisionWithSnakesHead(SnakeAttribute.Cordinates cordinate, PlayingMap map)
         {
             foreach (var snake in map.Snake)
             {
-                if (snake.Cordinates[0] == cordinate)
+                if (snake.IsAlive && snake.Cordinates[0] == cordinate)
                 {
                     return true;
                 }
@@ -270,16 +280,15 @@ namespace Logic
         /// <param name="cordinate">Кординаты для проверки</param>
         /// <param name="map">Карта с объектами</param>
         /// <returns>True если есть колизия с головами змеек</returns>
-        protected bool CollisionWithDeadSnakes(SnakeAttribute.Cordinates cordinate, PlayingMap map)
+        public static bool CollisionWithDeadSnakes(SnakeAttribute.Cordinates cordinate, PlayingMap map)
         {
             foreach (var snake in map.Snake)
-            {
-                foreach(var snakesCordinates in snake.Cordinates)
-                    if (snakesCordinates == cordinate && !snake.isAlive)
-                    {
-                        return true;
-                    }
-            }
+                if (!snake.IsAlive)
+                    foreach(var snakesCordinates in snake.Cordinates)
+                        if (snakesCordinates == cordinate)
+                        {
+                            return true;
+                        }
             return false;
         }
 
@@ -289,7 +298,7 @@ namespace Logic
         /// <param name="cordinate">Кординаты для проверки</param>
         /// <param name="map">Карта с объектами</param>
         /// <returns>True если есть колизия с барьером</returns>
-        protected bool CollisionWithBarriers(SnakeAttribute.Cordinates cordinate, PlayingMap map)
+        public static bool CollisionWithBarriers(SnakeAttribute.Cordinates cordinate, PlayingMap map)
         {
             foreach (var barrier in map.Barriers)
                 if (barrier == cordinate)
@@ -305,7 +314,7 @@ namespace Logic
         /// <param name="cordinate">Кординаты для проверки</param>
         /// <param name="map">Карта с объектами</param>
         /// <returns>True если есть колизия с едой</returns>
-        protected bool CollisionWithFood(SnakeAttribute.Cordinates cordinate, PlayingMap map)
+        public static bool CollisionWithFood(SnakeAttribute.Cordinates cordinate, PlayingMap map)
         {
             foreach (var food in map.Food.FoodCordinates)
                 if (food == cordinate)
@@ -314,6 +323,7 @@ namespace Logic
                 }
             return false;
         }
+
         #endregion
 
         #region GameOverPredicates
@@ -373,7 +383,7 @@ namespace Logic
                 return DeadAllSnakes();
             }
 
-            return players.Count (s => s.isAlive) > 0;
+            return players.Count (s => s.IsAlive) > 0;
         }
 
         /// <summary>
@@ -385,7 +395,7 @@ namespace Logic
             var snakes = (from snake in Map.Snake
                           select snake).ToList();
 
-            return snakes.Count (s => s.isAlive) == 0;
+            return snakes.Count (s => s.IsAlive) == 0;
         }
 
         /// <summary>
@@ -397,7 +407,7 @@ namespace Logic
             var snakes = (from snake in Map.Snake
                           select snake).ToList();
 
-            return snakes.Count (s => s.isAlive) == 1;
+            return snakes.Count (s => s.IsAlive) == 1;
         }
 
         /// <summary>

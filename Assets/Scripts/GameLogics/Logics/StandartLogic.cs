@@ -20,10 +20,7 @@ namespace Logic
         public StandartLogic(HashSet<GameLogicsAttributes.GameoverPredicates> gameoverPredicates,
             List<string> snakeNames, ISnakeFactory snakeFactory,
             int mapSideSize, int foodCount, bool leftDeadSnakeBody)
-            : base (gameoverPredicates, snakeFactory, mapSideSize, foodCount, snakeNames, leftDeadSnakeBody)
-        {    
-
-        }
+            : base(gameoverPredicates, snakeFactory, mapSideSize, foodCount, snakeNames, leftDeadSnakeBody) { }
 
         #endregion
 
@@ -47,7 +44,7 @@ namespace Logic
                 if (!snake.isAlive)
                 {
                     if (LeftDeadSnakeBody)
-                        Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive, snake.Statistics));
+                        Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake, snake.Statistics));
                     continue;
                 }
 
@@ -87,11 +84,11 @@ namespace Logic
                 if (!snake.isAlive)
                 {
                     if (LeftDeadSnakeBody)
-                        Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive, snake.Statistics));
+                        Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake, snake.Statistics));
                 }
                 else
                 {
-                    Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive, snake.Statistics));
+                    Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake, snake.Statistics));
                 }
             }
 
@@ -101,7 +98,7 @@ namespace Logic
             {
                 PlayingMap tempMapForColisionChecking = new PlayingMap(Map);
                 var snakeForMap = new PlayingMapAttributes.Snake
-                    (snake.SnakeName, new List<SnakeAttribute.Cordinates>(snake.SnakeBody), snake.isAlive, snake.Statistics);
+                    (snake.SnakeName, new List<SnakeAttribute.Cordinates>(snake.SnakeBody), snake, snake.Statistics);
 
                 // Удаляем голову змейки из карты, чтобы у нее не было коллизии с собой 
                 //Delete snake's head from the map, so that it doesn't collide with itself
@@ -114,7 +111,7 @@ namespace Logic
                 //If snake collides shortening it starting from head
                 if (HasCollisionAfterStep(head, tempMapForColisionChecking, snakeForMap))
                 {
-                    snakeForMap = new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake.isAlive, snake.Statistics);
+                    snakeForMap = new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake, snake.Statistics);
                     Map.Snake.RemoveAll(s => snakeForMap == s);
                     snakeForMap.Cordinates.RemoveAt(0);
                     Map.Snake.Add(snakeForMap);
@@ -176,7 +173,7 @@ namespace Logic
                 Map.Food.FoodCordinates.RemoveAll(c => c == head);
             }
 
-            if (!snake.isAlive)
+            if (!snake.IsAlive)
                 return false;
 
             if (CollisionWithSnakes(head, map) || CollisionWithBarriers(head, map))
