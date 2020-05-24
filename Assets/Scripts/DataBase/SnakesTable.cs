@@ -45,7 +45,7 @@ namespace Assets.Scripts.DataBase
                 ? (snake as SmartSnakeBase).GenesString 
                 : "null";
             newStatistics.StepsCount    = curSt.StepsCount + snake.Statistics.Steps;
-            newStatistics.DeathCount    = curSt.DeathCount + (snake.isAlive? 0 : 1);
+            newStatistics.DeathCount    = curSt.DeathCount + (snake.IsAlive? 0 : 1);
             newStatistics.EatenFood     = curSt.EatenFood + snake.Statistics.EatenFood;
             newStatistics.StepsPerFood  = (int)Math.Round (
                 (double)(newStatistics.StepsCount / ((newStatistics.EatenFood != 0)? newStatistics.EatenFood : 1)));

@@ -41,7 +41,7 @@ namespace Logic
             {
                 // Если змейка мертва у нее ничего не просим
                 //In case of snake's dead dont ask for anything
-                if (!snake.isAlive)
+                if (!snake.IsAlive)
                 {
                     if (LeftDeadSnakeBody)
                         Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake, snake.Statistics));
@@ -81,7 +81,7 @@ namespace Logic
 
                 // Проверяем жива ли змейка после хода
                 //Checking whether snake is alinve
-                if (!snake.isAlive)
+                if (!snake.IsAlive)
                 {
                     if (LeftDeadSnakeBody)
                         Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake, snake.Statistics));
@@ -137,7 +137,7 @@ namespace Logic
             if (CollisionWithBarriers(cordinate, map) || CollisionWithSnakesBody(cordinate, map)
                 || CollisionWithSnakesHead(cordinate, map) || CollisionWithDeadSnakes(cordinate, map))
             {
-                snake.isAlive = false;
+                snake.IsAlive = false;
                 return;
             }
 

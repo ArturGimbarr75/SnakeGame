@@ -44,7 +44,7 @@ namespace Snake
         /// <summary>
         /// Значиние указывающее на то, жива ли змейка
         /// </summary>
-        public bool isAlive = true;
+        public bool IsAlive = true;
         /// <summary>
         /// Статистика змеек
         /// </summary>

@@ -61,7 +61,7 @@ namespace Map
             /// Жива ли змейка
             /// Is snake alive
             /// </summary>
-            public bool IsAlive { get => SnakeB.isAlive; set { SnakeB.isAlive = value; } }
+            public bool IsAlive { get => SnakeB.IsAlive; set { SnakeB.IsAlive = value; } }
             /// <summary>
             /// Статистика змеек
             /// Snakes' statistics

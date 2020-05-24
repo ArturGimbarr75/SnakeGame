@@ -374,8 +374,8 @@ namespace Logic
         /// <returns>True если все мертвы</returns>
         private bool DeadAllPlayers()
         {
-            var players = (from snake in Map.Snake
-                           where snake.Name.Contains("Player")
+            var players = (from snake in SnakesForLogic.Snakes
+                           where snake.SnakeName.Contains("Player")
                            select snake).ToList();
 
             if (players.Count == 0)
@@ -383,7 +383,7 @@ namespace Logic
                 return DeadAllSnakes();
             }
 
-            return players.Count (s => s.IsAlive) > 0;
+            return players.Count (s => s.IsAlive) == 0;
         }
 
         /// <summary>
@@ -392,7 +392,7 @@ namespace Logic
         /// <returns>True если все мертвы</returns>
         private bool DeadAllSnakes()
         {
-            var snakes = (from snake in Map.Snake
+            var snakes = (from snake in SnakesForLogic.Snakes
                           select snake).ToList();
 
             return snakes.Count (s => s.IsAlive) == 0;
@@ -404,7 +404,7 @@ namespace Logic
         /// <returns>True если все мертвы кроме одной</returns>
         private bool LeftOneAliveSnake()
         {
-            var snakes = (from snake in Map.Snake
+            var snakes = (from snake in SnakesForLogic.Snakes
                           select snake).ToList();
 
             return snakes.Count (s => s.IsAlive) == 1;
@@ -416,10 +416,10 @@ namespace Logic
         /// <returns>True если хоть одна достигла или если все погибли</returns>
         private bool Achieved30Cels()
         {
-            var snakes = (from snake in Map.Snake
+            var snakes = (from snake in SnakesForLogic.Snakes
                           select snake).ToList();
 
-            return snakes.Count(s => s.Cordinates.Count >= 30) > 0 || DeadAllSnakes();
+            return snakes.Count(s => s.SnakeLength >= 30) > 0 || DeadAllSnakes();
         }
 
 

@@ -54,7 +54,7 @@ namespace Logic
             {
                 // Если змейка мертва у нее ничего не просим
                 //In case of snake's dead dont ask for anything
-                if (!snake.isAlive)
+                if (!snake.IsAlive)
                 {
                     if (LeftDeadSnakeBody)
                         Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake, snake.Statistics));
