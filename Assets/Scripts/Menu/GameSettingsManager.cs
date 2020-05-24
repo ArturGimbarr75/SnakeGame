@@ -37,7 +37,8 @@ namespace Assets.Scripts.Menu
         {
             SetUpElementsValue();
             InitialiseSnakeHeadSprites();
-            SetUpSnakeButtons(); 
+            SetUpSnakeButtons();
+            SetUpSnakes();
         }
 
 
@@ -72,6 +73,16 @@ namespace Assets.Scripts.Menu
                 tempButton.transform.GetChild(0).gameObject.GetComponent<Text>().text = name;
                 tempRow.transform.parent = SnakesScrollView.transform;
             }
+        }
+
+        /// <summary>
+        /// Уснановка змеек
+        /// Show previously chosen snakes
+        /// </summary>
+        private void SetUpSnakes()
+        {
+            foreach (var snake in GameInits.SnakeNames)
+                DrawChosenSnake(snake);
         }
 
         /// <summary>
@@ -123,7 +134,11 @@ namespace Assets.Scripts.Menu
         private void OnButtonSnakePressed(string name)
         {
             GameInits.SnakeNames.Add(name);
+            DrawChosenSnake(name);
+        }
 
+        private void DrawChosenSnake(string name)
+        {
             var tempRow = Instantiate(AddedSnakeRowPrefab);
             tempRow.SetActive(true);
 
@@ -133,7 +148,7 @@ namespace Assets.Scripts.Menu
                 color.a = 30.0f / 255.0f;
                 tempRow.GetComponent<Image>().color = color;
             }
-  
+
             tempRow.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = SnakeHeadSprites[name];
 
             tempRow.transform.GetChild(1).gameObject.GetComponent<Text>().text =
@@ -153,7 +168,6 @@ namespace Assets.Scripts.Menu
             var tempButton = tempRow.transform.GetChild(2).gameObject.GetComponent<Button>();
             tempButton.onClick.AddListener(() => OnButtonRemoveSnakePresed(tempRow, name));
             tempRow.transform.parent = AddedSnakesScrollView.transform;
-
         }
 
         private void OnButtonRemoveSnakePresed(GameObject o, string name)
