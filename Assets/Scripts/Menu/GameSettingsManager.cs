@@ -40,7 +40,10 @@ namespace Assets.Scripts.Menu
             SetUpSnakeButtons();
             SetUpSnakes();
         }
-
+        private void Update()
+        {
+            ChangeRowsCollor();
+        }
 
         #region SetUps
 
@@ -142,15 +145,7 @@ namespace Assets.Scripts.Menu
             var tempRow = Instantiate(AddedSnakeRowPrefab);
             tempRow.SetActive(true);
 
-            if (AddedSnakesScrollView.transform.childCount % 2 == 0)
-            {
-                var color = tempRow.GetComponent<Image>().color;
-                color.a = 30.0f / 255.0f;
-                tempRow.GetComponent<Image>().color = color;
-            }
-
             tempRow.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = SnakeHeadSprites[name];
-
             tempRow.transform.GetChild(1).gameObject.GetComponent<Text>().text =
                 new Func<string>(() =>
                 {
@@ -164,10 +159,23 @@ namespace Assets.Scripts.Menu
                     }
                     return line;
                 }).Invoke().Trim();
-
+             
             var tempButton = tempRow.transform.GetChild(2).gameObject.GetComponent<Button>();
             tempButton.onClick.AddListener(() => OnButtonRemoveSnakePresed(tempRow, name));
             tempRow.transform.parent = AddedSnakesScrollView.transform;
+        }
+
+        private void ChangeRowsCollor()
+        {
+            for (int i = 0; i < AddedSnakesScrollView.transform.childCount; i++)
+            {
+                var color = AddedSnakesScrollView.transform.GetChild(i).GetComponent<Image>().color;
+                if (i % 2 == 0)
+                    color.a = 30.0f / 255.0f;
+                else
+                    color.a = 0.0f;
+                AddedSnakesScrollView.transform.GetChild(i).GetComponent<Image>().color = color;
+            }
         }
 
         private void OnButtonRemoveSnakePresed(GameObject o, string name)
