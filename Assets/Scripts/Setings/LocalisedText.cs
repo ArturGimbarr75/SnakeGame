@@ -38,7 +38,7 @@ namespace Assets.Scripts.Setings
             TextComponent.text = localisedString;
         }
         /// <summary>
-        /// Оброботчик смены языка obrAbotchik
+        /// Обработчик смены языка
         /// Language change handler
         /// </summary>
         /// <param name="language">Выбранный язык/Chosen language</param> // не используется пока

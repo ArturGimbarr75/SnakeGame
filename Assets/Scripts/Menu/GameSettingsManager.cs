@@ -23,6 +23,7 @@ namespace Assets.Scripts.Menu
         public Dropdown GameMode;
         public InputField FoodCount;
         public InputField MapSize;
+        public InputField Speed;
         public List<Toggle> EndGameCheckboxes;
         public GameObject SnakesScrollView;
         public GameObject SnakeButtonRowPrefab;
@@ -121,11 +122,9 @@ namespace Assets.Scripts.Menu
                             break;
                     }
 
-            // Установка размера карты
             MapSize.text = GameInits.MapSize.ToString();
-
-            // Установка количества еды
             FoodCount.text = GameInits.FoodCount.ToString();
+            Speed.text = GameInits.Speed.ToString();
         }
 
         #endregion
@@ -251,6 +250,21 @@ namespace Assets.Scripts.Menu
 
             FoodCount.text = num.ToString();
             GameInits.FoodCount = num;
+        }
+
+        public void OnSpeedChanged()
+        {
+            int num = int.Parse(Speed.text);
+
+            int min = 1, max = 10;
+
+            if (num < min)
+                num = min;
+            if (num > max)
+                num = max;
+
+            Speed.text = num.ToString();
+            GameInits.Speed = num;
         }
 
         /// <summary>
