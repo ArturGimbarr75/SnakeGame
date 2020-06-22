@@ -58,6 +58,8 @@ namespace Logic
             LeftDeadSnakeBody = leftDeadSnakeBody;
             InitialGameoverPredicate(gameoverPredicates);
 
+            if (snakeNames.Count == 0)
+                snakeNames.Add(nameof(PlayerArrows));
             var snakesCordinates = GetInitialSnakesCordinates(mapSideSize, snakeNames.Count);
             for (int i = 0; i < snakeNames.Count; i++)
                 SnakesForLogic.Snakes.Add(snakeFactory.GetSnakeByName(snakeNames[i], snakesCordinates[i]));
