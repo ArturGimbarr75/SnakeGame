@@ -102,12 +102,15 @@ namespace Logic
                     Map.Snake[i].Cordinates.RemoveAt(Map.Snake[i].Cordinates.Count - 1);
                 }
                 else
+                {
+                    Map.Snake[i].SnakeB.Statistics.EatenFood++;
                     for (int j = 0; j < Map.Food.MaxCount; j++)
                         if (Map.Food.FoodCordinates[j] == Map.Snake[i].Cordinates[0])
                         {
                             Map.Food.FoodCordinates.RemoveAt(j);
                             break;
                         }
+                }
             for (int i = 0; i < Map.Snake.Count; i++)
             {
                 if (!Map.Snake[i].IsAlive)
@@ -120,6 +123,16 @@ namespace Logic
                 if (DidStepsWithoutFood != null && Map.Snake[i].IsAlive)
                     DidStepsWithoutFood.OnStepsDid(Map.Snake[i], afterStepsMapDublicate);
             }
+
+            // Удаление мертвых змеек если змейка умерла после хода
+            // Remove dead snakes if snake dead after step
+            if (!LeftDeadSnakeBody)
+                for (int i = 0; i < Map.Snake.Count; i++)
+                    if (!Map.Snake[i].IsAlive)
+                    {
+                        Map.Snake.RemoveAt(i);
+                        i--;
+                    }
 
             InsertFood(Map);
             UpdateLengthStatistics();

@@ -39,7 +39,7 @@ namespace Assets.Scripts.Menu
         {
             EndGame = false;
             TimePause = Time.time + GameInits.Pause;
-            GameLogic = new StandartLogic
+            GameLogic = new CustomisingLogic
                 (
                 GameInits.GameoverPredicates,
                 GameInits.SnakeNames,
