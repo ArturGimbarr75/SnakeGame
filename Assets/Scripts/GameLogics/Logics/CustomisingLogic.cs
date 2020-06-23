@@ -104,7 +104,7 @@ namespace Logic
                 else
                 {
                     Map.Snake[i].SnakeB.Statistics.EatenFood++;
-                    for (int j = 0; j < Map.Food.MaxCount; j++)
+                    for (int j = 0; j < Map.Food.FoodCordinates.Count; j++)
                         if (Map.Food.FoodCordinates[j] == Map.Snake[i].Cordinates[0])
                         {
                             Map.Food.FoodCordinates.RemoveAt(j);

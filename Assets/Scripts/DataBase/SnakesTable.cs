@@ -108,7 +108,7 @@ namespace Assets.Scripts.DataBase
             statistics.MaxSize      = reader.GetInt32(5);
             statistics.EatenFood    = reader.GetInt32(6);
             statistics.PlayedGames  = reader.GetInt32(7);
-            statistics.Mark         = reader.GetInt32(8);
+            //statistics.Mark         = reader.GetInt32(8);
 
             reader.Close();
             dbcmd.Dispose();
