@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Experimental.UIElements;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Menu
