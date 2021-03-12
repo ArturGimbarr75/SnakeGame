@@ -9,6 +9,6 @@ namespace Situations
 {
     public interface ICollisionWithSnake
     {
-        void OnColision(PlayingMapAttributes.Snake snake, PlayingMap mapCopy, PlayingMap map);
+        void OnCollision(PlayingMapAttributes.Snake snake, PlayingMap currentMap, PlayingMap previousMap);
     }
 }

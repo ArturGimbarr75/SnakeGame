@@ -23,7 +23,6 @@ namespace Snake
             MaxSize = 0;
             _length = 0;
             Length = 0;
-
         }
 
         /// <summary>

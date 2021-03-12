@@ -1,4 +1,4 @@
-﻿using Logic;
+﻿using System.Linq;
 using Map;
 
 
@@ -6,9 +6,10 @@ namespace Situations
 {
     class IncreaseBody : ICollisionWithFood
     {
-        public bool OnCollision(PlayingMapAttributes.Snake snake, PlayingMap mapCopy)
+        public void OnCollision(PlayingMapAttributes.Snake snake, PlayingMap currentMap, PlayingMap previousMap)
         {
-            return GameLogicBase.CollisionWithFood(snake.Cordinates[0], mapCopy);
+            var tailPos = previousMap.Snake.Find(x => x == snake).Cordinates.Last();
+            snake.Cordinates.Add(tailPos);
         }
     }
 }

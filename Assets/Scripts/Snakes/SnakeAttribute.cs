@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Newtonsoft.Json;
+using Map;
 
 namespace Snake
 {
@@ -105,6 +106,16 @@ namespace Snake
             public static Cordinates operator - (Cordinates cordinate1, Cordinates cordinate2)
             {
                 return new Cordinates(cordinate1.X - cordinate2.X, cordinate1.Y - cordinate2.Y);
+            }
+
+            public override int GetHashCode()
+            {
+                return X * (int)Math.Pow(10, PlayingMap.MaxSize.ToString().Length) + Y;
+            }
+
+            public override bool Equals(object obj)
+            {
+                return this == (Cordinates)obj;
             }
         }
 

@@ -3,7 +3,7 @@ using Map;
 
 namespace Situations
 {
-    class Dead : ICollisionWithBarrier
+    class DeadSnake : ICollisionWithSnake
     {
         public void OnCollision(PlayingMapAttributes.Snake snake, PlayingMap currentMap, PlayingMap previousMap)
         {

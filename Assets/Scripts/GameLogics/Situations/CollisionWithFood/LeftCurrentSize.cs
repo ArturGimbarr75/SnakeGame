@@ -5,14 +5,9 @@ namespace Situations
 {
     class LeftCurrentSize : ICollisionWithFood
     {
-        public bool OnCollision(PlayingMapAttributes.Snake snake, PlayingMap mapCopy)
+        public void OnCollision(PlayingMapAttributes.Snake snake, PlayingMap currentMap, PlayingMap previousMap)
         {
-            if (GameLogicBase.CollisionWithFood(snake.Cordinates[0], mapCopy))
-            {
-                snake.Cordinates.RemoveAt(snake.Cordinates.Count - 1);
-                return true;
-            }
-            return false;
+            
         }
     }
 }

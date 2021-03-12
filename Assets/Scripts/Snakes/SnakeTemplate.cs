@@ -13,6 +13,7 @@ namespace Snake
     public abstract class SnakeBase
     {
         #region Params
+        public int ID;
         /// <summary>
         /// Имя змейки
         /// </summary>

@@ -44,7 +44,17 @@ namespace Map
                 Name = name;
                 Cordinates = cordinates;
                 SnakeB = snake;
-                SnakeStatistics = snakeStatistics; 
+                SnakeStatistics = snake.Statistics;
+                FoundFoodAfterStep = false;
+            }
+
+            public Snake (SnakeBase snake)
+            {
+                Name = snake.SnakeName;
+                Cordinates = snake.SnakeBody;
+                SnakeB = snake;
+                SnakeStatistics = snake.Statistics;
+                FoundFoodAfterStep = false;
             }
 
             /// <summary>
@@ -62,6 +72,7 @@ namespace Map
             /// Is snake alive
             /// </summary>
             public bool IsAlive { get => SnakeB.IsAlive; set { SnakeB.IsAlive = value; } }
+            public bool FoundFoodAfterStep;
             /// <summary>
             /// Статистика змеек
             /// Snakes' statistics
@@ -82,16 +93,7 @@ namespace Map
             /// <returns>True если равны/Returns true if 2 snakes are equal</returns>
             public static bool operator == (Snake snake1, Snake snake2)
             {
-                if (snake1.Name == snake2.Name && snake1.IsAlive == snake2.IsAlive
-                    && snake1.Cordinates.Count == snake2.Cordinates.Count)
-                {
-                    for (int i = 0; i < snake1.Cordinates.Count; i++)
-                        if (snake1.Cordinates[i] != snake2.Cordinates[i])
-                            return false;
-                }
-                else
-                    return false;
-                return true;
+                return snake1.SnakeB.ID == snake2.SnakeB.ID;
             }
 
             /// <summary>

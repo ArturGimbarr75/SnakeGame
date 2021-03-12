@@ -32,7 +32,8 @@ namespace Logic
         {
             CollisionWithBarrier = new Dead();
             CollisionWithFood = new IncreaseBody();
-            CollisionWithSnake = new Destroy();
+            CollisionWithSnake = new DeadSnake();
+            DidStepsWithoutFood = new Decrease(10);
         }
 
         #endregion
@@ -46,98 +47,93 @@ namespace Logic
         /// Returns map with new location of objects</returns>
         public override PlayingMap GetNextPlayingMap()
         {
-            var tempMap = new PlayingMap(Map);
+            var previousMap = new PlayingMap(Map);
             Map.Snake.Clear();
-            // Считываем следующие направления
-            //Reads next directions
+
+            ReadNextSnakesPathwayAndMove(previousMap);
+            CheckCollisionWithFoodAndRemoveFood(previousMap);
+
+            foreach (var snake in Map.Snake)
+                if (snake.FoundFoodAfterStep)
+                    CollisionWithFood.OnCollision(snake, Map, previousMap);
+
+            foreach (var snake in Map.Snake)
+            {
+                if (CollisionWithBarrier(snake, Map) && snake.IsAlive)
+                    CollisionWithBarrier.OnCollision(snake, Map, previousMap);
+            }
+
+            while (SnakesHaveCollisionsWithOtherSnakes(Map))
+                foreach (var snake in Map.Snake)
+                {
+                    if (CollisionWithSnakes(snake, Map))
+                        CollisionWithSnake.OnCollision(snake, Map, previousMap);
+                }
+
+            foreach (var snake in Map.Snake)
+            {
+                if (snake.IsAlive)
+                    DidStepsWithoutFood.OnStepDid(snake, Map, previousMap, this);
+            }
+
+            InsertFood(Map);
+
+            return Map;
+        }
+
+        private void CheckCollisionWithFoodAndRemoveFood(PlayingMap previousMap)
+        {
+            HashSet<SnakeAttribute.Cordinates> foodCoordsToRemove = new HashSet<SnakeAttribute.Cordinates>();
+            foreach (var snake in Map.Snake)
+                if (snake.IsAlive)
+                    if (CollisionWithFood(snake.SnakeB.Head, previousMap))
+                    {
+                        snake.SnakeB.Statistics.EatenFood++;
+                        snake.SnakeB.Statistics.Length = snake.Cordinates.Count;
+                        snake.FoundFoodAfterStep = true;
+                        foodCoordsToRemove.Add(snake.SnakeB.Head);
+                    }
+
+            Map.Food.FoodCordinates = Map.Food.FoodCordinates.Where(x => !foodCoordsToRemove.Contains(x)).ToList();
+        }
+
+        private void ReadNextSnakesPathwayAndMove(PlayingMap previousMap)
+        {
             foreach (var snake in SnakesForLogic.Snakes)
             {
-                // Если змейка мертва у нее ничего не просим
-                //In case of snake's dead dont ask for anything
                 if (!snake.IsAlive)
                 {
                     if (LeftDeadSnakeBody)
-                        Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake, snake.Statistics));
+                        Map.Snake.Add(new PlayingMapAttributes.Snake(snake));
                     continue;
                 }
 
-                SnakeAttribute.SnakePathway snakePathway = snake.GetNextPathway(tempMap);
+                var pathway = snake.GetNextPathway(previousMap);
                 snake.Statistics.Steps++;
-                SnakeAttribute.Cordinates snakeHead = new SnakeAttribute.Cordinates(snake.Head);
-                // Если змейка после шага погибает, мы ее не передвигаем
-                // In case a snake dies after making a step, we don't move it
-                switch (snakePathway)
+                var headCoord = snake.Head;
+
+                switch (pathway)
                 {
                     case SnakeAttribute.SnakePathway.Up:
-                        snakeHead.Y = (snakeHead.Y - 1 != -1) ? --snakeHead.Y : Map.sideSize - 1;
+                        headCoord.Y = (headCoord.Y - 1 != -1) ? --headCoord.Y : Map.sideSize - 1;
                         break;
 
                     case SnakeAttribute.SnakePathway.Right:
-                        snakeHead.X = (snakeHead.X + 1 != Map.sideSize) ? ++snakeHead.X : 0;
+                        headCoord.X = (headCoord.X + 1 != Map.sideSize) ? ++headCoord.X : 0;
                         break;
 
                     case SnakeAttribute.SnakePathway.Down:
-                        snakeHead.Y = (snakeHead.Y + 1 != Map.sideSize) ? ++snakeHead.Y : 0;
+                        headCoord.Y = (headCoord.Y + 1 != Map.sideSize) ? ++headCoord.Y : 0;
                         break;
 
                     case SnakeAttribute.SnakePathway.Left:
-                        snakeHead.X = (snakeHead.X - 1 != -1) ? --snakeHead.X : Map.sideSize - 1;
+                        headCoord.X = (headCoord.X - 1 != -1) ? --headCoord.X : Map.sideSize - 1;
                         break;
-
-                    default:
-                        throw new ArgumentException(nameof(snakePathway), "Unknown pathway");
                 }
-                snake.SnakeBody.Insert(0, snakeHead);
-                Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake, snake.Statistics));
+                snake.SnakeBody.Insert(0, headCoord);
+                snake.SnakeBody.RemoveAt(snake.SnakeBody.Count - 1);
+                Map.Snake.Add(new PlayingMapAttributes.Snake(snake));
             }
-            var afterStepsMapDublicate = new PlayingMap(Map);
-
-            // Если нет коллизии с едой, удаляем последнюю часть змейки
-            // If has collision whith food remove last snakes element
-            for (int i = 0; i < Map.Snake.Count; i++)
-                if (!Map.Snake[i].IsAlive)
-                    continue;
-                else if (!CollisionWithFood.OnCollision(Map.Snake[i], afterStepsMapDublicate))
-                {
-                    Map.Snake[i].Cordinates.RemoveAt(Map.Snake[i].Cordinates.Count - 1);
-                }
-                else
-                {
-                    Map.Snake[i].SnakeB.Statistics.EatenFood++;
-                    for (int j = 0; j < Map.Food.FoodCordinates.Count; j++)
-                        if (Map.Food.FoodCordinates[j] == Map.Snake[i].Cordinates[0])
-                        {
-                            Map.Food.FoodCordinates.RemoveAt(j);
-                            break;
-                        }
-                }
-            for (int i = 0; i < Map.Snake.Count; i++)
-            {
-                if (!Map.Snake[i].IsAlive)
-                    continue;
-                CollisionWithBarrier.OnColision(Map.Snake[i], afterStepsMapDublicate);
-                CollisionWithSnake.OnColision(Map.Snake[i], afterStepsMapDublicate, Map);
-                if (!Map.Snake[i].IsAlive)
-                if (AchievedLength != null && Map.Snake[i].IsAlive)
-                    AchievedLength.OnAchievedLength(Map.Snake[i], afterStepsMapDublicate);
-                if (DidStepsWithoutFood != null && Map.Snake[i].IsAlive)
-                    DidStepsWithoutFood.OnStepsDid(Map.Snake[i], afterStepsMapDublicate);
-            }
-
-            // Удаление мертвых змеек если змейка умерла после хода
-            // Remove dead snakes if snake dead after step
-            if (!LeftDeadSnakeBody)
-                for (int i = 0; i < Map.Snake.Count; i++)
-                    if (!Map.Snake[i].IsAlive)
-                    {
-                        Map.Snake.RemoveAt(i);
-                        i--;
-                    }
-
-            InsertFood(Map);
-            UpdateLengthStatistics();
-
-            return Map;
         }
     }
 }

@@ -4,6 +4,6 @@ namespace Situations
 {
     public interface ICollisionWithFood
     {
-        bool OnCollision(PlayingMapAttributes.Snake snake, PlayingMap mapCopy);
+        void OnCollision(PlayingMapAttributes.Snake snake, PlayingMap currentMap, PlayingMap previousMap);
     }
 }

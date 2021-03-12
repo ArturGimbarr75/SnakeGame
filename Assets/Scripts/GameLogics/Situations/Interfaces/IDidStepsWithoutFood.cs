@@ -1,10 +1,12 @@
-﻿using Map;
+﻿using Logic;
+using Map;
+using System.Collections.Generic;
 
 namespace Situations
 {
     public interface IDidStepsWithoutFood
     {
-        int StepsWithoutFood { get; }
-        void OnStepsDid(PlayingMapAttributes.Snake snake, PlayingMap mapCopy);
+        public int StepsWithoutFood { get; set; }
+        void OnStepDid(PlayingMapAttributes.Snake snake, PlayingMap currentMap, PlayingMap previousMap, GameLogicBase gl);
     }
 }

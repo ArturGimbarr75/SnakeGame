@@ -1,15 +1,16 @@
 ﻿using Logic;
 using Map;
+using System.Linq;
 
 namespace Situations
 {
     class Stops : ICollisionWithBarrier
     {
-        public void OnColision(PlayingMapAttributes.Snake snake, PlayingMap mapCopy)
+        public void OnCollision(PlayingMapAttributes.Snake snake, PlayingMap currentMap, PlayingMap previousMap)
         {
-            if (GameLogicBase.CollisionWithBarriers(snake.Cordinates[0], mapCopy)
-                || GameLogicBase.CollisionWithDeadSnakes(snake.Cordinates[0], mapCopy))
-                snake.Cordinates.RemoveAt(0);
+            var tailPos = previousMap.Snake.Find(x => x == snake).Cordinates.Last();
+            snake.Cordinates.Add(tailPos);
+            snake.Cordinates.RemoveAt(0);
         }
     }
 }

@@ -62,7 +62,11 @@ namespace Logic
                 snakeNames.Add(nameof(PlayerArrows));
             var snakesCordinates = GetInitialSnakesCordinates(mapSideSize, snakeNames.Count);
             for (int i = 0; i < snakeNames.Count; i++)
-                SnakesForLogic.Snakes.Add(snakeFactory.GetSnakeByName(snakeNames[i], snakesCordinates[i]));
+            {
+                var snake = snakeFactory.GetSnakeByName(snakeNames[i], snakesCordinates[i]);
+                snake.ID = i;
+                SnakesForLogic.Snakes.Add(snake);
+            }
 
             foreach (var snake in SnakesForLogic.Snakes)
                 Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake, snake.Statistics));
@@ -291,6 +295,39 @@ namespace Logic
                         {
                             return true;
                         }
+            return false;
+        }
+
+        public static bool CollisionWithSnakes(PlayingMapAttributes.Snake s, PlayingMap map)
+        {
+            foreach (var snake in map.Snake)
+                for (int i = 0; i < snake.Cordinates.Count; i++)
+                    if (!(snake == s && i == 0))
+                    {
+                        if (snake.Cordinates[i] == s.SnakeB.Head)
+                            return true;
+                    }
+            return false;
+        }
+
+        public static bool SnakesHaveCollisionsWithOtherSnakes(PlayingMap map)
+        {
+            foreach (var snake in map.Snake)
+                    if (CollisionWithSnakes(snake, map))
+                        return true;
+            return false;
+        }
+
+        public static bool CollisionWithBarrier(PlayingMapAttributes.Snake s, PlayingMap map)
+        {
+            foreach (var barrier in map.Barriers)
+                if (barrier == s.SnakeB.Head)
+                    return true;
+            foreach (var snake in map.Snake)
+                if (!snake.IsAlive)
+                    foreach (var coord in snake.Cordinates)
+                    if (coord == s.SnakeB.Head)
+                    return true;
             return false;
         }
 
