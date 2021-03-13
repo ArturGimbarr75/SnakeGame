@@ -57,6 +57,7 @@ namespace Assets.Scripts.GameLogics
                 foreach (var c in cordinates)
                     snake.SnakeBody.Add(c);
 
+                snake.SetLastPathway();
                 return snake;
             }
 

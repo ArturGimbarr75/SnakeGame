@@ -30,10 +30,11 @@ namespace Logic
             int mapSideSize, int foodCount, bool leftDeadSnakeBody)
             : base(gameoverPredicates, snakeFactory, mapSideSize, foodCount, snakeNames, leftDeadSnakeBody)
         {
+            AchievedLength = new AppearNewSnake(10, new List<string>() { nameof(RandPathwaySnake), nameof(FollowFoodSnake) });
             CollisionWithBarrier = new Dead();
             CollisionWithFood = new IncreaseBody();
             CollisionWithSnake = new SnakeDead();
-            DidStepsWithoutFood = new Decrease(10);
+            DidStepsWithoutFood = new NoAction(10);
         }
 
         #endregion
@@ -59,7 +60,7 @@ namespace Logic
 
             foreach (var snake in Map.Snake)
             {
-                if (CollisionWithBarrier(snake, Map) && snake.IsAlive)
+                if (snake.IsAlive && CollisionWithBarrier(snake, Map))
                     CollisionWithBarrier.OnCollision(snake, Map, previousMap);
             }
 
@@ -75,6 +76,14 @@ namespace Logic
                 if (snake.IsAlive)
                     DidStepsWithoutFood.OnStepDid(snake, Map, previousMap, this);
             }
+
+            foreach (var snake in Map.Snake)
+            {
+                if (snake.Cordinates.Count >= AchievedLength.Length)
+                    AchievedLength.OnAchievedLength(snake, Map, previousMap, this);
+            }
+
+            AchievedLength.AddSnakes(Map);
 
             InsertFood(Map);
 

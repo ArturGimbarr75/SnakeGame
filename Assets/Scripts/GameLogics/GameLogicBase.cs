@@ -7,6 +7,7 @@ using Snake;
 using Map;
 using Assets.Scripts.GameLogics;
 using Assets.Scripts.DataBase;
+using static Snake.SnakeAttribute;
 
 namespace Logic
 {
@@ -72,6 +73,18 @@ namespace Logic
                 Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake, snake.Statistics));
 
             InsertFood(Map);
+        }
+
+        public SnakeBase AddSnake(string snakeName, List<Cordinates> cordinates)
+        {
+            foreach (var cord in cordinates)
+                if (CollisionWithOtherObject(cord, Map, LeftDeadSnakeBody))
+                    return null;
+
+            var snake = SnakeFactory.GetSnakeByName(snakeName, cordinates);
+            snake.ID = SnakesForLogic.Snakes.Count;
+            SnakesForLogic.Snakes.Add(snake);
+            return snake;
         }
 
         /// <summary>
@@ -326,8 +339,27 @@ namespace Logic
             foreach (var snake in map.Snake)
                 if (!snake.IsAlive)
                     foreach (var coord in snake.Cordinates)
-                    if (coord == s.SnakeB.Head)
+                        if (coord == s.SnakeB.Head)
+                            return true;
+            return false;
+        }
+
+        public static bool CollisionWithOtherObject(Cordinates cordinate, PlayingMap map, bool leaveDeadBody)
+        {
+            foreach (var barrier in map.Barriers)
+                if (barrier == cordinate)
                     return true;
+
+            foreach (var food in map.Food.FoodCordinates)
+                if (food == cordinate)
+                    return true;
+
+            foreach (var snake in map.Snake)
+                if (!snake.IsAlive && !leaveDeadBody)
+                    foreach (var coord in snake.Cordinates)
+                        if (coord == cordinate)
+                            return true;
+
             return false;
         }
 

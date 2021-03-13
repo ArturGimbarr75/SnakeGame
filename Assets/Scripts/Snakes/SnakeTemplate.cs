@@ -25,11 +25,11 @@ namespace Snake
         /// <summary>
         /// Текущее направление
         /// </summary>
-        public SnakeAttribute.SnakePathway CurrentPathway { get; } = SnakeAttribute.SnakePathway.Up;
+        public SnakeAttribute.SnakePathway CurrentPathway { get; protected set; }
         /// <summary>
         /// Предыдущее направление
         /// </summary>
-        public SnakeAttribute.SnakePathway LastPathway { get; protected set; } = SnakeAttribute.SnakePathway.Up;
+        public SnakeAttribute.SnakePathway LastPathway { get; protected set; }
         /// <summary>
         /// Кординаты головы змейки
         /// </summary>
@@ -41,7 +41,7 @@ namespace Snake
         /// <summary>
         /// Кординаты тела змейки
         /// </summary>
-        public List<SnakeAttribute.Cordinates> SnakeBody { get; } = new List<SnakeAttribute.Cordinates>();
+        public List<SnakeAttribute.Cordinates> SnakeBody { get; }
         /// <summary>
         /// Значиние указывающее на то, жива ли змейка
         /// </summary>
@@ -61,6 +61,8 @@ namespace Snake
         protected SnakeBase()
         {
             Statistics = new SnakeStatistics(SnakeName);
+            SnakeBody = new List<SnakeAttribute.Cordinates>();
+
         }
 
         /// <summary>
@@ -68,7 +70,21 @@ namespace Snake
         /// </summary>
         /// <param name="map">Текущее игровое поле</param>
         /// <returns>Следующее направление змейки</returns>
-        public virtual SnakeAttribute.SnakePathway GetNextPathway(PlayingMap map) => LastPathway;
+        public abstract SnakeAttribute.SnakePathway GetNextPathway(PlayingMap map);
+
+        public void SetLastPathway()
+        {
+            if (SnakeBody[0].X > SnakeBody[1].X)
+                LastPathway = SnakeAttribute.SnakePathway.Right;
+            if (SnakeBody[0].X < SnakeBody[1].X)
+                LastPathway = SnakeAttribute.SnakePathway.Left;
+            if (SnakeBody[0].Y > SnakeBody[1].Y)
+                LastPathway = SnakeAttribute.SnakePathway.Down;
+            if (SnakeBody[0].Y < SnakeBody[1].Y)
+                LastPathway = SnakeAttribute.SnakePathway.Up;
+
+            CurrentPathway = LastPathway;
+        }
 
         #endregion
     }
