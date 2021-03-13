@@ -32,7 +32,7 @@ namespace Logic
         {
             CollisionWithBarrier = new Dead();
             CollisionWithFood = new IncreaseBody();
-            CollisionWithSnake = new DeadSnake();
+            CollisionWithSnake = new SnakeDead();
             DidStepsWithoutFood = new Decrease(10);
         }
 
