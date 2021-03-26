@@ -30,11 +30,11 @@ namespace Logic
             int mapSideSize, int foodCount, bool leftDeadSnakeBody)
             : base(gameoverPredicates, snakeFactory, mapSideSize, foodCount, snakeNames, leftDeadSnakeBody)
         {
-            AchievedLength = new AppearNewSnake(10, new List<string>() { nameof(RandPathwaySnake), nameof(FollowFoodSnake) });
-            CollisionWithBarrier = new Dead();
+            AchievedLength = new AppearNewSnake(10000, new List<string>() { nameof(FollowFoodAdam) });
+            CollisionWithBarrier = new Stops();
             CollisionWithFood = new IncreaseBody();
             CollisionWithSnake = new SnakeDead();
-            DidStepsWithoutFood = new NoAction(10);
+            DidStepsWithoutFood = new Decrease(30);
         }
 
         #endregion

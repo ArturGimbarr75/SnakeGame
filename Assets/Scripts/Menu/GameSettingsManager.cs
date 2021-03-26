@@ -19,12 +19,19 @@ namespace Assets.Scripts.Menu
 {
     public class GameSettingsManager : MonoBehaviour
     {
+        public List<GameObject> SettingsPanels;
+        public Button NextPanel;
+        public Button PreviousPanel;
+        private int CurrentPanelIndex = 1;
+
         public Toggle LeftDeadBody;
         public Dropdown GameMode;
         public InputField FoodCount;
         public InputField MapSize;
         public InputField Speed;
+
         public List<Toggle> EndGameCheckboxes;
+
         public GameObject SnakesScrollView;
         public GameObject SnakeButtonRowPrefab;
         public GameObject AddedSnakesScrollView;
@@ -129,6 +136,8 @@ namespace Assets.Scripts.Menu
 
         #endregion
 
+        #region SnakePanel
+
         /// <summary>
         /// Добавляет имена змеек для игры
         /// Adds snakes' names for a game
@@ -212,6 +221,10 @@ namespace Assets.Scripts.Menu
                     }
         }
 
+        #endregion
+
+        #region Settings
+
         /// <summary>
         /// Установка корректного значения размеров карты
         /// Setting correct map size
@@ -280,6 +293,8 @@ namespace Assets.Scripts.Menu
                     checkbox.isOn = isOn;
         }
 
+        #endregion
+
         #region Buttons
 
         /// <summary>
@@ -304,6 +319,33 @@ namespace Assets.Scripts.Menu
         public void OnLeftDeadBodyValueChanged()
         {
             GameInits.LeftDeadSnakeBody = LeftDeadBody.isOn;
+        }
+
+        #endregion
+
+        #region SettingsButtons
+
+        public void OnNextPressed()
+        {
+            CurrentPanelIndex++;
+            if (CurrentPanelIndex >= SettingsPanels.Count)
+                CurrentPanelIndex = 0;
+            ShowPanel(CurrentPanelIndex);
+        }
+
+        public void OnPreviousPressed()
+        {
+            CurrentPanelIndex--;
+            if (CurrentPanelIndex < 0)
+                CurrentPanelIndex = SettingsPanels.Count - 1;
+            ShowPanel(CurrentPanelIndex);
+        }
+
+        private void ShowPanel(int index)
+        {
+            foreach (var panel in SettingsPanels)
+                panel.SetActive(false);
+            SettingsPanels[index].SetActive(true);
         }
 
         #endregion
