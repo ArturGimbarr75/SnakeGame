@@ -43,6 +43,7 @@ namespace Assets.Scripts.Menu
 
         private void Start()
         {
+            ShowPanel(CurrentPanelIndex);
             SetUpElementsValue();
             InitialiseSnakeHeadSprites();
             SetUpSnakeButtons();
