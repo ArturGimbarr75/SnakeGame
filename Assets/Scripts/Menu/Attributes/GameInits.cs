@@ -60,6 +60,7 @@ namespace Assets.Scripts.Menu.Attributes
         /// <summary>
         /// Пауза междую шагами змеек
         /// </summary>
-        public static float Pause => (float)(0.31 - Speed * 0.03); 
+        public static float Pause => (float)(0.31 - Speed * 0.03);
+        public static SituationsInit.SituationsObjects Situations = SituationsInit.Instance.GetSituationsObjects();
     }
 }

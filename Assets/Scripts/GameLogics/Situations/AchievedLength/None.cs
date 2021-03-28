@@ -10,7 +10,7 @@ namespace Situations
 {
     class None : BaseAchievedLength
     {
-        public None(int length) : base(length) {}
+        public None(int length = 10) : base(length) {}
 
         public override void AddSnakes(PlayingMap currentMap)
         {

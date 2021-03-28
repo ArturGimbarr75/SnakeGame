@@ -33,8 +33,8 @@ namespace Logic
             AchievedLength = new None(30);
             CollisionWithBarrier = new Stops();
             CollisionWithFood = new IncreaseBody();
-            CollisionWithSnake = new SnakeDead();
-            DidStepsWithoutFood = new Decrease(30);
+            CollisionWithSnake = new SnakeStops();
+            DidStepsWithoutFood = new NoAction(30);
         }
 
         #endregion
