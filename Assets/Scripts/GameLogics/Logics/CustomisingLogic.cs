@@ -8,6 +8,7 @@ using UnityEngine;
 using Map;
 using Snake;
 using Situations;
+using Assets.Scripts.Menu.Attributes;
 
 namespace Logic
 {
@@ -30,11 +31,12 @@ namespace Logic
             int mapSideSize, int foodCount, bool leftDeadSnakeBody)
             : base(gameoverPredicates, snakeFactory, mapSideSize, foodCount, snakeNames, leftDeadSnakeBody)
         {
-            AchievedLength = new None(30);
-            CollisionWithBarrier = new Stops();
-            CollisionWithFood = new IncreaseBody();
-            CollisionWithSnake = new SnakeStops();
-            DidStepsWithoutFood = new NoAction(30);
+            var situations = SituationsInit.Instance.GetSituationsObjects();
+            AchievedLength = situations.AchievedLength;
+            CollisionWithBarrier = situations.CollisionWithBarrier;
+            CollisionWithFood = situations.CollisionWithFood;
+            CollisionWithSnake = situations.CollisionWithSnake;
+            DidStepsWithoutFood = situations.DidStepsWithoutFood;
         }
 
         #endregion

@@ -1,5 +1,6 @@
 using Assets.Scripts.GameLogics;
 using Assets.Scripts.Menu.Attributes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -85,6 +86,65 @@ public class SituationsTable : MonoBehaviour
 
         StepsField.text = SituationsInit.Instance.Steps.ToString();
         DidStepsWithoutFoodDropdown.value = (int)SituationsInit.Instance.DidStepsWithoutFood;
+    }
+
+    #endregion
+
+    #region AchievedLength
+
+    public void OnLengthEndEdit()
+    {
+        string value = LengthField.text;
+        Int32.TryParse(value, out int length);
+        length = Mathf.Clamp(length, 0, 10000);
+
+        if (value != length.ToString())
+            LengthField.text = length.ToString();
+        SituationsInit.Instance.Length = length;
+    }
+
+    public void OnAchievedLengthDropdownValueChanged()
+    {
+        SituationsInit.Instance.AchievedLength = (SituationsInit.AchievedLengthEnum)AchievedLengthDropdown.value;
+    }
+
+    #endregion
+
+    #region Collisions
+
+    public void OnCollisionWithBarrierDropdownValueChanged()
+    {
+        SituationsInit.Instance.CollisionWithBarrier = (SituationsInit.CollisionWithBarrierEnum)CollisionWithBarrierDropdown.value;
+    }
+
+    public void OnCollisionWithFoodDropdownValueChanged()
+    {
+        SituationsInit.Instance.CollisionWithFood = (SituationsInit.CollisionWithFoodEnum)CollisionWithFoodDropdown.value;
+    }
+
+    public void OnCollisionWithSnakeDropdownValueChanged()
+    {
+        SituationsInit.Instance.CollisionWithSnake = (SituationsInit.CollisionWithSnakeEnum)CollisionWithSnakeDropdown.value;
+    }
+
+    #endregion
+
+    #region Collisions
+
+    public void OnStepsEndEdit()
+    {
+        string value = StepsField.text;
+        Int32.TryParse(value, out int steps);
+        steps = Mathf.Clamp(steps, 0, 10000);
+
+        if (value != steps.ToString())
+            StepsField.text = steps.ToString();
+        SituationsInit.Instance.Steps = steps;
+    }
+
+    public void OnDidStepsWithoutFoodDropdownValueChanged()
+    {
+        SituationsInit.Instance.DidStepsWithoutFood = (SituationsInit.DidStepsWithoutFoodEnum)DidStepsWithoutFoodDropdown.value;
     }
 
     #endregion
