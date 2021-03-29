@@ -35,28 +35,28 @@ namespace Assets.Scripts.Menu.Attributes
 
         public enum AchievedLengthEnum
         {
-            None,
-            AppearNewSnake
+            None = 0,
+            AppearNewSnake = 1
         }
         public enum CollisionWithBarrierEnum
         {
-            Dead,
-            Stops
+            Dead = 0,
+            Stops = 1
         }
         public enum CollisionWithFoodEnum
         {
-            IncreaseBody,
-            LeftCurrentSize
+            IncreaseBody = 0,
+            LeftCurrentSize = 1
         }
         public enum CollisionWithSnakeEnum
         {
-            Dead,
-            Stops
+            Dead = 0,
+            Stops = 1
         }
         public enum DidStepsWithoutFoodEnum
         {   
-            None,
-            Decrease
+            None = 0,
+            Decrease = 1
         }
 
         public struct SituationsObjects
