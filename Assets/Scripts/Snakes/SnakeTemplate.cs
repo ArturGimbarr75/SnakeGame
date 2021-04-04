@@ -29,7 +29,8 @@ namespace Snake
         /// <summary>
         /// Предыдущее направление
         /// </summary>
-        public SnakeAttribute.SnakePathway LastPathway { get; protected set; }
+        public SnakeAttribute.SnakePathway LastPathway { get => GetLastPathway(); protected set { lastPathway = value; } }
+        public SnakeAttribute.SnakePathway lastPathway { get; protected set; }
         /// <summary>
         /// Кординаты головы змейки
         /// </summary>
@@ -74,16 +75,21 @@ namespace Snake
 
         public void SetLastPathway()
         {
-            if (SnakeBody[0].X > SnakeBody[1].X)
-                LastPathway = SnakeAttribute.SnakePathway.Right;
-            if (SnakeBody[0].X < SnakeBody[1].X)
-                LastPathway = SnakeAttribute.SnakePathway.Left;
-            if (SnakeBody[0].Y > SnakeBody[1].Y)
-                LastPathway = SnakeAttribute.SnakePathway.Down;
-            if (SnakeBody[0].Y < SnakeBody[1].Y)
-                LastPathway = SnakeAttribute.SnakePathway.Up;
+            CurrentPathway = GetLastPathway();
+        }
 
-            CurrentPathway = LastPathway;
+        private SnakeAttribute.SnakePathway GetLastPathway()
+        {
+            if ((SnakeBody[0].X == SnakeBody[1].X + 1 || SnakeBody[0].X < SnakeBody[1].X) && SnakeBody[0].X != SnakeBody[1].X - 1 && SnakeBody[0].Y == SnakeBody[1].Y)
+                lastPathway = SnakeAttribute.SnakePathway.Right;
+            if ((SnakeBody[0].X == SnakeBody[1].X - 1 || SnakeBody[0].X > SnakeBody[1].X) && SnakeBody[0].X != SnakeBody[1].X + 1 && SnakeBody[0].Y == SnakeBody[1].Y)
+                lastPathway = SnakeAttribute.SnakePathway.Left;
+            if ((SnakeBody[0].Y == SnakeBody[1].Y + 1 || SnakeBody[0].Y < SnakeBody[1].Y) && SnakeBody[0].Y != SnakeBody[1].Y - 1 && SnakeBody[0].X == SnakeBody[1].X)
+                lastPathway = SnakeAttribute.SnakePathway.Down;
+            if ((SnakeBody[0].Y == SnakeBody[1].Y - 1 || SnakeBody[0].Y > SnakeBody[1].Y) && SnakeBody[0].Y != SnakeBody[1].Y + 1 && SnakeBody[0].X == SnakeBody[1].X)
+                lastPathway = SnakeAttribute.SnakePathway.Up;
+
+            return lastPathway;
         }
 
         #endregion
