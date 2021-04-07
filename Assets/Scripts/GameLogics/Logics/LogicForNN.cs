@@ -25,17 +25,18 @@ namespace Logic
             {
                 nameof(FollowFoodAdam),
                 nameof(FollowFoodAdam),
-                /*nameof(FollowFoodAdam),
                 nameof(FollowFoodAdam),
                 nameof(FollowFoodAdam),
                 nameof(FollowFoodAdam),
                 nameof(FollowFoodAdam),
-                nameof(FollowFoodAdam)*/
+                nameof(FollowFoodAdam),
+                nameof(FollowFoodAdam)
             },
             new AssemblySnakeFactory(),
             50,
             20,
-            true
+            true,
+            GameLogicsAttributes.Barriers.None
         ){ }
 
         public override PlayingMap GetNextPlayingMap()

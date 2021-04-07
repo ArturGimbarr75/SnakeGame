@@ -28,8 +28,8 @@ namespace Logic
 
         public CustomisingLogic(HashSet<GameLogicsAttributes.GameoverPredicates> gameoverPredicates,
             List<string> snakeNames, ISnakeFactory snakeFactory,
-            int mapSideSize, int foodCount, bool leftDeadSnakeBody)
-            : base(gameoverPredicates, snakeFactory, mapSideSize, foodCount, snakeNames, leftDeadSnakeBody)
+            int mapSideSize, int foodCount, bool leftDeadSnakeBody, GameLogicsAttributes.Barriers barriers = GameLogicsAttributes.Barriers.None)
+            : base(gameoverPredicates, snakeFactory, mapSideSize, foodCount, snakeNames, leftDeadSnakeBody, barriers)
         {
             var situations = SituationsInit.Instance.GetSituationsObjects();
             AchievedLength = situations.AchievedLength;

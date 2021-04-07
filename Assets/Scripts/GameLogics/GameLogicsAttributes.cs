@@ -8,12 +8,11 @@ namespace Logic
 {
     public class GameLogicsAttributes
     {
-        // TODO: Наверное этот класс не нужен или его надо добавить в другое место
         /// <summary>
         /// Класс змейки для использования в логике игры
         /// Snake class, used in a game logic
         /// </summary> 
-        public sealed class SnakesForLogic // TODO: запись предыдущего хода, длина...
+        public sealed class SnakesForLogic
         {
             public List<SnakeBase> Snakes = new List<SnakeBase>(); 
         }
@@ -26,6 +25,16 @@ namespace Logic
             DeadAllSnakes,
             LeftOneAliveSnake,
             Achieved30Cels
+        }
+
+        public enum Barriers
+        {
+            None,
+            Solid,
+            Random,
+            LinesHorizontal,
+            LinesVertical,
+            Angles
         }
     }
 }

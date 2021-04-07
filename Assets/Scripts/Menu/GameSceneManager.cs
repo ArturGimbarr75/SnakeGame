@@ -20,6 +20,7 @@ namespace Assets.Scripts.Menu
     {
         private TileBase Grass;
         private TileBase Food;
+        private TileBase Barrier;
         private Dictionary<string, List<TileBase>> SnakeBodies;
         private const string DEAD_SNAKE_BODY = "DeadSnake";
 
@@ -57,6 +58,7 @@ namespace Assets.Scripts.Menu
 
             ShowFood();
             ShowSnakes();
+            ShowBarriers();
 
             SetUpStatisticsTable();
         }
@@ -78,6 +80,7 @@ namespace Assets.Scripts.Menu
                 SnakesTileMap.ClearAllTiles();
                 ShowFood();
                 ShowSnakes();
+                ShowBarriers();
                 UpdateStatisticsTable();
             }
         }
@@ -156,6 +159,7 @@ namespace Assets.Scripts.Menu
 
             Food = (TileBase)Instantiate(AssetDatabase.LoadAssetAtPath("Assets\\IMG\\Food\\Simple\\Apple.asset", typeof(TileBase)));
             Grass = (TileBase)Instantiate(AssetDatabase.LoadAssetAtPath("Assets\\IMG\\Background\\Simple\\Grass.asset", typeof(TileBase)));
+            Barrier = (TileBase)Instantiate(AssetDatabase.LoadAssetAtPath("Assets\\IMG\\Barriers\\Simple\\Barrier.asset", typeof(TileBase)));
 
         }
 
@@ -330,6 +334,12 @@ namespace Assets.Scripts.Menu
         {
             foreach (var food in Map.Food.FoodCordinates)
                 SnakesTileMap.SetTile(ConvertMapCoorToTileCoor(food.X, food.Y), Food);
+        }
+
+        private void ShowBarriers()
+        {
+            foreach (var barrier in Map.Barriers)
+                SnakesTileMap.SetTile(ConvertMapCoorToTileCoor(barrier.X, barrier.Y), Barrier);
         }
 
         private void FillBackground()

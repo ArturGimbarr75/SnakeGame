@@ -42,6 +42,7 @@ namespace Logic
         /// Objects which return any instance of a snake base on snake's name
         /// </summary>
         protected ISnakeFactory SnakeFactory;
+        protected GameLogicsAttributes.Barriers BarriersType;
 
         /// <summary>
         /// Базовый конструктор
@@ -51,8 +52,10 @@ namespace Logic
         /// <param name="mapSideSize">Сторона карты/Map's edge</param>
         /// <param name="foodCount">Максимальное колличество еды/Max amount of food</param>
         public GameLogicBase (HashSet<GameLogicsAttributes.GameoverPredicates> gameoverPredicates,
-            ISnakeFactory snakeFactory, int mapSideSize, int foodCount, List<string> snakeNames, bool leftDeadSnakeBody = false)
+            ISnakeFactory snakeFactory, int mapSideSize, int foodCount, List<string> snakeNames, bool leftDeadSnakeBody = false,
+            GameLogicsAttributes.Barriers barriers = GameLogicsAttributes.Barriers.None)
         {
+            BarriersType = barriers;
             this.SnakeFactory = snakeFactory;
             this.SnakesForLogic = new GameLogicsAttributes.SnakesForLogic();
             Map = new PlayingMap(mapSideSize, foodCount);
@@ -72,6 +75,7 @@ namespace Logic
             foreach (var snake in SnakesForLogic.Snakes)
                 Map.Snake.Add(new PlayingMapAttributes.Snake(snake.SnakeName, snake.SnakeBody, snake, snake.Statistics));
 
+            InsertBarriers(Map);
             InsertFood(Map);
         }
 
@@ -107,6 +111,79 @@ namespace Logic
                 if (!CollisionWithSnakes(foodCordinates, map) && !CollisionWithFood(foodCordinates, map)
                     && !CollisionWithBarriers(foodCordinates, map))
                     map.Food.FoodCordinates.Add(foodCordinates);
+            }
+        }
+
+        public void InsertBarriers(PlayingMap map)
+        {
+            int length;
+            switch (BarriersType)
+            {
+                case GameLogicsAttributes.Barriers.None:
+                    break;
+
+                case GameLogicsAttributes.Barriers.Angles:
+                    length = map.sideSize / 4;
+                    for (int i = 0; i < length; i++)
+                    {
+                        map.Barriers.Add(new Cordinates(i, 0));
+                        map.Barriers.Add(new Cordinates(map.sideSize - 1 - i, 0));
+                        map.Barriers.Add(new Cordinates(i, map.sideSize - 1));
+                        map.Barriers.Add(new Cordinates(map.sideSize - 1 - i, map.sideSize - 1));
+                        if (i != 0)
+                        {
+                            map.Barriers.Add(new Cordinates(0, i));
+                            map.Barriers.Add(new Cordinates(0, map.sideSize - 1 - i));
+                            map.Barriers.Add(new Cordinates(map.sideSize - 1, i));
+                            map.Barriers.Add(new Cordinates(map.sideSize - 1, map.sideSize - 1 - i));
+                        }
+                    }
+                    break;
+
+                case GameLogicsAttributes.Barriers.LinesHorizontal:
+                    for (int i = UnityEngine.Random.Range(0, 5); i < map.sideSize; i += UnityEngine.Random.Range(3, 10))
+                    {
+                        length = UnityEngine.Random.Range(1, map.sideSize);
+                        int startX = UnityEngine.Random.Range(0, map.sideSize - length);
+                        for (int j = 0; j < length; j++)
+                            if (!CollisionWithFood(new Cordinates(startX + j, i), map) && !CollisionWithSnakes(new Cordinates(startX + j, i), map))
+                            {
+                                map.Barriers.Add(new Cordinates(startX + j, i));
+                            }
+                    }
+                    break;
+
+                case GameLogicsAttributes.Barriers.LinesVertical:
+                    for (int i = UnityEngine.Random.Range(0, 5); i < map.sideSize; i += UnityEngine.Random.Range(3, 10))
+                    {
+                        length = UnityEngine.Random.Range(1, map.sideSize);
+                        int startY = UnityEngine.Random.Range(0, map.sideSize - length);
+                        for (int j = 0; j < length; j++)
+                            if (!CollisionWithFood(new Cordinates(i, startY + j), map) && !CollisionWithSnakes(new Cordinates(i, startY + j), map))
+                            {
+                                map.Barriers.Add(new Cordinates(i, startY + j));
+                            }
+                    }
+                    break;
+
+                case GameLogicsAttributes.Barriers.Random:
+                    int count = (int)(Math.Pow(map.sideSize, 2) * UnityEngine.Random.Range(5, 10) / 100);
+                    while (map.Barriers.Count < count)
+                    {
+                        var cor = new Cordinates(UnityEngine.Random.Range(0, map.Barriers.Count), UnityEngine.Random.Range(0, map.Barriers.Count));
+                        if (!CollisionWithSnakes(cor, map))
+                        {
+                            map.Barriers.Add(cor);
+                        }
+                    }
+                    break;
+
+                case GameLogicsAttributes.Barriers.Solid:
+                    for (int i = 0; i < map.sideSize; i++)
+                        for (int j = 0; j < map.sideSize; j++)
+                            if (i == 0 || j == 0 || i == map.sideSize - 1 || j == map.sideSize - 1)
+                                map.Barriers.Add(new Cordinates(i, j));
+                    break;
             }
         }
 
