@@ -251,8 +251,7 @@ namespace Snake
             }
 
             var paths = FindMaxWeights();
-            LastPathway = paths[UnityEngine.Random.Range(0, paths.Count - 1)];
-            return LastPathway;
+            return paths[UnityEngine.Random.Range(0, paths.Count - 1)];
         }
     }
 }

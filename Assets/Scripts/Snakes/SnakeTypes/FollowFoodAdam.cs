@@ -111,8 +111,7 @@ class FollowFoodAdam : SmartSnakeBase
 
         SnakePathwaysWeights[GetNearPathwayToFood(map)] += 20;
         var paths = FindMaxWeights();
-        LastPathway = paths[UnityEngine.Random.Range(0, paths.Count - 1)];
-        return LastPathway;
+        return paths[UnityEngine.Random.Range(0, paths.Count - 1)];
     }
 
     private SnakeAttribute.SnakePathway GetNearPathwayToFood(PlayingMap map)

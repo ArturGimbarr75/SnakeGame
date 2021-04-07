@@ -26,6 +26,28 @@ namespace Snake
             Left
         }
 
+        public enum ObjectTypes
+        {
+            None = 0,
+            Food = 1,
+            Snake = 2,
+            Barrier = 4
+        }
+
+        public struct MapForNN
+        {
+            public MapForNN(int size)
+            {
+                Map = new ObjectTypes[size, size];
+                NearestFoodHorizontal = null;
+                NearestFoodVertical = null;
+            }
+
+            public SnakePathway? NearestFoodVertical { get; set; }
+            public SnakePathway? NearestFoodHorizontal { get; set; }
+            public ObjectTypes[,] Map { get; set; }
+        }
+
         /// <summary>
         /// Кординаты объектов игрового поля
         /// Objects' coordinates in the map
