@@ -56,7 +56,7 @@ namespace Logic
 
         private static void WriteToFile(List<MapForNN> mapNN)
         {
-            string data = string.Empty;
+            /*string data = string.Empty;
             using (StreamReader reader = new StreamReader(Path.Combine(Application.dataPath, "Resources", "TrainData", "Data.json")))
             {
                 var json = reader.ReadToEnd();
@@ -71,6 +71,13 @@ namespace Logic
             using (StreamWriter writer = new StreamWriter(Path.Combine(Application.dataPath, "Resources", "TrainData", "Data.json")))
             {       
                 writer.WriteLine(data);
+                writer.Close();
+            }*/
+
+            using (StreamWriter writer = new StreamWriter(Path.Combine(Application.dataPath, "Resources", "TrainData", "Data.json")))
+            {
+                foreach (var m in mapNN)
+                    writer.Write("," + JsonConvert.SerializeObject(m));
                 writer.Close();
             }
         }
