@@ -40,15 +40,15 @@ namespace Assets.Scripts.Menu
         {
             EndGame = false;
             TimePause = Time.time + GameInits.Pause;
-            GameLogic = new LogicForNN();
-                /*(
+            GameLogic = new CustomisingLogic
+                (
                 GameInits.GameoverPredicates,
                 GameInits.SnakeNames,
                 GameInits.Assembly,
                 GameInits.MapSize,
                 GameInits.FoodCount,
                 GameInits.LeftDeadSnakeBody
-                );*/
+                );
             Map = GameLogic.GetCurrentPlayingMap();
 
             SetTileBases();
